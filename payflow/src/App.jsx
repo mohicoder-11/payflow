@@ -1,0 +1,1110 @@
+import { useState, useEffect, useRef } from "react";
+
+const transactions = [
+  { id: 1, name: "Airtel Recharge", type: "bill", amount: -299, date: "Mar 5", icon: "📱", category: "Mobile", status: "success", messages: [{from:"me",text:"Done! ✓",time:"10:02"}] },
+  { id: 2, name: "Received from Pradeep", type: "receive", amount: +5000, date: "Mar 5", icon: "👤", category: "Transfer", status: "success", messages: [{from:"other",text:"Hey! Sent ₹5000 for the dinner 🍽️",time:"9:15"},{from:"me",text:"Got it, thanks!",time:"9:16"}] },
+  { id: 3, name: "Swiggy", type: "food", amount: -480, date: "Mar 4", icon: "🍔", category: "Food", status: "success", messages: [] },
+  { id: 4, name: "Netflix", type: "bill", amount: -649, date: "Mar 3", icon: "🎬", category: "Entertainment", status: "success", messages: [] },
+  { id: 5, name: "Sent to Gopi", type: "send", amount: -2000, date: "Mar 3", icon: "👤", category: "Transfer", status: "success", messages: [{from:"me",text:"Sent ₹2000 for the trip 🚗",time:"14:30"},{from:"other",text:"Thanks da! Received 👍",time:"14:35"}] },
+  { id: 6, name: "Jio DTH", type: "bill", amount: -350, date: "Mar 2", icon: "📺", category: "DTH", status: "success", messages: [] },
+  { id: 7, name: "Salary Credit", type: "receive", amount: +85000, date: "Mar 1", icon: "💼", category: "Income", status: "success", messages: [{from:"other",text:"March salary processed ✅",time:"9:00"},{from:"me",text:"Received, thank you!",time:"9:05"}] },
+  { id: 8, name: "BSNL Broadband", type: "bill", amount: -999, date: "Feb 28", icon: "🌐", category: "Internet", status: "success", messages: [] },
+];
+
+const spendingData = [
+  { category: "Food", amount: 3200, color: "#D4A853", pct: 32 },
+  { category: "Bills", amount: 2800, color: "#7B9FE0", pct: 28 },
+  { category: "Transfer", amount: 2000, color: "#6EC6A0", pct: 20 },
+  { category: "Entertainment", amount: 1200, color: "#E07B9F", pct: 12 },
+  { category: "Other", amount: 800, color: "#A07BE0", pct: 8 },
+];
+
+const contacts = [
+  { name: "Pradeep", initials: "PD", color: "#D4A853" },
+  { name: "Gopi", initials: "GP", color: "#7B9FE0" },
+  { name: "Madan", initials: "MD", color: "#6EC6A0" },
+  { name: "Elakkiya", initials: "EL", color: "#E07B9F" },
+  { name: "Dhilip", initials: "DH", color: "#A07BE0" },
+  { name: "+ Add", initials: "+", color: "#555" },
+];
+
+const billServices = [
+  { name: "Mobile", icon: "📱", color: "#D4A853" },
+  { name: "Internet", icon: "🌐", color: "#7B9FE0" },
+  { name: "DTH", icon: "📺", color: "#6EC6A0" },
+  { name: "Electricity", icon: "⚡", color: "#E07B9F" },
+  { name: "Gas", icon: "🔥", color: "#A07BE0" },
+  { name: "Water", icon: "💧", color: "#4CBDC9" },
+];
+
+const initNotifications = [
+  { id: 1, msg: "₹5,000 received from Pradeep", time: "2h ago", read: false },
+  { id: 2, msg: "Airtel recharge of ₹299 successful", time: "5h ago", read: false },
+  { id: 3, msg: "Your March statement is ready", time: "1d ago", read: true },
+  { id: 4, msg: "5% cashback on DTH bills — claim now!", time: "2d ago", read: true },
+];
+
+const initSavingsGoals = [
+  { id: 1, name: "New iPhone", target: 80000, saved: 32000, icon: "📱", color: "#D4A853" },
+  { id: 2, name: "Goa Trip", target: 30000, saved: 18500, icon: "🏖️", color: "#7B9FE0" },
+  { id: 3, name: "Emergency Fund", target: 100000, saved: 65000, icon: "🛡️", color: "#6EC6A0" },
+];
+
+const loans = [
+  { name: "Home Loan", bank: "HDFC Bank", emi: 22500, remaining: 18, total: 36, outstanding: 405000, color: "#D4A853" },
+  { name: "Personal Loan", bank: "ICICI Bank", emi: 5200, remaining: 8, total: 24, outstanding: 41600, color: "#7B9FE0" },
+];
+
+const cashbackOffers = [
+  { title: "5% on Mobile Recharge", brand: "Airtel / Jio / Vi", expires: "Mar 31", color: "#D4A853", icon: "📱", earned: 149 },
+  { title: "10% on Food Orders", brand: "Swiggy / Zomato", expires: "Mar 15", color: "#E07B9F", icon: "🍔", earned: 480 },
+  { title: "₹200 on DTH Bills", brand: "Tata Sky / Dish TV", expires: "Mar 20", color: "#6EC6A0", icon: "📺", earned: 200 },
+  { title: "2% on Electricity", brand: "All Providers", expires: "Apr 30", color: "#7B9FE0", icon: "⚡", earned: 64 },
+];
+
+const currencies = [
+  { code: "USD", name: "US Dollar", flag: "🇺🇸", rate: 83.5 },
+  { code: "EUR", name: "Euro", flag: "🇪🇺", rate: 90.2 },
+  { code: "GBP", name: "British Pound", flag: "🇬🇧", rate: 105.8 },
+  { code: "AED", name: "UAE Dirham", flag: "🇦🇪", rate: 22.7 },
+  { code: "SGD", name: "Singapore Dollar", flag: "🇸🇬", rate: 61.4 },
+  { code: "CAD", name: "Canadian Dollar", flag: "🇨🇦", rate: 61.1 },
+  { code: "AUD", name: "Australian Dollar", flag: "🇦🇺", rate: 53.8 },
+  { code: "JPY", name: "Japanese Yen", flag: "🇯🇵", rate: 0.56 },
+];
+
+const QR_PATTERN = [1,1,1,1,1,1,1,0,1,0,1,1,0,1,1,1,0,1,1,0,1,0,1,1,0,1,1,1,0,1,1,0,1,1,1,1,1,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,1,0,1,1,0,0,1,1,0,1,0,0,1,1,1,1,1,1,1,1,1,0,1,0,0,0,1,0,1,1,0,0,0,1,0,0,1,0,0,1,1,0,0,1,1,1,0,1,0,1,1,1,0,0,1,1,0,0,1,0,0,0,1,1,0,0,1,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1,1,1,0,0,1,0,0,0,0,0,1,0,1,1,1,1,1,1,1,0,1,0,0,1,1,0,1,0,1,1,0,1,1,1,0,1,1,0,1,0,1,0,0,1,1,0,0,1,0,1,0,1,1,0,1,0,1,0,0,0,1,0,1,1,1,0,1,1,1,0,0,1,1,0,1,0,0,0,1,0,1,0,1,1,0,1,0,0,1,0,0,0,1,0,0,0,0,0];
+
+const D = {
+  dark: {
+    bg: "#09090F", surface: "rgba(255,255,255,0.03)", surfaceHover: "rgba(255,255,255,0.055)",
+    border: "rgba(212,168,83,0.12)", borderBright: "rgba(212,168,83,0.28)",
+    text: "#F0EAD6", textMuted: "rgba(240,234,214,0.38)", textSub: "rgba(240,234,214,0.62)",
+    modal: "#0E0E18", tab: "rgba(9,9,15,0.96)", input: "rgba(255,255,255,0.04)",
+    row: "rgba(255,255,255,0.04)", bar: "rgba(255,255,255,0.06)",
+    chat1: "rgba(212,168,83,0.18)", chat2: "rgba(255,255,255,0.06)",
+    gold: "#D4A853", goldLight: "#F0C96A", green: "#5DB896", blue: "#7B9FE0", pink: "#E07B9F",
+    cardGrad: "linear-gradient(145deg, #141420 0%, #0D1520 50%, #100D1A 100%)",
+  },
+  light: {
+    bg: "#F7F3EC", surface: "rgba(0,0,0,0.03)", surfaceHover: "rgba(0,0,0,0.055)",
+    border: "rgba(160,120,32,0.15)", borderBright: "rgba(160,120,32,0.35)",
+    text: "#1A1408", textMuted: "rgba(26,20,8,0.42)", textSub: "rgba(26,20,8,0.65)",
+    modal: "#FEFAF2", tab: "rgba(247,243,236,0.97)", input: "rgba(0,0,0,0.04)",
+    row: "rgba(0,0,0,0.03)", bar: "rgba(0,0,0,0.07)",
+    chat1: "rgba(160,120,32,0.18)", chat2: "rgba(0,0,0,0.06)",
+    gold: "#A07820", goldLight: "#C49A30", green: "#3A9470", blue: "#5178C0", pink: "#C05070",
+    cardGrad: "linear-gradient(145deg, #FFF8E8 0%, #EEF4FF 50%, #F8EEFF 100%)",
+  },
+};
+
+function QRScanner({ th, onScan, scannerActive, setScannerActive }) {
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const streamRef = useRef(null);
+  const animRef = useRef(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (scannerActive) startCamera();
+    return () => stopCamera();
+  }, [scannerActive]);
+
+  async function startCamera() {
+    setError(null); setLoading(true);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.play();
+        videoRef.current.onloadedmetadata = () => { setLoading(false); scanFrame(); };
+      }
+    } catch { setLoading(false); setError("Camera access denied. Please allow camera permission."); }
+  }
+
+  function stopCamera() {
+    if (streamRef.current) streamRef.current.getTracks().forEach(t => t.stop());
+    if (animRef.current) cancelAnimationFrame(animRef.current);
+  }
+
+  async function scanFrame() {
+    if (!videoRef.current || !canvasRef.current) return;
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+      canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      try {
+        if (window.jsQR) {
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const code = window.jsQR(imageData.data, imageData.width, imageData.height);
+          if (code) { stopCamera(); onScan(code.data); return; }
+        }
+      } catch {}
+    }
+    animRef.current = requestAnimationFrame(scanFrame);
+  }
+
+  return (
+    <div style={{ textAlign: "center" }}>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js" />
+      {!scannerActive ? (
+        <div>
+          <div style={{ width: 220, height: 220, margin: "0 auto 20px", borderRadius: 24, background: th.input, border: `1.5px dashed ${th.borderBright}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12 }}>
+            <span style={{ fontSize: 52 }}>📷</span>
+            <p style={{ fontFamily: "'DM Sans'", fontSize: 12, color: th.textMuted, letterSpacing: 0.5 }}>Camera ready</p>
+          </div>
+          <p style={{ fontFamily: "'DM Sans'", fontSize: 12, color: th.textMuted, marginBottom: 20, lineHeight: 1.6 }}>Point your camera at any UPI QR code to pay instantly</p>
+          <button className="btn-primary" onClick={() => setScannerActive(true)}>Open Camera & Scan</button>
+        </div>
+      ) : (
+        <div>
+          {loading && <div style={{ width: 240, height: 240, margin: "0 auto 12px", borderRadius: 20, background: th.input, display: "flex", alignItems: "center", justifyContent: "center" }}><p style={{ fontFamily: "'DM Sans'", fontSize: 13, color: th.textMuted }}>Starting camera…</p></div>}
+          {error ? (
+            <div style={{ padding: 16, background: "rgba(224,123,159,0.08)", border: "1px solid rgba(224,123,159,0.25)", borderRadius: 16, marginBottom: 16 }}>
+              <p style={{ fontFamily: "'DM Sans'", fontSize: 13, color: th.pink }}>{error}</p>
+            </div>
+          ) : (
+            <div style={{ position: "relative", width: 240, height: 240, margin: "0 auto 16px", borderRadius: 20, overflow: "hidden" }}>
+              <video ref={videoRef} style={{ width: "100%", height: "100%", objectFit: "cover" }} playsInline muted />
+              <div style={{ position: "absolute", inset: 0, borderRadius: 20, pointerEvents: "none" }}>
+                {[["top","left"],["top","right"],["bottom","left"],["bottom","right"]].map(([v,h]) => (
+                  <div key={v+h} style={{ position: "absolute", [v]: 12, [h]: 12, width: 24, height: 24, borderTop: v==="top" ? `2.5px solid ${th.gold}` : "none", borderBottom: v==="bottom" ? `2.5px solid ${th.gold}` : "none", borderLeft: h==="left" ? `2.5px solid ${th.gold}` : "none", borderRight: h==="right" ? `2.5px solid ${th.gold}` : "none", borderRadius: v==="top"&&h==="left"?"6px 0 0 0":v==="top"&&h==="right"?"0 6px 0 0":v==="bottom"&&h==="left"?"0 0 0 6px":"0 0 6px 0" }} />
+                ))}
+                <div style={{ position: "absolute", left: 12, right: 12, height: 1.5, background: `linear-gradient(90deg,transparent,${th.gold},transparent)`, animation: "scanline 2s ease-in-out infinite" }} />
+              </div>
+            </div>
+          )}
+          <canvas ref={canvasRef} style={{ display: "none" }} />
+          <p style={{ fontFamily: "'DM Sans'", fontSize: 11, color: th.textMuted, marginBottom: 14, letterSpacing: 0.3 }}>Align QR code within the frame</p>
+          <button className="btn-ghost" onClick={() => { setScannerActive(false); stopCamera(); }}>Cancel</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function PayFlow() {
+  const [tab, setTab] = useState("home");
+  const [dark, setDark] = useState(true);
+  const [showSend, setShowSend] = useState(false);
+  const [showBill, setShowBill] = useState(null);
+  const [showQR, setShowQR] = useState(false);
+  const [qrTab, setQrTab] = useState("My QR");
+  const [scanResult, setScanResult] = useState(null);
+  const [scannerActive, setScannerActive] = useState(false);
+  const [showSplit, setShowSplit] = useState(false);
+  const [showAddGoal, setShowAddGoal] = useState(false);
+  const [showIntl, setShowIntl] = useState(false);
+  const [showChat, setShowChat] = useState(null);
+  const [showNotif, setShowNotif] = useState(false);
+  const [sendAmount, setSendAmount] = useState("");
+  const [sendTo, setSendTo] = useState("");
+  const [billAmount, setBillAmount] = useState("");
+  const [billNumber, setBillNumber] = useState("");
+  const [notifications, setNotifications] = useState(initNotifications);
+  const [sendSuccess, setSendSuccess] = useState(false);
+  const [billSuccess, setBillSuccess] = useState(false);
+  const [goals, setGoals] = useState(initSavingsGoals);
+  const [newGoalName, setNewGoalName] = useState("");
+  const [newGoalTarget, setNewGoalTarget] = useState("");
+  const [splitAmount, setSplitAmount] = useState("");
+  const [splitPeople, setSplitPeople] = useState([]);
+  const [splitSuccess, setSplitSuccess] = useState(false);
+  const [txFilter, setTxFilter] = useState("All");
+  const [intlAmount, setIntlAmount] = useState("");
+  const [intlCurrency, setIntlCurrency] = useState(currencies[0]);
+  const [intlRecipient, setIntlRecipient] = useState("");
+  const [intlAccount, setIntlAccount] = useState("");
+  const [intlSuccess, setIntlSuccess] = useState(false);
+  const [showCurrencyPicker, setShowCurrencyPicker] = useState(false);
+  const [txMessages, setTxMessages] = useState(() => { const m = {}; transactions.forEach(t => { m[t.id] = [...t.messages]; }); return m; });
+  const [chatInput, setChatInput] = useState("");
+  const [supportMessages, setSupportMessages] = useState([{ role: "assistant", text: "Hi Mohindharan! 👋 I'm Aria, your PayFlow AI assistant. How can I help you today?" }]);
+  const [supportInput, setSupportInput] = useState("");
+  const [supportLoading, setSupportLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const chatEndRef = useRef(null);
+  const supportEndRef = useRef(null);
+
+  const th = dark ? D.dark : D.light;
+  const totalCashback = cashbackOffers.reduce((s, o) => s + o.earned, 0);
+  const unread = notifications.filter(n => !n.read).length;
+
+  useEffect(() => { setTimeout(() => setMounted(true), 80); }, []);
+  useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [showChat, txMessages]);
+  useEffect(() => { supportEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [supportMessages, supportLoading]);
+
+  const go = (t) => setTab(t);
+
+  function handleSend() {
+    if (!sendAmount || !sendTo) return;
+    setSendSuccess(true);
+    setTimeout(() => { setSendSuccess(false); setShowSend(false); setSendAmount(""); setSendTo(""); }, 2200);
+  }
+  function handleBill() {
+    if (!billAmount || !billNumber) return;
+    setBillSuccess(true);
+    setTimeout(() => { setBillSuccess(false); setShowBill(null); setBillAmount(""); setBillNumber(""); }, 2200);
+  }
+  function handleSplit() {
+    if (!splitAmount || splitPeople.length === 0) return;
+    setSplitSuccess(true);
+    setTimeout(() => { setSplitSuccess(false); setShowSplit(false); setSplitAmount(""); setSplitPeople([]); }, 2500);
+  }
+  function handleIntl() {
+    if (!intlAmount || !intlRecipient || !intlAccount) return;
+    setIntlSuccess(true);
+    setTimeout(() => { setIntlSuccess(false); setShowIntl(false); setIntlAmount(""); setIntlRecipient(""); setIntlAccount(""); }, 2500);
+  }
+  function addGoal() {
+    if (!newGoalName || !newGoalTarget) return;
+    const icons = ["🎯","💰","✈️","🏠","🎓","🚗"]; const colors = ["#D4A853","#7B9FE0","#6EC6A0","#E07B9F","#A07BE0","#4CBDC9"];
+    const i = goals.length % 6;
+    setGoals(g => [...g, { id: Date.now(), name: newGoalName, target: parseInt(newGoalTarget), saved: 0, icon: icons[i], color: colors[i] }]);
+    setNewGoalName(""); setNewGoalTarget(""); setShowAddGoal(false);
+  }
+  function sendChat() {
+    if (!chatInput.trim() || !showChat) return;
+    const now = new Date(); const t = `${now.getHours()}:${String(now.getMinutes()).padStart(2,"0")}`;
+    setTxMessages(p => ({ ...p, [showChat.id]: [...(p[showChat.id]||[]), { from:"me", text: chatInput.trim(), time: t }] }));
+    setChatInput("");
+    const replies = ["Got it! 👍","Thanks for the note!","Sure, no problem 😊","Acknowledged ✅","Will confirm shortly!"];
+    setTimeout(() => { setTxMessages(p => ({ ...p, [showChat.id]: [...(p[showChat.id]||[]), { from:"other", text: replies[Math.floor(Math.random()*replies.length)], time: t }] })); }, 1200);
+  }
+  async function sendSupport() {
+    const text = supportInput.trim(); if (!text || supportLoading) return;
+    const userMsg = { role:"user", text };
+    setSupportMessages(p => [...p, userMsg]); setSupportInput(""); setSupportLoading(true);
+    try {
+      const history = [...supportMessages, userMsg];
+      const apiMessages = history.map(m => ({ role: m.role==="assistant"?"assistant":"user", content: m.text }));
+      const res = await fetch("https://api.anthropic.com/v1/messages", { method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:1000,
+          system:`You are Aria, a friendly AI support assistant for PayFlow fintech app. User: Mohindharan DK. Balance: ₹1,24,350. UPI: mohindharan@upi. Bank: HDFC ••4821. Gold Member. Help with transactions, payments, UPI, international transfers, bills, savings, loans, cashback, security. Keep responses concise (2-4 sentences), warm, helpful. Use ₹ for amounts.`,
+          messages: apiMessages }) });
+      const data = await res.json();
+      setSupportMessages(p => [...p, { role:"assistant", text: data.content?.[0]?.text || "Sorry, I couldn't process that. Please try again." }]);
+    } catch { setSupportMessages(p => [...p, { role:"assistant", text: "Having trouble connecting. Please try again. 🙏" }]); }
+    setSupportLoading(false);
+  }
+
+  const filteredTx = transactions.filter(tx => {
+    if (txFilter==="All") return true; if (txFilter==="Income") return tx.amount>0;
+    if (txFilter==="Expense") return tx.amount<0 && !["Mobile","DTH","Internet","Entertainment"].includes(tx.category);
+    if (txFilter==="Bills") return ["Mobile","DTH","Internet","Entertainment"].includes(tx.category);
+    return true;
+  });
+  const intlINR = intlAmount ? (parseFloat(intlAmount)*intlCurrency.rate).toFixed(2) : null;
+  const intlFee = intlINR ? Math.max(50, parseFloat(intlINR)*0.005).toFixed(2) : null;
+
+  const TABS = [["home","◈","Home"],["history","⊟","History"],["analytics","◉","Stats"],["savings","◎","Goals"],["rewards","✦","Rewards"],["support","⊕","Support"],["profile","◈","Me"]];
+
+  // Reusable style helpers
+  const glass = { background: th.surface, border: `1px solid ${th.border}`, borderRadius: 20, padding: "18px 20px", backdropFilter: "blur(12px)" };
+  const inp = { background: th.input, border: `1px solid ${th.border}`, borderRadius: 14, padding: "14px 16px", color: th.text, fontFamily:"'DM Sans',sans-serif", fontSize:14, width:"100%", outline:"none", transition:"border-color 0.2s" };
+  const lbl = { fontFamily:"'DM Sans',sans-serif", fontSize:10, color:th.textMuted, display:"block", marginBottom:8, textTransform:"uppercase", letterSpacing:1.5 };
+  const row = { display:"flex", alignItems:"center", gap:14, padding:"14px 0", borderBottom:`1px solid ${th.row}` };
+
+  return (
+    <div style={{ fontFamily:"'Cormorant Garamond','Georgia',serif", background:th.bg, minHeight:"100vh", color:th.text, maxWidth:420, margin:"0 auto", position:"relative", overflow:"hidden" }}>
+      {/* Ambient background orbs */}
+      <div style={{ position:"fixed", top:-120, right:-80, width:320, height:320, borderRadius:"50%", background:`radial-gradient(circle, ${dark?"rgba(212,168,83,0.06)":"rgba(212,168,83,0.1)"} 0%, transparent 70%)`, pointerEvents:"none", zIndex:0 }} />
+      <div style={{ position:"fixed", bottom:80, left:-100, width:280, height:280, borderRadius:"50%", background:`radial-gradient(circle, ${dark?"rgba(123,159,224,0.05)":"rgba(123,159,224,0.08)"} 0%, transparent 70%)`, pointerEvents:"none", zIndex:0 }} />
+      <div style={{ position:"relative", zIndex:1 }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+        *{box-sizing:border-box;margin:0;padding:0}
+        ::-webkit-scrollbar{width:0}
+
+        .btn-primary{
+          background:linear-gradient(135deg,#D4A853 0%,#F0C96A 50%,#D4A853 100%);
+          background-size:200% 100%;
+          color:#0A0806;border:none;border-radius:16px;padding:15px;
+          font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;
+          cursor:pointer;width:100%;letter-spacing:0.4px;
+          transition:all .3s;box-shadow:0 4px 24px rgba(212,168,83,0.3),0 1px 0 rgba(255,255,255,0.15) inset;
+        }
+        .btn-primary:hover{background-position:100% 0;transform:translateY(-2px);box-shadow:0 8px 32px rgba(212,168,83,0.4)}
+        .btn-primary:active{transform:translateY(0)}
+
+        .btn-ghost{
+          background:transparent;color:#D4A853;
+          border:1px solid rgba(212,168,83,0.25);
+          border-radius:12px;padding:10px 16px;
+          font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;
+          cursor:pointer;transition:all .2s;letter-spacing:0.3px;white-space:nowrap;
+        }
+        .btn-ghost:hover{background:rgba(212,168,83,0.08);border-color:rgba(212,168,83,0.45);transform:translateY(-1px)}
+
+        .tab-bar{
+          position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:420px;
+          backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+          border-top:1px solid rgba(212,168,83,0.08);
+          display:flex;overflow-x:auto;padding:10px 8px 24px;z-index:100;gap:2px;
+          scrollbar-width:none;
+        }
+        .tab-bar::before{
+          content:'';position:absolute;inset:0;
+          background:linear-gradient(180deg,rgba(212,168,83,0.04) 0%,transparent 100%);
+          pointer-events:none;
+        }
+        .tab-bar::-webkit-scrollbar{display:none}
+        .ti{
+          min-width:52px;flex:1;display:flex;flex-direction:column;
+          align-items:center;gap:5px;cursor:pointer;padding:7px 4px;
+          border-radius:16px;transition:all .25s;position:relative;
+        }
+        .ti:hover{background:rgba(212,168,83,0.07)}
+        .ti-icon{font-size:17px;line-height:1;transition:all .3s;opacity:0.32}
+        .ti-lbl{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:500;color:rgba(212,168,83,0.32);letter-spacing:0.8px;text-transform:uppercase;white-space:nowrap;transition:all .3s}
+        .ti.active .ti-icon{opacity:1;filter:drop-shadow(0 0 8px rgba(212,168,83,0.7));transform:scale(1.1)}
+        .ti.active .ti-lbl{color:#D4A853;font-weight:700}
+        .ti.active::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:20px;height:2px;background:#D4A853;border-radius:2px;box-shadow:0 0 8px rgba(212,168,83,0.6)}
+
+        .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.78);backdrop-filter:blur(12px);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+        .sheet{
+          border-radius:32px 32px 0 0;padding:0;width:100%;max-width:420px;
+          animation:rise .4s cubic-bezier(0.22,1,0.36,1);
+          max-height:92vh;overflow-y:auto;overflow-x:hidden;
+        }
+        .sheet-inner{padding:10px 24px 52px}
+        .sheet-handle{width:40px;height:4px;border-radius:4px;background:rgba(255,255,255,0.12);margin:14px auto 20px}
+        .chat-full{
+          border-radius:32px 32px 0 0;width:100%;max-width:420px;
+          animation:rise .4s cubic-bezier(0.22,1,0.36,1);
+          height:90vh;display:flex;flex-direction:column;overflow:hidden;
+        }
+        @keyframes rise{from{transform:translateY(110%);opacity:0}to{transform:translateY(0);opacity:1}}
+
+        .fade{opacity:0;transform:translateY(20px);transition:opacity .55s cubic-bezier(0.22,1,0.36,1),transform .55s cubic-bezier(0.22,1,0.36,1)}
+        .fade.in{opacity:1;transform:translateY(0)}
+
+        .success-wrap{
+          background:linear-gradient(135deg,rgba(93,184,150,0.1),rgba(93,184,150,0.04));
+          border:1px solid rgba(93,184,150,0.25);color:#5DB896;
+          border-radius:22px;padding:32px;text-align:center;font-family:'DM Sans',sans-serif;
+        }
+        .pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-family:'DM Sans',sans-serif;font-weight:500;letter-spacing:0.4px}
+        .notif-dot{width:7px;height:7px;background:#D4A853;border-radius:50%;position:absolute;top:-2px;right:-2px;box-shadow:0 0 8px rgba(212,168,83,0.9);animation:pulse 2s ease-in-out infinite}
+        .bar{height:6px;border-radius:8px;overflow:hidden}
+
+        .action-btn{
+          background:${dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"};
+          border:1px solid ${th.border};
+          border-radius:18px;padding:15px 6px;cursor:pointer;
+          display:flex;flex-direction:column;align-items:center;gap:7px;
+          transition:all .25s;
+        }
+        .action-btn:hover{
+          background:rgba(212,168,83,0.07);border-color:rgba(212,168,83,0.3);
+          transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.15);
+        }
+        .action-btn:active{transform:translateY(-1px)}
+
+        .card-hover{transition:transform .25s,box-shadow .25s}
+        .card-hover:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.22)}
+
+        .glass-card{
+          background:${dark ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.7)"};
+          backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+          border:1px solid ${th.border};border-radius:22px;padding:20px;
+          box-shadow:${dark ? "0 4px 24px rgba(0,0,0,0.3),0 1px 0 rgba(255,255,255,0.05) inset" : "0 4px 24px rgba(0,0,0,0.06),0 1px 0 rgba(255,255,255,0.8) inset"};
+        }
+
+        @keyframes scanline{0%{top:10%}50%{top:85%}100%{top:10%}}
+        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.6;transform:scale(0.9)}}
+        @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+        @keyframes glow{0%,100%{box-shadow:0 0 30px rgba(212,168,83,0.1),0 0 60px rgba(212,168,83,0.05)}50%{box-shadow:0 0 50px rgba(212,168,83,0.2),0 0 100px rgba(212,168,83,0.08)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+        @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+        .balance-card{animation:glow 5s ease-in-out infinite}
+        .section-title{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;opacity:0.38;margin-bottom:16px}
+        input:focus{border-color:rgba(212,168,83,0.5) !important;box-shadow:0 0 0 4px rgba(212,168,83,0.07) !important;outline:none}
+        input{transition:border-color .2s,box-shadow .2s}
+
+        .tx-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid ${th.row};transition:all .2s}
+        .tx-row:hover{background:${dark ? "rgba(255,255,255,0.015)" : "rgba(0,0,0,0.015)"};margin:0 -8px;padding-left:8px;padding-right:8px;border-radius:14px;border-bottom-color:transparent}
+        .tx-row:last-child{border-bottom:none}
+
+        .contact-avatar{transition:all .2s}
+        .contact-avatar:hover{transform:scale(1.1);filter:brightness(1.2)}
+
+        .currency-option{transition:background .15s}
+        .currency-option:hover{background:rgba(212,168,83,0.06) !important}
+      `}</style>
+
+      {/* ── HEADER ── */}
+      <div style={{ padding:"54px 24px 16px", display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
+        <div>
+          <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, letterSpacing:4, textTransform:"uppercase", marginBottom:6 }}>Good morning</p>
+          <h2 style={{ fontSize:26, fontWeight:600, letterSpacing:-0.8, lineHeight:1, fontFamily:"'Cormorant Garamond',serif", fontStyle:"italic" }}>Mohindharan <span style={{ fontStyle:"normal", fontWeight:700 }}>DK</span></h2>
+        </div>
+        <div style={{ display:"flex", gap:8, alignItems:"center", marginTop:4 }}>
+          <button onClick={() => setDark(d => !d)} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:14, width:38, height:38, cursor:"pointer", fontSize:15, display:"flex", alignItems:"center", justifyContent:"center", transition:"all .2s", boxShadow: dark ? "0 2px 8px rgba(0,0,0,0.3)" : "0 2px 8px rgba(0,0,0,0.06)" }}>
+            {dark ? "🌙" : "☀️"}
+          </button>
+          <div style={{ position:"relative", cursor:"pointer", width:38, height:38, background:th.surface, border:`1px solid ${th.border}`, borderRadius:14, display:"flex", alignItems:"center", justifyContent:"center", transition:"all .2s", boxShadow: dark ? "0 2px 8px rgba(0,0,0,0.3)" : "0 2px 8px rgba(0,0,0,0.06)" }} onClick={() => setShowNotif(true)}>
+            <span style={{ fontSize:15 }}>🔔</span>
+            {unread > 0 && <div className="notif-dot" />}
+          </div>
+          <div style={{ width:38, height:38, borderRadius:14, background:`linear-gradient(135deg,${th.gold},${th.goldLight})`, display:"flex", alignItems:"center", justifyContent:"center", color:"#0A0806", fontWeight:700, fontFamily:"'DM Sans'", fontSize:12, letterSpacing:0.5, boxShadow:`0 4px 16px rgba(212,168,83,0.3)` }}>MD</div>
+        </div>
+      </div>
+
+      {/* ── CONTENT ── */}
+      <div style={{ padding:"0 24px", paddingBottom:110, overflowY:"auto", maxHeight:"calc(100vh - 98px)" }}>
+
+        {/* HOME */}
+        {tab==="home" && (
+          <div className={`fade ${mounted?"in":""}`}>
+
+            {/* Balance Card */}
+            <div className="balance-card card-hover" style={{ background:th.cardGrad, border:`1px solid ${th.borderBright}`, borderRadius:28, padding:"28px 24px 24px", marginBottom:24, position:"relative", overflow:"hidden", boxShadow: dark ? "0 20px 60px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset" : "0 20px 60px rgba(0,0,0,0.1)" }}>
+              {/* Decorative circles */}
+              <div style={{ position:"absolute", top:-70, right:-70, width:200, height:200, borderRadius:"50%", background:`radial-gradient(circle, rgba(212,168,83,0.12) 0%, transparent 70%)`, pointerEvents:"none" }} />
+              <div style={{ position:"absolute", bottom:-50, left:-50, width:160, height:160, borderRadius:"50%", background:`radial-gradient(circle, rgba(123,159,224,0.09) 0%, transparent 70%)`, pointerEvents:"none" }} />
+              <div style={{ position:"absolute", top:0, left:0, right:0, height:"1px", background:`linear-gradient(90deg, transparent, rgba(212,168,83,0.4), transparent)` }} />
+              <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, letterSpacing:3.5, textTransform:"uppercase", marginBottom:12 }}>Total Balance</p>
+              <h1 style={{ fontSize:40, fontWeight:600, color:th.gold, letterSpacing:-2, lineHeight:1, marginBottom:6, fontFamily:"'Cormorant Garamond',serif" }}>₹1,24,350</h1>
+              <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginBottom:20, letterSpacing:2 }}>•••• 4821 &nbsp;·&nbsp; VISA Gold</p>
+              <div style={{ height:"1px", background:`linear-gradient(90deg, transparent, ${th.borderBright}, transparent)`, marginBottom:20 }} />
+              <div style={{ display:"flex", gap:0 }}>
+                {[["Income","↑ ₹90,000",th.green],["Spent","↓ ₹8,777",th.pink],["Cashback",`✦ ₹${totalCashback}`,th.gold]].map(([l,v,c],i) => (
+                  <div key={l} style={{ flex:1, borderRight: i<2 ? `1px solid ${th.border}` : "none", paddingRight:14, paddingLeft:i>0?14:0 }}>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:6 }}>{l}</p>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:13, color:c, fontWeight:600, letterSpacing:-0.3 }}>{v}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:8, marginBottom:24 }}>
+              {[
+                { icon:"↑", label:"Send", fn:() => setShowSend(true), c:th.gold },
+                { icon:"↓", label:"Receive", fn:() => { setQrTab("My QR"); setScanResult(null); setScannerActive(false); setShowQR(true); }, c:th.green },
+                { icon:"🌍", label:"Global", fn:() => setShowIntl(true), c:th.blue },
+                { icon:"÷", label:"Split", fn:() => setShowSplit(true), c:th.pink },
+                { icon:"▦", label:"QR", fn:() => { setQrTab("Scan QR"); setScanResult(null); setScannerActive(false); setShowQR(true); }, c:"#A07BE0" },
+              ].map(a => (
+                <button key={a.label} className="action-btn" onClick={a.fn}>
+                  <span style={{ fontSize:18, color:a.c, lineHeight:1 }}>{a.icon}</span>
+                  <span style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textSub, fontWeight:500, letterSpacing:0.3 }}>{a.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Bills */}
+            <div style={{ marginBottom:24 }}>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:14 }}>
+                <p className="section-title" style={{ margin:0 }}>Pay Bills</p>
+                <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold, cursor:"pointer", letterSpacing:0.3 }}>See all →</span>
+              </div>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(6,1fr)", gap:8 }}>
+                {billServices.map(s => (
+                  <button key={s.name} className="action-btn" onClick={() => setShowBill(s.name)} style={{ padding:"12px 4px" }}>
+                    <span style={{ fontSize:19 }}>{s.icon}</span>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:8, color:th.textSub, letterSpacing:0.2 }}>{s.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Send Money */}
+            <div style={{ marginBottom:24 }}>
+              <p className="section-title">Send Money</p>
+              <div style={{ display:"flex", gap:14, overflowX:"auto", paddingBottom:4 }}>
+                {contacts.map(c => (
+                  <div key={c.name} onClick={() => { if (c.name!=="+ Add") setSendTo(c.name); setShowSend(true); }} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:7, cursor:"pointer", minWidth:50 }}>
+                    <div style={{ width:48, height:48, borderRadius:"50%", background:`${c.color}15`, border:`1.5px solid ${c.color}40`, display:"flex", alignItems:"center", justifyContent:"center", color:c.color, fontFamily:"'DM Sans'", fontWeight:600, fontSize:12, letterSpacing:0.5, transition:"all .2s" }}>{c.initials}</div>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textSub, letterSpacing:0.3 }}>{c.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Intl Banner */}
+            <div className="card-hover" onClick={() => setShowIntl(true)} style={{ ...glass, marginBottom:22, cursor:"pointer", display:"flex", alignItems:"center", gap:16, background:`linear-gradient(135deg, rgba(123,159,224,0.08), rgba(110,198,160,0.06))`, border:`1px solid rgba(123,159,224,0.15)` }}>
+              <div style={{ width:44, height:44, borderRadius:14, background:"rgba(123,159,224,0.12)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, flexShrink:0 }}>🌍</div>
+              <div style={{ flex:1 }}>
+                <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text, marginBottom:3 }}>International Transfer</p>
+                <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>Send to 50+ countries · Best live rates</p>
+              </div>
+              <span style={{ color:th.gold, fontSize:18 }}>›</span>
+            </div>
+
+            {/* Cashback Teaser */}
+            <div style={{ ...glass, marginBottom:22, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+              <div>
+                <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:1.5, marginBottom:6 }}>Cashback Earned</p>
+                <p style={{ fontFamily:"'DM Sans'", fontSize:24, fontWeight:700, color:th.gold, letterSpacing:-0.5 }}>₹{totalCashback}</p>
+              </div>
+              <button className="btn-ghost" onClick={() => go("rewards")}>View Offers →</button>
+            </div>
+
+            {/* Recent */}
+            <div>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:14 }}>
+                <p className="section-title" style={{ margin:0 }}>Recent</p>
+                <span onClick={() => go("history")} style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold, cursor:"pointer" }}>View all →</span>
+              </div>
+              {transactions.slice(0,5).map(tx => (
+                <div key={tx.id} className="tx-row">
+                  <div style={{ width:40, height:40, borderRadius:13, background:tx.amount>0?"rgba(93,184,150,0.1)":"rgba(212,168,83,0.08)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:17, flexShrink:0 }}>{tx.icon}</div>
+                  <div style={{ flex:1 }}>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:500, color:th.text, marginBottom:2 }}>{tx.name}</p>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, letterSpacing:0.2 }}>{tx.date} · {tx.category}</p>
+                  </div>
+                  <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                    <span style={{ fontFamily:"'DM Sans'", fontWeight:600, fontSize:13, color:tx.amount>0?th.green:th.text, letterSpacing:-0.3 }}>{tx.amount>0?"+ ":"– "}₹{Math.abs(tx.amount).toLocaleString()}</span>
+                    <button onClick={() => setShowChat(tx)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:14, opacity:0.4, padding:"2px 4px", transition:"opacity .2s" }} onMouseOver={e=>e.target.style.opacity=0.8} onMouseOut={e=>e.target.style.opacity=0.4}>
+                      💬{txMessages[tx.id]?.length>0 && <sup style={{ fontFamily:"'DM Sans'", fontSize:8, color:th.gold }}>{txMessages[tx.id].length}</sup>}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* HISTORY */}
+        {tab==="history" && (
+          <div className={`fade ${mounted?"in":""}`}>
+            <h2 style={{ fontSize:26, fontWeight:600, marginBottom:18, letterSpacing:-0.5 }}>Transactions</h2>
+            <div style={{ display:"flex", gap:6, marginBottom:18, overflowX:"auto", paddingBottom:2 }}>
+              {["All","Income","Expense","Bills"].map(f => (
+                <button key={f} onClick={() => setTxFilter(f)} className="btn-ghost" style={{ background:txFilter===f?"rgba(212,168,83,0.15)":undefined, borderColor:txFilter===f?th.gold:undefined, color:txFilter===f?th.gold:th.textSub }}>{f}</button>
+              ))}
+            </div>
+            {filteredTx.map(tx => (
+              <div key={tx.id} className="tx-row">
+                <div style={{ width:42, height:42, borderRadius:13, background:tx.amount>0?"rgba(93,184,150,0.1)":"rgba(212,168,83,0.08)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, flexShrink:0 }}>{tx.icon}</div>
+                <div style={{ flex:1 }}>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:500, color:th.text, marginBottom:2 }}>{tx.name}</p>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>{tx.date} · {tx.category}</p>
+                </div>
+                <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+                  <div style={{ textAlign:"right" }}>
+                    <p style={{ fontFamily:"'DM Sans'", fontWeight:600, fontSize:13, color:tx.amount>0?th.green:th.text }}>{tx.amount>0?"+ ":"– "}₹{Math.abs(tx.amount).toLocaleString()}</p>
+                    <span className="pill" style={{ background:"rgba(93,184,150,0.1)", color:th.green, marginTop:2 }}>✓ Done</span>
+                  </div>
+                  <button onClick={() => setShowChat(tx)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:14, opacity:0.4, padding:"2px 4px" }}>💬</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* ANALYTICS */}
+        {tab==="analytics" && (
+          <div className={`fade ${mounted?"in":""}`}>
+            <h2 style={{ fontSize:26, fontWeight:600, marginBottom:18, letterSpacing:-0.5 }}>Analytics</h2>
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:18 }}>
+              {[["Total Spent","₹8,777",th.pink,"↓"],["Total Income","₹90,000",th.green,"↑"],["Saved","₹81,223",th.gold,"◈"],["Bills Paid","₹2,297",th.blue,"⚡"]].map(([l,v,c,i]) => (
+                <div key={l} style={{ ...glass, padding:"16px 18px" }}>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, textTransform:"uppercase", letterSpacing:1.5, marginBottom:8 }}>{l}</p>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:18, fontWeight:700, color:c, letterSpacing:-0.5 }}>{i} {v}</p>
+                </div>
+              ))}
+            </div>
+            <div style={{ ...glass, marginBottom:14 }}>
+              <p className="section-title">Spending by Category</p>
+              {spendingData.map(s => (
+                <div key={s.category} style={{ marginBottom:14 }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", marginBottom:6 }}>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textSub }}>{s.category}</span>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:12, color:s.color, fontWeight:600 }}>₹{s.amount.toLocaleString()}</span>
+                  </div>
+                  <div className="bar" style={{ background:th.bar }}>
+                    <div style={{ height:"100%", width:`${s.pct}%`, background:s.color, borderRadius:8, transition:"width 1s ease" }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div style={glass}>
+              <p className="section-title">Monthly Overview</p>
+              <div style={{ display:"flex", alignItems:"flex-end", gap:6, height:80 }}>
+                {[55,72,40,88,62,48,90].map((h,i) => (
+                  <div key={i} style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:5 }}>
+                    <div style={{ width:"100%", height:h, borderRadius:"5px 5px 0 0", background: i===6?`linear-gradient(180deg,${th.gold},${th.goldLight})`:th.bar, transition:"height .8s ease" }} />
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:8, color:th.textMuted }}>{"SONDJFM"[i]}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* SAVINGS */}
+        {tab==="savings" && (
+          <div className={`fade ${mounted?"in":""}`}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:18 }}>
+              <h2 style={{ fontSize:26, fontWeight:600, letterSpacing:-0.5 }}>Goals</h2>
+              <button className="btn-ghost" onClick={() => setShowAddGoal(true)}>+ New Goal</button>
+            </div>
+            <div style={{ ...glass, marginBottom:18, textAlign:"center", background:`linear-gradient(135deg,rgba(93,184,150,0.08),rgba(93,184,150,0.03))`, border:`1px solid rgba(93,184,150,0.15)` }}>
+              <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:8 }}>Total Saved</p>
+              <p style={{ fontFamily:"'DM Sans'", fontSize:32, fontWeight:700, color:th.green, letterSpacing:-1 }}>₹{goals.reduce((s,g)=>s+g.saved,0).toLocaleString()}</p>
+              <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginTop:5 }}>across {goals.length} goals</p>
+            </div>
+            {goals.map(g => {
+              const pct = Math.min(100, Math.round((g.saved/g.target)*100));
+              return (
+                <div key={g.id} className="card-hover" style={{ ...glass, marginBottom:12 }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14 }}>
+                    <div style={{ width:44, height:44, borderRadius:14, background:`${g.color}12`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 }}>{g.icon}</div>
+                    <div style={{ flex:1 }}>
+                      <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text, marginBottom:2 }}>{g.name}</p>
+                      <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>Target ₹{g.target.toLocaleString()}</p>
+                    </div>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:18, fontWeight:700, color:g.color }}>{pct}%</span>
+                  </div>
+                  <div className="bar" style={{ background:th.bar, marginBottom:10 }}>
+                    <div style={{ height:"100%", width:`${pct}%`, background:`linear-gradient(90deg,${g.color},${g.color}99)`, borderRadius:8 }} />
+                  </div>
+                  <div style={{ display:"flex", justifyContent:"space-between" }}>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.green, fontWeight:500 }}>₹{g.saved.toLocaleString()} saved</span>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>₹{(g.target-g.saved).toLocaleString()} to go</span>
+                  </div>
+                </div>
+              );
+            })}
+            <h3 style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:600, marginTop:28, marginBottom:14, color:th.text, letterSpacing:0.2 }}>Loan & EMI Tracker</h3>
+            {loans.map(l => {
+              const pct = Math.round(((l.total-l.remaining)/l.total)*100);
+              return (
+                <div key={l.name} className="card-hover" style={{ ...glass, marginBottom:12 }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", marginBottom:12 }}>
+                    <div><p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text, marginBottom:2 }}>{l.name}</p><p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>{l.bank}</p></div>
+                    <div style={{ textAlign:"right" }}><p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:700, color:l.color }}>₹{l.emi.toLocaleString()}/mo</p><p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, marginTop:2 }}>{l.remaining} EMIs left</p></div>
+                  </div>
+                  <div className="bar" style={{ background:th.bar, marginBottom:8 }}>
+                    <div style={{ height:"100%", width:`${pct}%`, background:l.color, borderRadius:8 }} />
+                  </div>
+                  <div style={{ display:"flex", justifyContent:"space-between" }}>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.green }}>{pct}% paid</span>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>₹{l.outstanding.toLocaleString()} outstanding</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* REWARDS */}
+        {tab==="rewards" && (
+          <div className={`fade ${mounted?"in":""}`}>
+            <h2 style={{ fontSize:26, fontWeight:600, marginBottom:4, letterSpacing:-0.5 }}>Rewards</h2>
+            <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textMuted, marginBottom:20 }}>Earn while you spend ✦</p>
+            <div style={{ ...glass, marginBottom:20, background:`linear-gradient(135deg,rgba(212,168,83,0.1),rgba(212,168,83,0.04))`, border:`1px solid rgba(212,168,83,0.2)`, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+              <div>
+                <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:8 }}>Total Earned This Month</p>
+                <p style={{ fontFamily:"'DM Sans'", fontSize:28, fontWeight:700, color:th.gold, letterSpacing:-1 }}>₹{totalCashback}</p>
+              </div>
+              <span style={{ fontSize:38 }}>🏆</span>
+            </div>
+            <p className="section-title">Active Offers</p>
+            {cashbackOffers.map(o => (
+              <div key={o.title} className="card-hover" style={{ ...glass, marginBottom:10, display:"flex", gap:14, alignItems:"center" }}>
+                <div style={{ width:44, height:44, borderRadius:14, background:`${o.color}12`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:21, flexShrink:0 }}>{o.icon}</div>
+                <div style={{ flex:1 }}>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text, marginBottom:2 }}>{o.title}</p>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>{o.brand} · Expires {o.expires}</p>
+                </div>
+                <div style={{ textAlign:"right" }}>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:700, color:th.green }}>+₹{o.earned}</p>
+                  <button className="btn-ghost" style={{ padding:"4px 10px", fontSize:10, marginTop:5 }}>Claim</button>
+                </div>
+              </div>
+            ))}
+            <div style={{ ...glass, marginTop:18, textAlign:"center", background:`linear-gradient(135deg,rgba(212,168,83,0.07),rgba(212,168,83,0.02))` }}>
+              <span style={{ fontSize:28 }}>⭐</span>
+              <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text, marginTop:8, marginBottom:6 }}>Gold Member Perks</p>
+              <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, lineHeight:1.7 }}>2× cashback on bills · Priority support · Zero forex fees</p>
+            </div>
+          </div>
+        )}
+
+        {/* SUPPORT */}
+        {tab==="support" && (
+          <div className={`fade ${mounted?"in":""}`} style={{ display:"flex", flexDirection:"column", height:"calc(100vh - 210px)" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:18, flexShrink:0 }}>
+              <div style={{ width:44, height:44, borderRadius:14, background:"linear-gradient(135deg,rgba(123,159,224,0.15),rgba(160,123,224,0.15))", display:"flex", alignItems:"center", justifyContent:"center", fontSize:20, border:`1px solid rgba(123,159,224,0.2)` }}>🤖</div>
+              <div>
+                <h2 style={{ fontSize:18, fontWeight:600, letterSpacing:-0.3 }}>Aria · AI Support</h2>
+                <div style={{ display:"flex", alignItems:"center", gap:5, marginTop:3 }}>
+                  <div style={{ width:6, height:6, borderRadius:"50%", background:th.green, animation:"pulse 2s infinite" }} />
+                  <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.green, letterSpacing:0.3 }}>Online · Instant replies</span>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ flex:1, overflowY:"auto", display:"flex", flexDirection:"column", gap:12, paddingBottom:8 }}>
+              {supportMessages.map((msg,i) => (
+                <div key={i} style={{ display:"flex", flexDirection:"column", alignItems:msg.role==="user"?"flex-end":"flex-start", gap:4 }}>
+                  {msg.role==="assistant" && (
+                    <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:2 }}>
+                      <div style={{ width:18, height:18, borderRadius:6, background:"linear-gradient(135deg,rgba(123,159,224,0.2),rgba(160,123,224,0.2))", display:"flex", alignItems:"center", justifyContent:"center", fontSize:10 }}>🤖</div>
+                      <span style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, letterSpacing:0.5 }}>ARIA</span>
+                    </div>
+                  )}
+                  <div style={{ maxWidth:"82%", padding:"12px 15px", borderRadius:msg.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px", background:msg.role==="user"?`rgba(212,168,83,0.15)`:dark?"rgba(123,159,224,0.08)":"rgba(123,159,224,0.1)", border:msg.role==="assistant"?`1px solid rgba(123,159,224,0.15)`:`1px solid rgba(212,168,83,0.2)`, fontFamily:"'DM Sans',sans-serif", fontSize:13, lineHeight:1.55, color:th.text, whiteSpace:"pre-wrap" }}>{msg.text}</div>
+                </div>
+              ))}
+              {supportLoading && (
+                <div style={{ display:"flex", alignItems:"flex-start", gap:8 }}>
+                  <div style={{ width:18, height:18, borderRadius:6, background:"linear-gradient(135deg,rgba(123,159,224,0.2),rgba(160,123,224,0.2))", display:"flex", alignItems:"center", justifyContent:"center", fontSize:10 }}>🤖</div>
+                  <div style={{ padding:"12px 16px", borderRadius:"18px 18px 18px 4px", background:dark?"rgba(123,159,224,0.08)":"rgba(123,159,224,0.1)", border:"1px solid rgba(123,159,224,0.15)", display:"flex", gap:5, alignItems:"center" }}>
+                    {[0,1,2].map(i => <div key={i} style={{ width:6, height:6, borderRadius:"50%", background:th.blue, animation:`bounce 1.2s ${i*0.2}s infinite` }} />)}
+                  </div>
+                </div>
+              )}
+              <div ref={supportEndRef} />
+            </div>
+
+            {supportMessages.length<=1 && (
+              <div style={{ flexShrink:0, marginBottom:12 }}>
+                <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, marginBottom:8, textTransform:"uppercase", letterSpacing:1.5 }}>Common questions</p>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+                  {["Why was my payment declined?","How to dispute a transaction?","International transfer limit?","Add a new bank account?","Track my refund","Change UPI PIN"].map(q => (
+                    <button key={q} onClick={() => setSupportInput(q)} className="btn-ghost" style={{ fontSize:10, padding:"6px 10px" }}>{q}</button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div style={{ flexShrink:0, display:"flex", gap:10, paddingTop:12, borderTop:`1px solid ${th.row}` }}>
+              <input style={{ ...inp, flex:1, padding:"12px 15px", fontSize:13 }} placeholder="Ask Aria anything…" value={supportInput} onChange={e => setSupportInput(e.target.value)} onKeyDown={e => e.key==="Enter" && sendSupport()} />
+              <button onClick={sendSupport} disabled={supportLoading} style={{ background:supportLoading?th.bar:`linear-gradient(135deg,${th.gold},${th.goldLight})`, border:"none", borderRadius:12, width:44, height:44, cursor:supportLoading?"not-allowed":"pointer", fontSize:16, display:"flex", alignItems:"center", justifyContent:"center", color:"#0A0806", flexShrink:0, boxShadow:`0 4px 16px rgba(212,168,83,0.2)` }}>↑</button>
+            </div>
+          </div>
+        )}
+
+        {/* PROFILE */}
+        {tab==="profile" && (
+          <div className={`fade ${mounted?"in":""}`}>
+            <h2 style={{ fontSize:26, fontWeight:600, marginBottom:22, letterSpacing:-0.5 }}>Profile</h2>
+            <div style={{ display:"flex", flexDirection:"column", alignItems:"center", marginBottom:26 }}>
+              <div style={{ width:76, height:76, borderRadius:22, background:`linear-gradient(135deg,${th.gold},${th.goldLight})`, display:"flex", alignItems:"center", justifyContent:"center", color:"#0A0806", fontSize:26, fontWeight:700, fontFamily:"'DM Sans'", marginBottom:14, boxShadow:`0 8px 32px rgba(212,168,83,0.3)` }}>MD</div>
+              <h3 style={{ fontSize:20, fontWeight:600, letterSpacing:-0.3, marginBottom:4 }}>Mohindharan DK</h3>
+              <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textMuted, marginBottom:8 }}>mohindharan@gmail.com</p>
+              <span className="pill" style={{ background:`rgba(212,168,83,0.12)`, color:th.gold, border:`1px solid rgba(212,168,83,0.25)`, letterSpacing:0.5 }}>✦ Gold Member</span>
+            </div>
+            <div style={{ ...glass, marginBottom:12 }}>
+              {[["💳","Linked Accounts","2 cards"],["🔐","Security","2FA On"],["📍","UPI ID","mohindharan@upi"],["🏦","Bank","HDFC ••4821"],["🌍","Intl. Transfer","SWIFT enabled"],["🤖","AI Support","Chat with Aria"],["🌗","Theme",dark?"Dark Mode":"Light Mode"]].map(([icon,label,val],i) => (
+                <div key={label} onClick={i===5?()=>go("support"):i===6?()=>setDark(d=>!d):i===4?()=>setShowIntl(true):undefined} style={{ ...row, cursor:i>=4?"pointer":"default" }}>
+                  <span style={{ fontSize:17 }}>{icon}</span>
+                  <span style={{ fontFamily:"'DM Sans'", fontSize:13, color:th.textSub, flex:1 }}>{label}</span>
+                  <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold }}>{val}</span>
+                </div>
+              ))}
+            </div>
+            <button className="btn-ghost" style={{ width:"100%", marginTop:8, color:th.pink, borderColor:`rgba(224,123,159,0.25)` }}>Sign Out</button>
+          </div>
+        )}
+      </div>
+
+      {/* ── TAB BAR ── */}
+      <div className="tab-bar" style={{ background:th.tab }}>
+        {TABS.map(([id,icon,label]) => (
+          <div key={id} className={`ti ${tab===id?"active":""}`} onClick={() => go(id)}>
+            <span className="ti-icon">{icon}</span>
+            <span className="ti-lbl">{label}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* ── SEND MODAL ── */}
+      {showSend && (
+        <div className="overlay" onClick={e => e.target===e.currentTarget && setShowSend(false)}>
+          <div className="sheet" style={{ background:th.modal, border:`1px solid ${th.border}` }}>
+            <div className="sheet-inner"><div className="sheet-handle"></div>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:22 }}>
+                <h3 style={{ fontSize:20, fontWeight:600, letterSpacing:-0.3 }}>Send Money</h3>
+                <button onClick={() => setShowSend(false)} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:10, width:32, height:32, cursor:"pointer", color:th.textMuted, fontSize:16, display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
+              </div>
+              {sendSuccess ? (
+                <div className="success-wrap"><div style={{ fontSize:36, marginBottom:8 }}>✓</div><p style={{ fontSize:15, fontWeight:600 }}>₹{sendAmount} sent to {sendTo}!</p></div>
+              ) : (
+                <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+                  <div><label style={lbl}>Recipient</label><input style={inp} placeholder="Name, UPI ID or phone" value={sendTo} onChange={e => setSendTo(e.target.value)} /></div>
+                  <div><label style={lbl}>Amount (₹)</label><input style={inp} placeholder="0.00" type="number" value={sendAmount} onChange={e => setSendAmount(e.target.value)} /></div>
+                  <div style={{ display:"flex", gap:7 }}>{[500,1000,2000,5000].map(a => <button key={a} onClick={() => setSendAmount(String(a))} className="btn-ghost" style={{ flex:1, padding:"8px 4px", fontSize:11 }}>₹{a}</button>)}</div>
+                  <button className="btn-primary" onClick={handleSend}>Send Money →</button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── BILL MODAL ── */}
+      {showBill && (
+        <div className="overlay" onClick={e => e.target===e.currentTarget && setShowBill(null)}>
+          <div className="sheet" style={{ background:th.modal, border:`1px solid ${th.border}` }}>
+            <div className="sheet-inner"><div className="sheet-handle"></div>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20 }}>
+                <h3 style={{ fontSize:20, fontWeight:600, letterSpacing:-0.3 }}>Pay {showBill} Bill</h3>
+                <button onClick={() => setShowBill(null)} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:10, width:32, height:32, cursor:"pointer", color:th.textMuted, fontSize:16, display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
+              </div>
+              {billSuccess ? (
+                <div className="success-wrap"><div style={{ fontSize:36, marginBottom:8 }}>✓</div><p style={{ fontSize:15, fontWeight:600 }}>{showBill} bill of ₹{billAmount} paid!</p></div>
+              ) : (
+                <div style={{ display:"flex", flexDirection:"column", gap:13 }}>
+                  <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>{billServices.map(s => <button key={s.name} onClick={() => setShowBill(s.name)} className="btn-ghost" style={{ padding:"5px 10px", fontSize:11, background:showBill===s.name?"rgba(212,168,83,0.15)":undefined, borderColor:showBill===s.name?th.gold:undefined }}>{s.icon} {s.name}</button>)}</div>
+                  <div><label style={lbl}>{showBill==="Mobile"?"Mobile Number":showBill==="Internet"?"Account ID":showBill==="DTH"?"Customer ID":"Account Number"}</label><input style={inp} placeholder="Enter number / ID" value={billNumber} onChange={e => setBillNumber(e.target.value)} /></div>
+                  <div><label style={lbl}>Amount (₹)</label><input style={inp} placeholder="0.00" type="number" value={billAmount} onChange={e => setBillAmount(e.target.value)} /></div>
+                  <button className="btn-primary" onClick={handleBill}>Pay Now →</button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── QR MODAL ── */}
+      {showQR && (
+        <div className="overlay" onClick={e => e.target===e.currentTarget && (setShowQR(false), setScannerActive(false))}>
+          <div className="sheet" style={{ background:th.modal, border:`1px solid ${th.border}` }}>
+            <div className="sheet-inner"><div className="sheet-handle"></div>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:18 }}>
+                <h3 style={{ fontSize:20, fontWeight:600, letterSpacing:-0.3 }}>QR Payment</h3>
+                <button onClick={() => { setShowQR(false); setScannerActive(false); setScanResult(null); }} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:10, width:32, height:32, cursor:"pointer", color:th.textMuted, fontSize:16, display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
+              </div>
+              <div style={{ display:"flex", gap:6, marginBottom:20, background:th.input, borderRadius:14, padding:4 }}>
+                {["My QR","Scan QR"].map(t => (
+                  <button key={t} onClick={() => { setQrTab(t); setScanResult(null); setScannerActive(false); }} style={{ flex:1, padding:"9px", borderRadius:11, border:"none", cursor:"pointer", fontFamily:"'DM Sans',sans-serif", fontSize:13, fontWeight:600, background:qrTab===t?`linear-gradient(135deg,${th.gold},${th.goldLight})`:undefined, color:qrTab===t?"#0A0806":th.textMuted, transition:"all .2s", boxShadow:qrTab===t?"0 2px 8px rgba(212,168,83,0.2)":"none" }}>{t}</button>
+                ))}
+              </div>
+              {qrTab==="My QR" ? (
+                <div style={{ textAlign:"center" }}>
+                  <div style={{ background:"white", borderRadius:18, padding:18, display:"inline-block", marginBottom:14, boxShadow:"0 8px 32px rgba(0,0,0,0.15)" }}>
+                    <div style={{ display:"grid", gridTemplateColumns:"repeat(15,1fr)", gap:2, width:170, height:170 }}>
+                      {QR_PATTERN.map((v,i) => <div key={i} style={{ background:v?"#09090F":"white", borderRadius:1 }} />)}
+                    </div>
+                  </div>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:600, color:th.text, marginBottom:4 }}>mohindharan@upi</p>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginBottom:18 }}>Scan to pay Mohindharan DK</p>
+                  <button className="btn-primary">📤 Share QR Code</button>
+                </div>
+              ) : (
+                <div>
+                  {scanResult ? (
+                    <div style={{ textAlign:"center" }}>
+                      <div style={{ fontSize:44, marginBottom:10 }}>✅</div>
+                      <p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:600, color:th.green, marginBottom:10 }}>QR Scanned!</p>
+                      <div style={{ background:th.input, border:`1px solid ${th.border}`, borderRadius:14, padding:"12px 16px", marginBottom:16, wordBreak:"break-all", textAlign:"left" }}>
+                        <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, marginBottom:4, textTransform:"uppercase", letterSpacing:1 }}>UPI / Payment Info</p>
+                        <p style={{ fontFamily:"'DM Sans'", fontSize:13, color:th.text }}>{scanResult}</p>
+                      </div>
+                      <div style={{ display:"flex", gap:8 }}>
+                        <button className="btn-primary" onClick={() => { setShowQR(false); setScanResult(null); setShowSend(true); }}>Pay Now →</button>
+                        <button className="btn-ghost" onClick={() => { setScanResult(null); setScannerActive(false); }} style={{ flex:"0 0 auto" }}>Rescan</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <QRScanner th={th} onScan={(r) => { setScanResult(r); setScannerActive(false); }} scannerActive={scannerActive} setScannerActive={setScannerActive} />
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── SPLIT MODAL ── */}
+      {showSplit && (
+        <div className="overlay" onClick={e => e.target===e.currentTarget && setShowSplit(false)}>
+          <div className="sheet" style={{ background:th.modal, border:`1px solid ${th.border}` }}>
+            <div className="sheet-inner"><div className="sheet-handle"></div>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20 }}>
+                <h3 style={{ fontSize:20, fontWeight:600, letterSpacing:-0.3 }}>Split Bill</h3>
+                <button onClick={() => setShowSplit(false)} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:10, width:32, height:32, cursor:"pointer", color:th.textMuted, fontSize:16, display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
+              </div>
+              {splitSuccess ? (
+                <div className="success-wrap"><div style={{ fontSize:36, marginBottom:8 }}>✓</div><p style={{ fontSize:15, fontWeight:600 }}>Split requests sent!</p><p style={{ fontSize:12, marginTop:5, opacity:.7 }}>₹{Math.round(parseInt(splitAmount)/(splitPeople.length+1))} each · {splitPeople.join(", ")}</p></div>
+              ) : (
+                <div style={{ display:"flex", flexDirection:"column", gap:15 }}>
+                  <div><label style={lbl}>Total Amount (₹)</label><input style={inp} placeholder="0.00" type="number" value={splitAmount} onChange={e => setSplitAmount(e.target.value)} /></div>
+                  <div>
+                    <label style={lbl}>Split with</label>
+                    <div style={{ display:"flex", gap:12, flexWrap:"wrap" }}>
+                      {contacts.filter(c => c.name!=="+ Add").map(c => {
+                        const sel = splitPeople.includes(c.name);
+                        return (
+                          <div key={c.name} onClick={() => setSplitPeople(p => p.includes(c.name)?p.filter(x=>x!==c.name):[...p,c.name])} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:6, cursor:"pointer" }}>
+                            <div style={{ width:46, height:46, borderRadius:"50%", background:sel?`${c.color}30`:`${c.color}12`, border:`1.5px solid ${sel?c.color:c.color+"30"}`, display:"flex", alignItems:"center", justifyContent:"center", color:c.color, fontFamily:"'DM Sans'", fontWeight:600, fontSize:12, transition:"all .2s" }}>{sel?"✓":c.initials}</div>
+                            <span style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textSub }}>{c.name}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  {splitAmount && splitPeople.length>0 && (
+                    <div style={{ background:`rgba(212,168,83,0.07)`, border:`1px solid rgba(212,168,83,0.15)`, borderRadius:14, padding:"14px 16px" }}>
+                      <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginBottom:5 }}>Each person pays</p>
+                      <p style={{ fontFamily:"'DM Sans'", fontSize:26, fontWeight:700, color:th.gold, letterSpacing:-1 }}>₹{Math.round(parseInt(splitAmount)/(splitPeople.length+1))}</p>
+                      <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, marginTop:4 }}>Split {splitPeople.length+1} ways · you + {splitPeople.join(", ")}</p>
+                    </div>
+                  )}
+                  <button className="btn-primary" onClick={handleSplit}>Send Split Requests →</button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── INTERNATIONAL MODAL ── */}
+      {showIntl && (
+        <div className="overlay" onClick={e => e.target===e.currentTarget && (setShowIntl(false), setShowCurrencyPicker(false))}>
+          <div className="sheet" style={{ background:th.modal, border:`1px solid ${th.border}` }}>
+            <div className="sheet-inner"><div className="sheet-handle"></div>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:6 }}>
+                <div>
+                  <h3 style={{ fontSize:20, fontWeight:600, letterSpacing:-0.3 }}>🌍 International Transfer</h3>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginTop:3 }}>SWIFT · WIRE · Best live rates</p>
+                </div>
+                <button onClick={() => setShowIntl(false)} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:10, width:32, height:32, cursor:"pointer", color:th.textMuted, fontSize:16, display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
+              </div>
+              {intlSuccess ? (
+                <div className="success-wrap" style={{ marginTop:18 }}><div style={{ fontSize:36, marginBottom:8 }}>✓</div><p style={{ fontSize:15, fontWeight:600 }}>Transfer initiated!</p><p style={{ fontSize:12, marginTop:5, opacity:.75 }}>{intlCurrency.flag} {intlAmount} {intlCurrency.code} → {intlRecipient}</p><p style={{ fontSize:11, marginTop:4, opacity:.55 }}>Arrives in 1–3 business days</p></div>
+              ) : (
+                <div style={{ display:"flex", flexDirection:"column", gap:13, marginTop:16 }}>
+                  <div>
+                    <label style={lbl}>Send Currency</label>
+                    <button onClick={() => setShowCurrencyPicker(p=>!p)} style={{ ...inp, display:"flex", alignItems:"center", gap:10, cursor:"pointer", background:th.input, textAlign:"left" }}>
+                      <span style={{ fontSize:20 }}>{intlCurrency.flag}</span>
+                      <span style={{ flex:1, color:th.text }}>{intlCurrency.code} — {intlCurrency.name}</span>
+                      <span style={{ color:th.textMuted, fontSize:11 }}>{showCurrencyPicker?"▲":"▼"}</span>
+                    </button>
+                    {showCurrencyPicker && (
+                      <div style={{ background:th.modal, border:`1px solid ${th.border}`, borderRadius:14, marginTop:4, overflow:"hidden", maxHeight:200, overflowY:"auto" }}>
+                        {currencies.map(c => (
+                          <div key={c.code} onClick={() => { setIntlCurrency(c); setShowCurrencyPicker(false); }} style={{ display:"flex", alignItems:"center", gap:10, padding:"11px 14px", cursor:"pointer", background:intlCurrency.code===c.code?`rgba(212,168,83,0.08)`:"transparent", borderBottom:`1px solid ${th.row}`, transition:"background .15s" }}>
+                            <span style={{ fontSize:18 }}>{c.flag}</span>
+                            <span style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text }}>{c.code}</span>
+                            <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, flex:1 }}>{c.name}</span>
+                            <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold }}>₹{c.rate}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <label style={lbl}>Amount ({intlCurrency.code})</label>
+                    <input style={inp} placeholder={`0.00 ${intlCurrency.code}`} type="number" value={intlAmount} onChange={e => setIntlAmount(e.target.value)} />
+                    {intlINR && (
+                      <>
+                        <div style={{ display:"flex", justifyContent:"space-between", marginTop:8, padding:"10px 13px", background:`rgba(212,168,83,0.06)`, borderRadius:11 }}>
+                          <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>You pay (INR)</span>
+                          <span style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:700, color:th.gold }}>₹{parseFloat(intlINR).toLocaleString("en-IN")}</span>
+                        </div>
+                        <div style={{ display:"flex", justifyContent:"space-between", marginTop:4, padding:"8px 13px", background:th.input, borderRadius:11 }}>
+                          <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>Transfer fee (0.5%)</span>
+                          <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textSub }}>₹{parseFloat(intlFee).toLocaleString("en-IN")}</span>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  <div><label style={lbl}>Recipient Name</label><input style={inp} placeholder="Full legal name" value={intlRecipient} onChange={e => setIntlRecipient(e.target.value)} /></div>
+                  <div><label style={lbl}>Bank Account / IBAN</label><input style={inp} placeholder="Account number or IBAN" value={intlAccount} onChange={e => setIntlAccount(e.target.value)} /></div>
+                  <div style={{ display:"flex", alignItems:"center", gap:8, padding:"10px 13px", background:"rgba(93,184,150,0.06)", border:"1px solid rgba(93,184,150,0.15)", borderRadius:11 }}>
+                    <span style={{ fontSize:13 }}>ℹ️</span>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.green, lineHeight:1.5 }}>Live rate: 1 {intlCurrency.code} = ₹{intlCurrency.rate} · 1–3 business days</p>
+                  </div>
+                  <button className="btn-primary" onClick={handleIntl}>Send Internationally →</button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── TRANSACTION CHAT ── */}
+      {showChat && (
+        <div className="overlay" onClick={e => e.target===e.currentTarget && setShowChat(null)}>
+          <div className="chat-full" style={{ background:th.modal, border:`1px solid ${th.border}` }}>
+            <div style={{ padding:"20px 22px 16px", borderBottom:`1px solid ${th.row}`, display:"flex", alignItems:"center", gap:12, flexShrink:0 }}>
+              <div style={{ width:40, height:40, borderRadius:13, background:showChat.amount>0?"rgba(93,184,150,0.1)":"rgba(212,168,83,0.08)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18 }}>{showChat.icon}</div>
+              <div style={{ flex:1 }}>
+                <p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:600, color:th.text, marginBottom:2 }}>{showChat.name}</p>
+                <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>{showChat.date} · <span style={{ color:showChat.amount>0?th.green:th.pink }}>{showChat.amount>0?"+ ":"– "}₹{Math.abs(showChat.amount).toLocaleString()}</span></p>
+              </div>
+              <button onClick={() => setShowChat(null)} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:10, width:32, height:32, cursor:"pointer", color:th.textMuted, fontSize:16, display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
+            </div>
+            <div style={{ flex:1, overflowY:"auto", padding:"16px 20px", display:"flex", flexDirection:"column", gap:10 }}>
+              <div style={{ alignSelf:"center", background:`rgba(212,168,83,0.07)`, border:`1px solid rgba(212,168,83,0.15)`, borderRadius:12, padding:"10px 16px", textAlign:"center", marginBottom:6 }}>
+                <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.gold, fontWeight:600, letterSpacing:0.5, marginBottom:3 }}>📋 Transaction Receipt · {showChat.date}</p>
+                <p style={{ fontFamily:"'DM Sans'", fontSize:13, color:th.text }}>{showChat.amount>0?"+ ":"– "}₹{Math.abs(showChat.amount).toLocaleString()} · {showChat.category}</p>
+              </div>
+              {txMessages[showChat.id]?.length===0 && <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textMuted, textAlign:"center", marginTop:20 }}>No messages yet. Say something! 👋</p>}
+              {txMessages[showChat.id]?.map((msg,i) => (
+                <div key={i} style={{ display:"flex", flexDirection:"column", alignItems:msg.from==="me"?"flex-end":"flex-start" }}>
+                  <div style={{ maxWidth:"76%", padding:"11px 14px", borderRadius:msg.from==="me"?"16px 16px 4px 16px":"16px 16px 16px 4px", background:msg.from==="me"?`rgba(212,168,83,0.14)`:`rgba(255,255,255,0.05)`, border:msg.from==="me"?`1px solid rgba(212,168,83,0.2)`:`1px solid rgba(255,255,255,0.07)`, fontFamily:"'DM Sans',sans-serif", fontSize:13, lineHeight:1.5, color:th.text }}>{msg.text}</div>
+                  <span style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, marginTop:3, padding:"0 4px" }}>{msg.time}</span>
+                </div>
+              ))}
+              <div ref={chatEndRef} />
+            </div>
+            <div style={{ padding:"12px 18px 24px", borderTop:`1px solid ${th.row}`, display:"flex", gap:10, flexShrink:0 }}>
+              <input style={{ ...inp, flex:1, padding:"11px 14px", fontSize:13 }} placeholder="Type a message…" value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => e.key==="Enter" && sendChat()} />
+              <button onClick={sendChat} style={{ background:`linear-gradient(135deg,${th.gold},${th.goldLight})`, border:"none", borderRadius:12, width:44, height:44, cursor:"pointer", fontSize:16, display:"flex", alignItems:"center", justifyContent:"center", color:"#0A0806", flexShrink:0 }}>↑</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── ADD GOAL ── */}
+      {showAddGoal && (
+        <div className="overlay" onClick={e => e.target===e.currentTarget && setShowAddGoal(false)}>
+          <div className="sheet" style={{ background:th.modal, border:`1px solid ${th.border}` }}>
+            <div className="sheet-inner"><div className="sheet-handle"></div>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20 }}>
+                <h3 style={{ fontSize:20, fontWeight:600, letterSpacing:-0.3 }}>New Savings Goal</h3>
+                <button onClick={() => setShowAddGoal(false)} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:10, width:32, height:32, cursor:"pointer", color:th.textMuted, fontSize:16, display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
+              </div>
+              <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+                <div><label style={lbl}>Goal Name</label><input style={inp} placeholder="e.g. New Laptop, Europe Trip" value={newGoalName} onChange={e => setNewGoalName(e.target.value)} /></div>
+                <div><label style={lbl}>Target Amount (₹)</label><input style={inp} placeholder="50000" type="number" value={newGoalTarget} onChange={e => setNewGoalTarget(e.target.value)} /></div>
+                <button className="btn-primary" onClick={addGoal}>Create Goal →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── NOTIFICATIONS ── */}
+      {showNotif && (
+        <div className="overlay" onClick={e => e.target===e.currentTarget && setShowNotif(false)}>
+          <div className="sheet" style={{ background:th.modal, border:`1px solid ${th.border}` }}>
+            <div className="sheet-inner"><div className="sheet-handle"></div>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:18 }}>
+                <h3 style={{ fontSize:20, fontWeight:600, letterSpacing:-0.3 }}>Notifications</h3>
+                <div style={{ display:"flex", gap:12, alignItems:"center" }}>
+                  <span onClick={() => setNotifications(ns=>ns.map(n=>({...n,read:true})))} style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold, cursor:"pointer", letterSpacing:0.2 }}>Mark all read</span>
+                  <button onClick={() => setShowNotif(false)} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:10, width:32, height:32, cursor:"pointer", color:th.textMuted, fontSize:16, display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
+                </div>
+              </div>
+              {notifications.map(n => (
+                <div key={n.id} style={{ ...row, alignItems:"flex-start" }}>
+                  <div style={{ width:7, height:7, borderRadius:"50%", background:n.read?"transparent":th.gold, marginTop:5, flexShrink:0, border:n.read?`1px solid ${th.border}`:"none", boxShadow:n.read?"none":`0 0 6px rgba(212,168,83,0.6)` }} />
+                  <div>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:13, color:n.read?th.textSub:th.text, marginBottom:3 }}>{n.msg}</p>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>{n.time}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+      </div>{/* end z-index wrapper */}
+    </div>
+  );
+}
