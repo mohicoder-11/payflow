@@ -1,0 +1,9 @@
+{
+  "short_name": "PayFlow",
+  "name": "PayFlow — Premium Payments",
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#09090F",
+  "background_color": "#09090F"
+}
