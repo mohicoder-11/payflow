@@ -194,6 +194,11 @@ export default function PayFlow() {
   const [biometricSupported, setBiometricSupported] = useState(false);
   const [showRefer, setShowRefer] = useState(false);
   const [referCopied, setReferCopied] = useState(false);
+  const [showInstantLoan, setShowInstantLoan] = useState(false);
+  const [loanStep, setLoanStep] = useState(1); // 1=eligibility, 2=amount, 3=confirm, 4=success
+  const [loanAmount, setLoanAmount] = useState(5000);
+  const [loanTenure, setLoanTenure] = useState(30);
+  const [loanPurpose, setLoanPurpose] = useState("");
   const [showSend, setShowSend] = useState(false);
   const [showBill, setShowBill] = useState(null);
   const [showQR, setShowQR] = useState(false);
@@ -341,7 +346,7 @@ export default function PayFlow() {
   const intlINR = intlAmount ? (parseFloat(intlAmount)*intlCurrency.rate).toFixed(2) : null;
   const intlFee = intlINR ? Math.max(50, parseFloat(intlINR)*0.005).toFixed(2) : null;
 
-  const TABS = [["home","◈","Home"],["history","⊟","History"],["analytics","◉","Stats"],["savings","◎","Goals"],["rewards","✦","Rewards"],["support","⊕","Support"],["profile","◈","Me"]];
+  const TABS = [["home","◈","Home"],["history","⊟","History"],["analytics","◉","Stats"],["savings","◎","Goals"],["rewards","✦","Rewards"],["credit","💳","Credit"],["support","⊕","Support"],["profile","◈","Me"]];
 
   // Reusable style helpers
   const glass = { background: th.surface, border: `1px solid ${th.border}`, borderRadius: 20, padding: "18px 20px", backdropFilter: "blur(12px)" };
@@ -855,6 +860,177 @@ export default function PayFlow() {
           </div>
         )}
 
+        {/* CREDIT */}
+        {tab==="credit" && (
+          <div className={`fade ${mounted?"in":""}`}>
+            <h2 style={{ fontSize:26, fontWeight:600, marginBottom:4, letterSpacing:-0.5 }}>Credit</h2>
+            <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textMuted, marginBottom:20 }}>Your credit health at a glance</p>
+
+            {/* ── INSTANT LOAN BANNER ── */}
+            <div className="card-hover" onClick={() => { setShowInstantLoan(true); setLoanStep(1); }} style={{ marginBottom:22, borderRadius:22, padding:"20px", background:"linear-gradient(135deg,#1A2A1A,#0A1A0A)", border:"1px solid rgba(93,184,150,0.3)", cursor:"pointer", position:"relative", overflow:"hidden" }}>
+              <div style={{ position:"absolute", top:-30, right:-30, width:130, height:130, borderRadius:"50%", background:"radial-gradient(circle,rgba(93,184,150,0.12),transparent)", pointerEvents:"none" }} />
+              <div style={{ position:"absolute", bottom:-20, left:-20, width:100, height:100, borderRadius:"50%", background:"radial-gradient(circle,rgba(212,168,83,0.08),transparent)", pointerEvents:"none" }} />
+              <div style={{ display:"flex", alignItems:"center", gap:14 }}>
+                <div style={{ width:52, height:52, borderRadius:16, background:"rgba(93,184,150,0.15)", border:"1px solid rgba(93,184,150,0.25)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:24, flexShrink:0 }}>⚡</div>
+                <div style={{ flex:1 }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4 }}>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:15, fontWeight:700, color:"#F0EAD6" }}>Instant Loan</p>
+                    <span style={{ background:"rgba(93,184,150,0.15)", border:"1px solid rgba(93,184,150,0.3)", borderRadius:6, padding:"2px 8px", fontSize:9, color:"#5DB896", fontFamily:"'DM Sans'", fontWeight:600, letterSpacing:0.5 }}>PRE-APPROVED</span>
+                  </div>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:"rgba(240,234,214,0.5)", marginBottom:6 }}>Get up to ₹10,000 in 60 seconds</p>
+                  <div style={{ display:"flex", gap:12 }}>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:"#5DB896" }}>✓ No collateral</span>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:"#5DB896" }}>✓ Instant disbursal</span>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:"#5DB896" }}>✓ Flexible repay</span>
+                  </div>
+                </div>
+                <span style={{ fontSize:20, color:"#5DB896" }}>›</span>
+              </div>
+              <div style={{ marginTop:14, display:"flex", justifyContent:"space-between", padding:"10px 14px", background:"rgba(93,184,150,0.06)", borderRadius:12, border:"1px solid rgba(93,184,150,0.12)" }}>
+                <div style={{ textAlign:"center" }}>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:"rgba(240,234,214,0.4)", letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Eligible</p>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:15, fontWeight:700, color:"#5DB896" }}>₹10,000</p>
+                </div>
+                <div style={{ textAlign:"center" }}>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:"rgba(240,234,214,0.4)", letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Interest</p>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:15, fontWeight:700, color:"#D4A853" }}>1.5%/mo</p>
+                </div>
+                <div style={{ textAlign:"center" }}>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:"rgba(240,234,214,0.4)", letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Tenure</p>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:15, fontWeight:700, color:"#7B9FE0" }}>30-90 days</p>
+                </div>
+                <div style={{ textAlign:"center" }}>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:"rgba(240,234,214,0.4)", letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Disbursal</p>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:15, fontWeight:700, color:"#A07BE0" }}>60 secs</p>
+                </div>
+              </div>
+            </div>
+            <div style={{ ...glass, marginBottom:18, background:`linear-gradient(145deg,${dark?"#141420":"#FFF8EE"},${dark?"#0D1520":"#EEF4FF"})`, border:`1px solid ${th.borderBright}`, textAlign:"center", position:"relative", overflow:"hidden" }}>
+              <div style={{ position:"absolute", top:-40, right:-40, width:150, height:150, borderRadius:"50%", background:"radial-gradient(circle,rgba(212,168,83,0.1),transparent)", pointerEvents:"none" }} />
+              <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, letterSpacing:3, textTransform:"uppercase", marginBottom:14 }}>Credit Score</p>
+              {/* Score circle */}
+              <div style={{ position:"relative", width:140, height:140, margin:"0 auto 16px" }}>
+                <svg viewBox="0 0 140 140" style={{ width:140, height:140, transform:"rotate(-210deg)" }}>
+                  <circle cx="70" cy="70" r="58" fill="none" stroke={dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)"} strokeWidth="10"/>
+                  <circle cx="70" cy="70" r="58" fill="none" stroke="#D4A853" strokeWidth="10" strokeLinecap="round"
+                    strokeDasharray={`${(748/900)*364} 364`} style={{ transition:"stroke-dasharray 1s ease" }}/>
+                </svg>
+                <div style={{ position:"absolute", inset:0, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
+                  <span style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:38, fontWeight:700, color:th.gold, lineHeight:1 }}>748</span>
+                  <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, marginTop:4, letterSpacing:1 }}>GOOD</span>
+                </div>
+              </div>
+              <div style={{ display:"flex", justifyContent:"space-between", padding:"0 8px" }}>
+                {[["300","Poor"],["580","Fair"],["670","Good"],["740","V.Good"],["850","Excellent"]].map(([score, label]) => (
+                  <div key={label} style={{ textAlign:"center" }}>
+                    <div style={{ fontFamily:"'DM Sans'", fontSize:8, color:th.textMuted }}>{score}</div>
+                    <div style={{ fontFamily:"'DM Sans'", fontSize:7, color:th.textMuted, marginTop:1 }}>{label}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ marginTop:14, padding:"10px 14px", background:"rgba(93,184,150,0.08)", borderRadius:12, border:"1px solid rgba(93,184,150,0.15)" }}>
+                <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.green }}>↑ Score improved by 12 points this month!</p>
+              </div>
+            </div>
+
+            {/* Score factors */}
+            <p className="section-title">Score Factors</p>
+            <div style={{ ...glass, marginBottom:18 }}>
+              {[
+                ["Payment History","Excellent","92%","#5DB896"],
+                ["Credit Utilization","Good","45%","#D4A853"],
+                ["Credit Age","Fair","60%","#7B9FE0"],
+                ["Credit Mix","Good","70%","#A07BE0"],
+                ["New Inquiries","Excellent","88%","#5DB896"],
+              ].map(([factor, status, pct, color]) => (
+                <div key={factor} style={{ marginBottom:14 }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", marginBottom:6 }}>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:13, color:th.text, fontWeight:500 }}>{factor}</span>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:11, color, fontWeight:600 }}>{status}</span>
+                  </div>
+                  <div className="bar" style={{ background:th.bar }}>
+                    <div style={{ height:"100%", width:pct, background:`linear-gradient(90deg,${color},${color}99)`, borderRadius:8 }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Credit Cards */}
+            <p className="section-title">My Credit Cards</p>
+            {[
+              { name:"HDFC Regalia", network:"VISA", limit:200000, used:45000, color:"#D4A853", bg:"linear-gradient(135deg,#1A1400,#0A0F1A)" },
+              { name:"ICICI Coral", network:"Mastercard", limit:100000, used:12000, color:"#7B9FE0", bg:"linear-gradient(135deg,#0D1520,#141420)" },
+            ].map(card => {
+              const utilPct = Math.round((card.used/card.limit)*100);
+              return (
+                <div key={card.name} className="card-hover" style={{ marginBottom:14, borderRadius:20, padding:"20px", background:card.bg, border:`1px solid ${card.color}33`, position:"relative", overflow:"hidden" }}>
+                  <div style={{ position:"absolute", top:-20, right:-20, width:100, height:100, borderRadius:"50%", background:`radial-gradient(circle,${card.color}18,transparent)` }} />
+                  <div style={{ display:"flex", justifyContent:"space-between", marginBottom:16 }}>
+                    <div>
+                      <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:"#F0EAD6", marginBottom:2 }}>{card.name}</p>
+                      <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:"rgba(240,234,214,0.4)" }}>{card.network} •••• 4821</p>
+                    </div>
+                    <span style={{ fontSize:24 }}>{card.network==="VISA"?"💳":"💳"}</span>
+                  </div>
+                  <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
+                    <div>
+                      <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:"rgba(240,234,214,0.4)", textTransform:"uppercase", letterSpacing:1.5, marginBottom:3 }}>Used</p>
+                      <p style={{ fontFamily:"'DM Sans'", fontSize:15, fontWeight:700, color:card.color }}>₹{card.used.toLocaleString()}</p>
+                    </div>
+                    <div style={{ textAlign:"right" }}>
+                      <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:"rgba(240,234,214,0.4)", textTransform:"uppercase", letterSpacing:1.5, marginBottom:3 }}>Limit</p>
+                      <p style={{ fontFamily:"'DM Sans'", fontSize:15, fontWeight:700, color:"rgba(240,234,214,0.6)" }}>₹{card.limit.toLocaleString()}</p>
+                    </div>
+                  </div>
+                  <div className="bar" style={{ background:"rgba(255,255,255,0.08)", marginBottom:6 }}>
+                    <div style={{ height:"100%", width:`${utilPct}%`, background:card.color, borderRadius:8 }} />
+                  </div>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:"rgba(240,234,214,0.4)" }}>{utilPct}% utilized · Due on 5th</p>
+                </div>
+              );
+            })}
+
+            {/* Loan Offers */}
+            <p className="section-title" style={{ marginTop:8 }}>Pre-approved Offers</p>
+            {[
+              { title:"Personal Loan", amount:"₹5,00,000", rate:"10.5% p.a.", tenure:"48 months", icon:"💰", color:"#D4A853" },
+              { title:"Home Loan Top-up", amount:"₹20,00,000", rate:"8.75% p.a.", tenure:"120 months", icon:"🏠", color:"#7B9FE0" },
+              { title:"Car Loan", amount:"₹8,00,000", rate:"9.25% p.a.", tenure:"60 months", icon:"🚗", color:"#5DB896" },
+            ].map(offer => (
+              <div key={offer.title} className="card-hover" style={{ ...glass, marginBottom:12, display:"flex", gap:14, alignItems:"center" }}>
+                <div style={{ width:46, height:46, borderRadius:14, background:`${offer.color}12`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, flexShrink:0 }}>{offer.icon}</div>
+                <div style={{ flex:1 }}>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text, marginBottom:3 }}>{offer.title}</p>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>{offer.rate} · {offer.tenure}</p>
+                </div>
+                <div style={{ textAlign:"right" }}>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:700, color:offer.color, marginBottom:5 }}>{offer.amount}</p>
+                  <button className="btn-ghost" style={{ padding:"5px 10px", fontSize:10 }}>Apply →</button>
+                </div>
+              </div>
+            ))}
+
+            {/* Tips */}
+            <p className="section-title" style={{ marginTop:8 }}>Tips to Improve Score</p>
+            <div style={{ ...glass }}>
+              {[
+                ["💡","Pay bills on time","Biggest factor — set auto-pay"],
+                ["📉","Reduce utilization","Keep below 30% of your limit"],
+                ["🚫","Avoid new inquiries","Don't apply for too many loans"],
+                ["📅","Keep old accounts","Longer history = better score"],
+              ].map(([icon, tip, desc]) => (
+                <div key={tip} style={{ display:"flex", gap:12, alignItems:"flex-start", padding:"10px 0", borderBottom:`1px solid ${th.row}` }}>
+                  <span style={{ fontSize:18, flexShrink:0 }}>{icon}</span>
+                  <div>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:12, fontWeight:600, color:th.text, marginBottom:2 }}>{tip}</p>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>{desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* PROFILE */}
         {tab==="profile" && (
           <div className={`fade ${mounted?"in":""}`}>
@@ -1144,6 +1320,188 @@ export default function PayFlow() {
                 <div><label style={lbl}>Target Amount (₹)</label><input style={inp} placeholder="50000" type="number" value={newGoalTarget} onChange={e => setNewGoalTarget(e.target.value)} /></div>
                 <button className="btn-primary" onClick={addGoal}>Create Goal →</button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── INSTANT LOAN MODAL ── */}
+      {showInstantLoan && (
+        <div className="overlay" onClick={e => e.target===e.currentTarget && (setShowInstantLoan(false), setLoanStep(1))}>
+          <div className="sheet" style={{ background:th.modal, border:`1px solid ${th.border}` }}>
+            <div className="sheet-inner"><div className="sheet-handle"></div>
+
+              {/* Header */}
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:22 }}>
+                <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+                  <div style={{ width:36, height:36, borderRadius:11, background:"rgba(93,184,150,0.12)", border:"1px solid rgba(93,184,150,0.2)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18 }}>⚡</div>
+                  <div>
+                    <h3 style={{ fontSize:18, fontWeight:600, letterSpacing:-0.3 }}>Instant Loan</h3>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.green, marginTop:1 }}>Step {loanStep} of 4</p>
+                  </div>
+                </div>
+                <button onClick={() => { setShowInstantLoan(false); setLoanStep(1); }} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:10, width:32, height:32, cursor:"pointer", color:th.textMuted, fontSize:16, display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
+              </div>
+
+              {/* Progress bar */}
+              <div style={{ height:3, background:th.bar, borderRadius:4, marginBottom:24, overflow:"hidden" }}>
+                <div style={{ height:"100%", width:`${(loanStep/4)*100}%`, background:"linear-gradient(90deg,#5DB896,#D4A853)", borderRadius:4, transition:"width 0.4s ease" }} />
+              </div>
+
+              {/* Step 1 — Eligibility Check */}
+              {loanStep===1 && (
+                <div>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:600, color:th.text, marginBottom:16 }}>Checking your eligibility...</p>
+
+                  {/* Eligibility criteria */}
+                  {[
+                    ["Credit Score","748 — Good ✓","#5DB896",true],
+                    ["Account Age","8 months ✓","#5DB896",true],
+                    ["Salary Credits","Regular ✓","#5DB896",true],
+                    ["Active Loans","1 loan — OK ✓","#D4A853",true],
+                    ["KYC Status","Verified ✓","#5DB896",true],
+                  ].map(([label, value, color, passed]) => (
+                    <div key={label} style={{ display:"flex", alignItems:"center", gap:12, padding:"12px 16px", background:th.surface, border:`1px solid ${th.border}`, borderRadius:14, marginBottom:8 }}>
+                      <div style={{ width:28, height:28, borderRadius:"50%", background:passed?"rgba(93,184,150,0.12)":"rgba(224,123,159,0.12)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, flexShrink:0 }}>{passed?"✓":"✗"}</div>
+                      <div style={{ flex:1 }}>
+                        <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textSub }}>{label}</p>
+                      </div>
+                      <span style={{ fontFamily:"'DM Sans'", fontSize:12, fontWeight:600, color }}>{value}</span>
+                    </div>
+                  ))}
+
+                  <div style={{ background:"rgba(93,184,150,0.08)", border:"1px solid rgba(93,184,150,0.2)", borderRadius:16, padding:"16px", marginTop:16, marginBottom:20, textAlign:"center" }}>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginBottom:4 }}>You are eligible for</p>
+                    <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:36, fontWeight:700, color:th.green, letterSpacing:-1 }}>₹10,000</p>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginTop:4 }}>Based on your credit profile</p>
+                  </div>
+
+                  <button className="btn-primary" onClick={() => setLoanStep(2)}>Check My Offer →</button>
+                </div>
+              )}
+
+              {/* Step 2 — Choose Amount & Tenure */}
+              {loanStep===2 && (
+                <div>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:600, color:th.text, marginBottom:20 }}>Choose your loan amount</p>
+
+                  {/* Amount slider */}
+                  <div style={{ ...glass, marginBottom:16, textAlign:"center" }}>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:8 }}>Loan Amount</p>
+                    <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:40, fontWeight:700, color:th.gold, letterSpacing:-1, marginBottom:12 }}>₹{loanAmount.toLocaleString()}</p>
+                    <input type="range" min="1000" max="10000" step="500" value={loanAmount} onChange={e => setLoanAmount(parseInt(e.target.value))} style={{ width:"100%", accentColor:"#D4A853", cursor:"pointer" }} />
+                    <div style={{ display:"flex", justifyContent:"space-between", marginTop:4 }}>
+                      <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>₹1,000</span>
+                      <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>₹10,000</span>
+                    </div>
+                  </div>
+
+                  {/* Quick amounts */}
+                  <div style={{ display:"flex", gap:8, marginBottom:16 }}>
+                    {[2000,5000,7500,10000].map(a => (
+                      <button key={a} onClick={() => setLoanAmount(a)} className="btn-ghost" style={{ flex:1, padding:"8px 4px", fontSize:11, background:loanAmount===a?"rgba(212,168,83,0.15)":"transparent", borderColor:loanAmount===a?"rgba(212,168,83,0.5)":"rgba(212,168,83,0.2)" }}>₹{a>=1000?`${a/1000}K`:a}</button>
+                    ))}
+                  </div>
+
+                  {/* Tenure */}
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:12, fontWeight:600, color:th.text, marginBottom:10 }}>Repayment Period</p>
+                  <div style={{ display:"flex", gap:8, marginBottom:20 }}>
+                    {[30,60,90].map(t => (
+                      <button key={t} onClick={() => setLoanTenure(t)} style={{ flex:1, padding:"12px 8px", borderRadius:14, border:`1px solid ${loanTenure===t?"rgba(93,184,150,0.5)":"rgba(212,168,83,0.15)"}`, background:loanTenure===t?"rgba(93,184,150,0.1)":"transparent", cursor:"pointer", transition:"all .2s" }}>
+                        <p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:700, color:loanTenure===t?th.green:th.text }}>{t}</p>
+                        <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, marginTop:2 }}>days</p>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Summary */}
+                  <div style={{ background:"rgba(212,168,83,0.06)", border:`1px solid rgba(212,168,83,0.15)`, borderRadius:16, padding:"14px 16px", marginBottom:20 }}>
+                    {[
+                      ["Loan Amount", `₹${loanAmount.toLocaleString()}`],
+                      ["Interest (1.5%/mo)", `₹${Math.round(loanAmount * 0.015 * loanTenure/30).toLocaleString()}`],
+                      ["Processing Fee", "₹0"],
+                      ["Total Repayment", `₹${Math.round(loanAmount + loanAmount * 0.015 * loanTenure/30).toLocaleString()}`],
+                    ].map(([label, value], i) => (
+                      <div key={label} style={{ display:"flex", justifyContent:"space-between", padding:"6px 0", borderBottom: i<3?`1px solid ${th.row}`:"none" }}>
+                        <span style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textMuted }}>{label}</span>
+                        <span style={{ fontFamily:"'DM Sans'", fontSize:12, fontWeight: i===3?700:400, color: i===3?th.gold:th.text }}>{value}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <button className="btn-primary" onClick={() => setLoanStep(3)}>Continue →</button>
+                </div>
+              )}
+
+              {/* Step 3 — Confirm */}
+              {loanStep===3 && (
+                <div>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:600, color:th.text, marginBottom:20 }}>Confirm loan details</p>
+
+                  <div style={{ ...glass, marginBottom:16 }}>
+                    {[
+                      ["💰","Loan Amount",`₹${loanAmount.toLocaleString()}`],
+                      ["📅","Tenure",`${loanTenure} days`],
+                      ["💳","Disbursed to","HDFC ••4821"],
+                      ["📊","Interest Rate","1.5% per month"],
+                      ["🔄","Total Repayment",`₹${Math.round(loanAmount + loanAmount * 0.015 * loanTenure/30).toLocaleString()}`],
+                      ["📆","Due Date",`${new Date(Date.now() + loanTenure*86400000).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"})}`],
+                    ].map(([icon,label,value]) => (
+                      <div key={label} style={{ display:"flex", alignItems:"center", gap:12, padding:"10px 0", borderBottom:`1px solid ${th.row}` }}>
+                        <span style={{ fontSize:16 }}>{icon}</span>
+                        <span style={{ fontFamily:"'DM Sans'", fontSize:13, color:th.textSub, flex:1 }}>{label}</span>
+                        <span style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.gold }}>{value}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Purpose */}
+                  <div style={{ marginBottom:20 }}>
+                    <label style={lbl}>Purpose (optional)</label>
+                    <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
+                      {["Medical","Travel","Shopping","Education","Bills","Other"].map(p => (
+                        <button key={p} onClick={() => setLoanPurpose(p)} className="btn-ghost" style={{ padding:"7px 14px", fontSize:12, background:loanPurpose===p?"rgba(212,168,83,0.15)":"transparent", borderColor:loanPurpose===p?"rgba(212,168,83,0.5)":"rgba(212,168,83,0.2)" }}>{p}</button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ background:"rgba(93,184,150,0.06)", border:"1px solid rgba(93,184,150,0.15)", borderRadius:14, padding:"12px 14px", marginBottom:20 }}>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.green }}>⚡ Money will be credited to your HDFC account within 60 seconds of approval</p>
+                  </div>
+
+                  <button className="btn-primary" onClick={() => setLoanStep(4)}>🔐 Confirm & Get Money →</button>
+                </div>
+              )}
+
+              {/* Step 4 — Success */}
+              {loanStep===4 && (
+                <div style={{ textAlign:"center", padding:"20px 0" }}>
+                  <div style={{ fontSize:64, marginBottom:16 }}>⚡</div>
+                  <div style={{ width:80, height:80, borderRadius:"50%", background:"rgba(93,184,150,0.12)", border:"2px solid rgba(93,184,150,0.3)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:36, margin:"0 auto 20px" }}>✓</div>
+                  <h3 style={{ fontSize:24, fontWeight:700, color:th.green, letterSpacing:-0.5, marginBottom:8 }}>Loan Approved!</h3>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:13, color:th.textMuted, marginBottom:20 }}>₹{loanAmount.toLocaleString()} is being credited to your account</p>
+
+                  <div style={{ ...glass, marginBottom:20, textAlign:"left" }}>
+                    {[
+                      ["Amount Credited", `₹${loanAmount.toLocaleString()}`,"#5DB896"],
+                      ["Account", "HDFC ••4821", th.text],
+                      ["Loan ID", "PF2024031500" + Math.floor(Math.random()*99), th.textSub],
+                      ["Due Date", `${new Date(Date.now() + loanTenure*86400000).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"})}`, th.gold],
+                    ].map(([label, value, color]) => (
+                      <div key={label} style={{ display:"flex", justifyContent:"space-between", padding:"8px 0", borderBottom:`1px solid ${th.row}` }}>
+                        <span style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textMuted }}>{label}</span>
+                        <span style={{ fontFamily:"'DM Sans'", fontSize:12, fontWeight:600, color }}>{value}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={{ background:"rgba(212,168,83,0.06)", border:`1px solid rgba(212,168,83,0.15)`, borderRadius:14, padding:"12px 14px", marginBottom:24 }}>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>💡 Set a reminder to repay on time to maintain your credit score</p>
+                  </div>
+
+                  <button className="btn-primary" onClick={() => { setShowInstantLoan(false); setLoanStep(1); }}>Done ✓</button>
+                </div>
+              )}
             </div>
           </div>
         </div>
