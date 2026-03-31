@@ -349,10 +349,10 @@ export default function PayFlow() {
   const TABS = [["home","◈","Home"],["history","⊟","History"],["analytics","◉","Stats"],["savings","◎","Goals"],["rewards","✦","Rewards"],["credit","💳","Credit"],["support","⊕","Support"],["profile","◈","Me"]];
 
   // Reusable style helpers
-  const glass = { background: th.surface, border: `1px solid ${th.border}`, borderRadius: 20, padding: "18px 20px", backdropFilter: "blur(12px)" };
+  const glass = { background: th.surface, border: `1px solid ${th.border}`, borderRadius: 22, padding: "22px 22px", backdropFilter: "blur(12px)" };
   const inp = { background: th.input, border: `1px solid ${th.border}`, borderRadius: 14, padding: "14px 16px", color: th.text, fontFamily:"'DM Sans',sans-serif", fontSize:14, width:"100%", outline:"none", transition:"border-color 0.2s" };
   const lbl = { fontFamily:"'DM Sans',sans-serif", fontSize:10, color:th.textMuted, display:"block", marginBottom:8, textTransform:"uppercase", letterSpacing:1.5 };
-  const row = { display:"flex", alignItems:"center", gap:14, padding:"14px 0", borderBottom:`1px solid ${th.row}` };
+  const row = { display:"flex", alignItems:"center", gap:16, padding:"16px 0", borderBottom:`1px solid ${th.row}` };
 
   return (
     <div style={{ fontFamily:"'Cormorant Garamond','Georgia',serif", background:th.bg, minHeight:"100vh", color:th.text, maxWidth:420, margin:"0 auto", position:"relative", overflow:"hidden" }}>
@@ -498,11 +498,11 @@ export default function PayFlow() {
         @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
 
         .balance-card{animation:glow 5s ease-in-out infinite}
-        .section-title{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;opacity:0.38;margin-bottom:16px}
+        .section-title{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;opacity:0.35;margin-bottom:18px}
         input:focus{border-color:rgba(212,168,83,0.5) !important;box-shadow:0 0 0 4px rgba(212,168,83,0.07) !important;outline:none}
         input{transition:border-color .2s,box-shadow .2s}
 
-        .tx-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.04);transition:all .2s}
+        .tx-row{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.04);transition:all .2s}
         .tx-row:hover{background:rgba(255,255,255,0.015);margin:0 -8px;padding-left:8px;padding-right:8px;border-radius:14px;border-bottom-color:transparent}
         .tx-row:last-child{border-bottom:none}
 
@@ -532,7 +532,7 @@ export default function PayFlow() {
       </div>
 
       {/* ── CONTENT ── */}
-      <div style={{ padding:"0 24px", paddingBottom:110, overflowY:"auto", maxHeight:"calc(100vh - 98px)" }}>
+      <div style={{ padding:"0 22px", paddingBottom:120, overflowY:"auto", maxHeight:"calc(100vh - 98px)" }}>
 
         {/* HOME */}
         {tab==="home" && (
@@ -540,7 +540,6 @@ export default function PayFlow() {
 
             {/* Balance Card */}
             <div className="balance-card card-hover" style={{ background:th.cardGrad, border:`1px solid ${th.borderBright}`, borderRadius:28, padding:"28px 24px 24px", marginBottom:24, position:"relative", overflow:"hidden", boxShadow: dark ? "0 20px 60px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset" : "0 20px 60px rgba(0,0,0,0.1)" }}>
-              {/* Decorative circles */}
               <div style={{ position:"absolute", top:-70, right:-70, width:200, height:200, borderRadius:"50%", background:`radial-gradient(circle, rgba(212,168,83,0.12) 0%, transparent 70%)`, pointerEvents:"none" }} />
               <div style={{ position:"absolute", bottom:-50, left:-50, width:160, height:160, borderRadius:"50%", background:`radial-gradient(circle, rgba(123,159,224,0.09) 0%, transparent 70%)`, pointerEvents:"none" }} />
               <div style={{ position:"absolute", top:0, left:0, right:0, height:"1px", background:`linear-gradient(90deg, transparent, rgba(212,168,83,0.4), transparent)` }} />
@@ -548,7 +547,7 @@ export default function PayFlow() {
               <h1 style={{ fontSize:40, fontWeight:600, color:th.gold, letterSpacing:-2, lineHeight:1, marginBottom:6, fontFamily:"'Cormorant Garamond',serif" }}>₹1,24,350</h1>
               <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginBottom:20, letterSpacing:2 }}>•••• 4821 &nbsp;·&nbsp; VISA Gold</p>
               <div style={{ height:"1px", background:`linear-gradient(90deg, transparent, ${th.borderBright}, transparent)`, marginBottom:20 }} />
-              <div style={{ display:"flex", gap:0 }}>
+              <div style={{ display:"flex", gap:0, marginBottom:16 }}>
                 {[["Income","↑ ₹90,000",th.green],["Spent","↓ ₹8,777",th.pink],["Cashback",`✦ ₹${totalCashback}`,th.gold]].map(([l,v,c],i) => (
                   <div key={l} style={{ flex:1, borderRight: i<2 ? `1px solid ${th.border}` : "none", paddingRight:14, paddingLeft:i>0?14:0 }}>
                     <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:6 }}>{l}</p>
@@ -556,10 +555,19 @@ export default function PayFlow() {
                   </div>
                 ))}
               </div>
+              {/* Instant Loan Banner inside card */}
+              <div onClick={() => { setShowInstantLoan(true); setLoanStep(1); }} style={{ display:"flex", alignItems:"center", gap:10, background:"rgba(93,184,150,0.08)", border:"1px solid rgba(93,184,150,0.2)", borderRadius:14, padding:"10px 14px", cursor:"pointer", transition:"all .2s" }}>
+                <span style={{ fontSize:18 }}>⚡</span>
+                <div style={{ flex:1 }}>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:11, fontWeight:600, color:"#5DB896", marginBottom:1 }}>Instant Loan Available</p>
+                  <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:"rgba(240,234,214,0.4)" }}>Get up to ₹10,000 in 60 seconds</p>
+                </div>
+                <span style={{ fontFamily:"'DM Sans'", fontSize:12, fontWeight:700, color:"#5DB896" }}>₹10K →</span>
+              </div>
             </div>
 
             {/* Quick Actions */}
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:8, marginBottom:24 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:10, marginBottom:32 }}>
               {[
                 { icon:"↑", label:"Send", fn:() => setShowSend(true), c:th.gold },
                 { icon:"↓", label:"Receive", fn:() => { setQrTab("My QR"); setScanResult(null); setScannerActive(false); setShowQR(true); }, c:th.green },
@@ -567,76 +575,60 @@ export default function PayFlow() {
                 { icon:"÷", label:"Split", fn:() => setShowSplit(true), c:th.pink },
                 { icon:"▦", label:"QR", fn:() => { setQrTab("Scan QR"); setScanResult(null); setScannerActive(false); setShowQR(true); }, c:"#A07BE0" },
               ].map(a => (
-                <button key={a.label} className="action-btn" onClick={a.fn}>
-                  <span style={{ fontSize:18, color:a.c, lineHeight:1 }}>{a.icon}</span>
-                  <span style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textSub, fontWeight:500, letterSpacing:0.3 }}>{a.label}</span>
+                <button key={a.label} className="action-btn" onClick={a.fn} style={{ padding:"18px 6px", gap:8 }}>
+                  <span style={{ fontSize:20, color:a.c, lineHeight:1 }}>{a.icon}</span>
+                  <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textSub, fontWeight:500, letterSpacing:0.3 }}>{a.label}</span>
                 </button>
               ))}
             </div>
 
-            {/* Bills */}
-            <div style={{ marginBottom:24 }}>
-              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:14 }}>
-                <p className="section-title" style={{ margin:0 }}>Pay Bills</p>
-                <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold, cursor:"pointer", letterSpacing:0.3 }}>See all →</span>
+            {/* Send Money */}
+            <div style={{ marginBottom:32 }}>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
+                <p className="section-title" style={{ margin:0 }}>Send Money</p>
+                <span onClick={() => setShowSend(true)} style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold, cursor:"pointer" }}>See all →</span>
               </div>
-              <div style={{ display:"grid", gridTemplateColumns:"repeat(6,1fr)", gap:8 }}>
+              <div style={{ display:"flex", gap:20, overflowX:"auto", paddingBottom:4 }}>
+                {contacts.map(c => (
+                  <div key={c.name} onClick={() => { if (c.name!=="+ Add") setSendTo(c.name); setShowSend(true); }} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:8, cursor:"pointer", minWidth:52 }}>
+                    <div style={{ width:52, height:52, borderRadius:"50%", background:`${c.color}15`, border:`1.5px solid ${c.color}40`, display:"flex", alignItems:"center", justifyContent:"center", color:c.color, fontFamily:"'DM Sans'", fontWeight:600, fontSize:13, transition:"all .2s" }}>{c.initials}</div>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textSub }}>{c.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Bills */}
+            <div style={{ marginBottom:32 }}>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
+                <p className="section-title" style={{ margin:0 }}>Pay Bills</p>
+                <span onClick={() => setShowBill(billServices[0].name)} style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold, cursor:"pointer" }}>See all →</span>
+              </div>
+              <div style={{ display:"flex", gap:10, overflowX:"auto", paddingBottom:4 }}>
                 {billServices.map(s => (
-                  <button key={s.name} className="action-btn" onClick={() => setShowBill(s.name)} style={{ padding:"12px 4px" }}>
-                    <span style={{ fontSize:19 }}>{s.icon}</span>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:8, color:th.textSub, letterSpacing:0.2 }}>{s.name}</span>
+                  <button key={s.name} onClick={() => setShowBill(s.name)} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:18, padding:"16px 14px", cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", gap:8, minWidth:68, flexShrink:0, transition:"all .2s" }}>
+                    <span style={{ fontSize:22 }}>{s.icon}</span>
+                    <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textSub, fontWeight:500 }}>{s.name}</span>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Send Money */}
-            <div style={{ marginBottom:24 }}>
-              <p className="section-title">Send Money</p>
-              <div style={{ display:"flex", gap:14, overflowX:"auto", paddingBottom:4 }}>
-                {contacts.map(c => (
-                  <div key={c.name} onClick={() => { if (c.name!=="+ Add") setSendTo(c.name); setShowSend(true); }} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:7, cursor:"pointer", minWidth:50 }}>
-                    <div style={{ width:48, height:48, borderRadius:"50%", background:`${c.color}15`, border:`1.5px solid ${c.color}40`, display:"flex", alignItems:"center", justifyContent:"center", color:c.color, fontFamily:"'DM Sans'", fontWeight:600, fontSize:12, letterSpacing:0.5, transition:"all .2s" }}>{c.initials}</div>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textSub, letterSpacing:0.3 }}>{c.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Intl Banner */}
-            <div className="card-hover" onClick={() => setShowIntl(true)} style={{ ...glass, marginBottom:22, cursor:"pointer", display:"flex", alignItems:"center", gap:16, background:`linear-gradient(135deg, rgba(123,159,224,0.08), rgba(110,198,160,0.06))`, border:`1px solid rgba(123,159,224,0.15)` }}>
-              <div style={{ width:44, height:44, borderRadius:14, background:"rgba(123,159,224,0.12)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, flexShrink:0 }}>🌍</div>
-              <div style={{ flex:1 }}>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text, marginBottom:3 }}>International Transfer</p>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>Send to 50+ countries · Best live rates</p>
-              </div>
-              <span style={{ color:th.gold, fontSize:18 }}>›</span>
-            </div>
-
-            {/* Cashback Teaser */}
-            <div style={{ ...glass, marginBottom:22, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-              <div>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:1.5, marginBottom:6 }}>Cashback Earned</p>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:24, fontWeight:700, color:th.gold, letterSpacing:-0.5 }}>₹{totalCashback}</p>
-              </div>
-              <button className="btn-ghost" onClick={() => go("rewards")}>View Offers →</button>
-            </div>
-
             {/* Recent */}
-            <div>
-              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:14 }}>
+            <div style={{ marginBottom:16 }}>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
                 <p className="section-title" style={{ margin:0 }}>Recent</p>
                 <span onClick={() => go("history")} style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold, cursor:"pointer" }}>View all →</span>
               </div>
-              {transactions.slice(0,5).map(tx => (
+              {transactions.slice(0,4).map(tx => (
                 <div key={tx.id} className="tx-row">
-                  <div style={{ width:40, height:40, borderRadius:13, background:tx.amount>0?"rgba(93,184,150,0.1)":"rgba(212,168,83,0.08)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:17, flexShrink:0 }}>{tx.icon}</div>
+                  <div style={{ width:44, height:44, borderRadius:14, background:tx.amount>0?"rgba(93,184,150,0.1)":"rgba(212,168,83,0.08)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, flexShrink:0 }}>{tx.icon}</div>
                   <div style={{ flex:1 }}>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:500, color:th.text, marginBottom:2 }}>{tx.name}</p>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, letterSpacing:0.2 }}>{tx.date} · {tx.category}</p>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:500, color:th.text, marginBottom:3 }}>{tx.name}</p>
+                    <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>{tx.date} · {tx.category}</p>
                   </div>
                   <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                    <span style={{ fontFamily:"'DM Sans'", fontWeight:600, fontSize:13, color:tx.amount>0?th.green:th.text, letterSpacing:-0.3 }}>{tx.amount>0?"+ ":"– "}₹{Math.abs(tx.amount).toLocaleString()}</span>
+                    <span style={{ fontFamily:"'DM Sans'", fontWeight:600, fontSize:13, color:tx.amount>0?th.green:th.text }}>{tx.amount>0?"+ ":"– "}₹{Math.abs(tx.amount).toLocaleString()}</span>
                     <button onClick={() => setShowChat(tx)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:14, opacity:0.4, padding:"2px 4px", transition:"opacity .2s" }} onMouseOver={e=>e.target.style.opacity=0.8} onMouseOut={e=>e.target.style.opacity=0.4}>
                       💬{txMessages[tx.id]?.length>0 && <sup style={{ fontFamily:"'DM Sans'", fontSize:8, color:th.gold }}>{txMessages[tx.id].length}</sup>}
                     </button>
