@@ -77,24 +77,24 @@ const QR_PATTERN = [1,1,1,1,1,1,1,0,1,0,1,1,0,1,1,1,0,1,1,0,1,0,1,1,0,1,1,1,0,1,
 
 const D = {
   dark: {
-    bg: "#09090F", surface: "rgba(255,255,255,0.03)", surfaceHover: "rgba(255,255,255,0.055)",
-    border: "rgba(212,168,83,0.12)", borderBright: "rgba(212,168,83,0.28)",
-    text: "#F0EAD6", textMuted: "rgba(240,234,214,0.38)", textSub: "rgba(240,234,214,0.62)",
-    modal: "#0E0E18", tab: "rgba(9,9,15,0.96)", input: "rgba(255,255,255,0.04)",
-    row: "rgba(255,255,255,0.04)", bar: "rgba(255,255,255,0.06)",
-    chat1: "rgba(212,168,83,0.18)", chat2: "rgba(255,255,255,0.06)",
-    gold: "#D4A853", goldLight: "#F0C96A", green: "#5DB896", blue: "#7B9FE0", pink: "#E07B9F",
-    cardGrad: "linear-gradient(145deg, #141420 0%, #0D1520 50%, #100D1A 100%)",
+    bg: "#0A1628", surface: "rgba(255,255,255,0.05)", surfaceHover: "rgba(255,255,255,0.08)",
+    border: "rgba(96,165,250,0.15)", borderBright: "rgba(96,165,250,0.35)",
+    text: "#F0F6FF", textMuted: "rgba(200,220,255,0.45)", textSub: "rgba(200,220,255,0.7)",
+    modal: "#0F1F3D", tab: "rgba(10,22,40,0.97)", input: "rgba(255,255,255,0.05)",
+    row: "rgba(255,255,255,0.05)", bar: "rgba(255,255,255,0.07)",
+    chat1: "rgba(59,130,246,0.2)", chat2: "rgba(255,255,255,0.06)",
+    gold: "#60A5FA", goldLight: "#93C5FD", green: "#34D399", blue: "#3B82F6", pink: "#F472B6",
+    cardGrad: "linear-gradient(145deg, #0F2040 0%, #0A1628 50%, #0D1A35 100%)",
   },
   light: {
-    bg: "#F7F3EC", surface: "rgba(0,0,0,0.03)", surfaceHover: "rgba(0,0,0,0.055)",
-    border: "rgba(160,120,32,0.15)", borderBright: "rgba(160,120,32,0.35)",
-    text: "#1A1408", textMuted: "rgba(26,20,8,0.42)", textSub: "rgba(26,20,8,0.65)",
-    modal: "#FEFAF2", tab: "rgba(247,243,236,0.97)", input: "rgba(0,0,0,0.04)",
-    row: "rgba(0,0,0,0.03)", bar: "rgba(0,0,0,0.07)",
-    chat1: "rgba(160,120,32,0.18)", chat2: "rgba(0,0,0,0.06)",
-    gold: "#A07820", goldLight: "#C49A30", green: "#3A9470", blue: "#5178C0", pink: "#C05070",
-    cardGrad: "linear-gradient(145deg, #FFF8E8 0%, #EEF4FF 50%, #F8EEFF 100%)",
+    bg: "#F0F5FF", surface: "rgba(255,255,255,0.9)", surfaceHover: "rgba(255,255,255,1)",
+    border: "rgba(59,130,246,0.15)", borderBright: "rgba(59,130,246,0.4)",
+    text: "#0A1628", textMuted: "rgba(10,22,40,0.45)", textSub: "rgba(10,22,40,0.68)",
+    modal: "#FFFFFF", tab: "rgba(240,245,255,0.97)", input: "rgba(59,130,246,0.05)",
+    row: "rgba(59,130,246,0.06)", bar: "rgba(59,130,246,0.08)",
+    chat1: "rgba(59,130,246,0.12)", chat2: "rgba(0,0,0,0.05)",
+    gold: "#1D4ED8", goldLight: "#3B82F6", green: "#059669", blue: "#2563EB", pink: "#DB2777",
+    cardGrad: "linear-gradient(145deg, #1E40AF 0%, #1D4ED8 50%, #2563EB 100%)",
   },
 };
 
@@ -350,12 +350,12 @@ export default function PayFlow() {
 
   // Reusable style helpers
   const glass = { background: th.surface, border: `1px solid ${th.border}`, borderRadius: 22, padding: "22px 22px", backdropFilter: "blur(12px)" };
-  const inp = { background: th.input, border: `1px solid ${th.border}`, borderRadius: 14, padding: "14px 16px", color: th.text, fontFamily:"'DM Sans',sans-serif", fontSize:14, width:"100%", outline:"none", transition:"border-color 0.2s" };
-  const lbl = { fontFamily:"'DM Sans',sans-serif", fontSize:10, color:th.textMuted, display:"block", marginBottom:8, textTransform:"uppercase", letterSpacing:1.5 };
+  const inp = { background: th.input, border: `1px solid ${th.border}`, borderRadius: 14, padding: "14px 16px", color: th.text, fontFamily:"'Inter',sans-serif", fontSize:14, width:"100%", outline:"none", transition:"border-color 0.2s" };
+  const lbl = { fontFamily:"'Inter',sans-serif", fontSize:10, color:th.textMuted, display:"block", marginBottom:8, textTransform:"uppercase", letterSpacing:1.5 };
   const row = { display:"flex", alignItems:"center", gap:16, padding:"16px 0", borderBottom:`1px solid ${th.row}` };
 
   return (
-    <div style={{ fontFamily:"'Cormorant Garamond','Georgia',serif", background:th.bg, minHeight:"100vh", color:th.text, maxWidth:420, margin:"0 auto", position:"relative", overflow:"hidden" }}>
+    <div style={{ fontFamily:"'Plus Jakarta Sans','Inter',sans-serif", background:th.bg, minHeight:"100vh", color:th.text, maxWidth:420, margin:"0 auto", position:"relative", overflow:"hidden" }}>
 
       {/* ── LOCK SCREEN ── */}
       {locked && (
@@ -365,159 +365,115 @@ export default function PayFlow() {
           <div style={{ position:"absolute", bottom:100, left:-80, width:250, height:250, borderRadius:"50%", background:"radial-gradient(circle, rgba(123,159,224,0.06) 0%, transparent 70%)", pointerEvents:"none" }} />
 
           {/* Logo */}
-          <div style={{ width:80, height:80, borderRadius:24, background:"linear-gradient(135deg,#D4A853,#F0C96A)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:32, marginBottom:24, boxShadow:"0 16px 48px rgba(212,168,83,0.35)", animation:"float 3s ease-in-out infinite" }}>💳</div>
+          <div style={{ width:80, height:80, borderRadius:24, background:"linear-gradient(135deg,#1D4ED8,#3B82F6)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:32, marginBottom:24, boxShadow:"0 16px 48px rgba(212,168,83,0.35)", animation:"float 3s ease-in-out infinite" }}>💳</div>
           <h1 style={{ fontSize:32, fontWeight:700, color:"#D4A853", letterSpacing:-1, marginBottom:8 }}>PayFlow</h1>
-          <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:"rgba(240,234,214,0.4)", letterSpacing:3, textTransform:"uppercase", marginBottom:60 }}>Premium Payments</p>
+          <p style={{ fontFamily:"'Inter'", fontSize:12, color:"rgba(240,234,214,0.4)", letterSpacing:3, textTransform:"uppercase", marginBottom:60 }}>Premium Payments</p>
 
           {/* Lock icon */}
-          <div style={{ width:72, height:72, borderRadius:"50%", background:"rgba(212,168,83,0.08)", border:"1px solid rgba(212,168,83,0.2)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:28, marginBottom:20, cursor:"pointer", transition:"all .3s", boxShadow:"0 0 0 0 rgba(212,168,83,0.3)", animation:"pulse-ring 2.5s ease-in-out infinite" }} onClick={handleBiometricUnlock}>
+          <div style={{ width:72, height:72, borderRadius:"50%", background:"rgba(59,130,246,0.08)", border:"1px solid rgba(59,130,246,0.2)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:28, marginBottom:20, cursor:"pointer", transition:"all .3s", boxShadow:"0 0 0 0 rgba(212,168,83,0.3)", animation:"pulse-ring 2.5s ease-in-out infinite" }} onClick={handleBiometricUnlock}>
             {biometricSupported ? "🔐" : "🔓"}
           </div>
-          <p style={{ fontFamily:"'DM Sans'", fontSize:13, color:"rgba(240,234,214,0.5)", marginBottom:32, letterSpacing:0.3 }}>
+          <p style={{ fontFamily:"'Inter'", fontSize:13, color:"rgba(240,234,214,0.5)", marginBottom:32, letterSpacing:0.3 }}>
             {biometricSupported ? "Touch ID / Face ID to unlock" : "Tap to unlock"}
           </p>
 
-          <button onClick={handleBiometricUnlock} style={{ background:"linear-gradient(135deg,#D4A853,#F0C96A)", border:"none", borderRadius:16, padding:"15px 48px", fontFamily:"'DM Sans'", fontSize:15, fontWeight:600, color:"#0A0806", cursor:"pointer", letterSpacing:0.3, boxShadow:"0 8px 32px rgba(212,168,83,0.35)", transition:"all .2s" }}>
+          <button onClick={handleBiometricUnlock} style={{ background:"linear-gradient(135deg,#1D4ED8,#3B82F6)", border:"none", borderRadius:16, padding:"15px 48px", fontFamily:"'Inter'", fontSize:15, fontWeight:600, color:"#0A0806", cursor:"pointer", letterSpacing:0.3, boxShadow:"0 8px 32px rgba(59,130,246,0.4)", transition:"all .2s" }}>
             {biometricSupported ? "🔐 Unlock with Biometrics" : "Unlock PayFlow"}
           </button>
 
-          <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:"rgba(240,234,214,0.25)", marginTop:20, letterSpacing:0.3 }}>Mohindharan DK · ••4821</p>
+          <p style={{ fontFamily:"'Inter'", fontSize:11, color:"rgba(240,234,214,0.25)", marginTop:20, letterSpacing:0.3 }}>Mohindharan DK · ••4821</p>
         </div>
       )}
 
       {/* Ambient background orbs */}
-      <div style={{ position:"fixed", top:-120, right:-80, width:320, height:320, borderRadius:"50%", background:`radial-gradient(circle, ${dark?"rgba(212,168,83,0.06)":"rgba(212,168,83,0.1)"} 0%, transparent 70%)`, pointerEvents:"none", zIndex:0 }} />
-      <div style={{ position:"fixed", bottom:80, left:-100, width:280, height:280, borderRadius:"50%", background:`radial-gradient(circle, ${dark?"rgba(123,159,224,0.05)":"rgba(123,159,224,0.08)"} 0%, transparent 70%)`, pointerEvents:"none", zIndex:0 }} />
+      <div style={{ position:"fixed", top:-120, right:-80, width:320, height:320, borderRadius:"50%", background:"radial-gradient(circle, rgba(59,130,246,0.07) 0%, transparent 70%)", pointerEvents:"none", zIndex:0 }} />
+      <div style={{ position:"fixed", bottom:80, left:-100, width:280, height:280, borderRadius:"50%", background:"radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 70%)", pointerEvents:"none", zIndex:0 }} />
       <div style={{ position:"relative", zIndex:1 }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+      <style>{\`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         *{box-sizing:border-box;margin:0;padding:0}
         ::-webkit-scrollbar{width:0}
 
         .btn-primary{
-          background:linear-gradient(135deg,#D4A853 0%,#F0C96A 50%,#D4A853 100%);
+          background:linear-gradient(135deg,#1D4ED8 0%,#3B82F6 50%,#1D4ED8 100%);
           background-size:200% 100%;
-          color:#0A0806;border:none;border-radius:16px;padding:15px;
-          font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;
-          cursor:pointer;width:100%;letter-spacing:0.4px;
-          transition:all .3s;box-shadow:0 4px 24px rgba(212,168,83,0.3),0 1px 0 rgba(255,255,255,0.15) inset;
+          color:#ffffff;border:none;border-radius:16px;padding:15px;
+          font-family:'Inter',sans-serif;font-weight:600;font-size:14px;
+          cursor:pointer;width:100%;letter-spacing:0.3px;
+          transition:all .3s;box-shadow:0 4px 24px rgba(59,130,246,0.35),0 1px 0 rgba(255,255,255,0.15) inset;
         }
-        .btn-primary:hover{background-position:100% 0;transform:translateY(-2px);box-shadow:0 8px 32px rgba(212,168,83,0.4)}
+        .btn-primary:hover{background-position:100% 0;transform:translateY(-2px);box-shadow:0 8px 32px rgba(59,130,246,0.45)}
         .btn-primary:active{transform:translateY(0)}
 
         .btn-ghost{
-          background:transparent;color:#D4A853;
-          border:1px solid rgba(212,168,83,0.25);
+          background:transparent;color:#3B82F6;
+          border:1px solid rgba(59,130,246,0.3);
           border-radius:12px;padding:10px 16px;
-          font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;
-          cursor:pointer;transition:all .2s;letter-spacing:0.3px;white-space:nowrap;
+          font-family:'Inter',sans-serif;font-size:12px;font-weight:500;
+          cursor:pointer;transition:all .2s;letter-spacing:0.2px;white-space:nowrap;
         }
-        .btn-ghost:hover{background:rgba(212,168,83,0.08);border-color:rgba(212,168,83,0.45);transform:translateY(-1px)}
+        .btn-ghost:hover{background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.5);transform:translateY(-1px)}
 
         .tab-bar{
           position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:420px;
           backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
-          border-top:1px solid rgba(212,168,83,0.08);
+          border-top:1px solid rgba(59,130,246,0.1);
           display:flex;overflow-x:auto;padding:10px 8px 24px;z-index:100;gap:2px;
           scrollbar-width:none;
         }
-        .tab-bar::before{
-          content:'';position:absolute;inset:0;
-          background:linear-gradient(180deg,rgba(212,168,83,0.04) 0%,transparent 100%);
-          pointer-events:none;
-        }
+        .tab-bar::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(59,130,246,0.03) 0%,transparent 100%);pointer-events:none;}
         .tab-bar::-webkit-scrollbar{display:none}
-        .ti{
-          min-width:52px;flex:1;display:flex;flex-direction:column;
-          align-items:center;gap:5px;cursor:pointer;padding:7px 4px;
-          border-radius:16px;transition:all .25s;position:relative;
-        }
-        .ti:hover{background:rgba(212,168,83,0.07)}
+        .ti{min-width:52px;flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;padding:7px 4px;border-radius:16px;transition:all .25s;position:relative;}
+        .ti:hover{background:rgba(59,130,246,0.08)}
         .ti-icon{font-size:17px;line-height:1;transition:all .3s;opacity:0.32}
-        .ti-lbl{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:500;color:rgba(212,168,83,0.32);letter-spacing:0.8px;text-transform:uppercase;white-space:nowrap;transition:all .3s}
-        .ti.active .ti-icon{opacity:1;filter:drop-shadow(0 0 8px rgba(212,168,83,0.7));transform:scale(1.1)}
-        .ti.active .ti-lbl{color:#D4A853;font-weight:700}
-        .ti.active::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:20px;height:2px;background:#D4A853;border-radius:2px;box-shadow:0 0 8px rgba(212,168,83,0.6)}
+        .ti-lbl{font-family:'Inter',sans-serif;font-size:9px;font-weight:500;color:rgba(59,130,246,0.4);letter-spacing:0.8px;text-transform:uppercase;white-space:nowrap;transition:all .3s}
+        .ti.active .ti-icon{opacity:1;filter:drop-shadow(0 0 8px rgba(59,130,246,0.7));transform:scale(1.1)}
+        .ti.active .ti-lbl{color:#3B82F6;font-weight:700}
+        .ti.active::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:20px;height:2px;background:#3B82F6;border-radius:2px;box-shadow:0 0 8px rgba(59,130,246,0.6)}
 
-        .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.78);backdrop-filter:blur(12px);z-index:200;display:flex;align-items:flex-end;justify-content:center}
-        .sheet{
-          border-radius:32px 32px 0 0;padding:0;width:100%;max-width:420px;
-          animation:rise .4s cubic-bezier(0.22,1,0.36,1);
-          max-height:92vh;overflow-y:auto;overflow-x:hidden;
-        }
+        .overlay{position:fixed;inset:0;background:rgba(0,0,20,0.78);backdrop-filter:blur(12px);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+        .sheet{border-radius:32px 32px 0 0;padding:0;width:100%;max-width:420px;animation:rise .4s cubic-bezier(0.22,1,0.36,1);max-height:92vh;overflow-y:auto;overflow-x:hidden;}
         .sheet-inner{padding:10px 24px 52px}
-        .sheet-handle{width:40px;height:4px;border-radius:4px;background:rgba(255,255,255,0.12);margin:14px auto 20px}
-        .chat-full{
-          border-radius:32px 32px 0 0;width:100%;max-width:420px;
-          animation:rise .4s cubic-bezier(0.22,1,0.36,1);
-          height:90vh;display:flex;flex-direction:column;overflow:hidden;
-        }
+        .sheet-handle{width:40px;height:4px;border-radius:4px;background:rgba(59,130,246,0.2);margin:14px auto 20px}
+        .chat-full{border-radius:32px 32px 0 0;width:100%;max-width:420px;animation:rise .4s cubic-bezier(0.22,1,0.36,1);height:90vh;display:flex;flex-direction:column;overflow:hidden;}
         @keyframes rise{from{transform:translateY(110%);opacity:0}to{transform:translateY(0);opacity:1}}
-
         .fade{opacity:0;transform:translateY(20px);transition:opacity .55s cubic-bezier(0.22,1,0.36,1),transform .55s cubic-bezier(0.22,1,0.36,1)}
         .fade.in{opacity:1;transform:translateY(0)}
-
-        .success-wrap{
-          background:linear-gradient(135deg,rgba(93,184,150,0.1),rgba(93,184,150,0.04));
-          border:1px solid rgba(93,184,150,0.25);color:#5DB896;
-          border-radius:22px;padding:32px;text-align:center;font-family:'DM Sans',sans-serif;
-        }
-        .pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-family:'DM Sans',sans-serif;font-weight:500;letter-spacing:0.4px}
-        .notif-dot{width:7px;height:7px;background:#D4A853;border-radius:50%;position:absolute;top:-2px;right:-2px;box-shadow:0 0 8px rgba(212,168,83,0.9);animation:pulse 2s ease-in-out infinite}
+        .success-wrap{background:linear-gradient(135deg,rgba(52,211,153,0.1),rgba(52,211,153,0.04));border:1px solid rgba(52,211,153,0.25);color:#34D399;border-radius:22px;padding:32px;text-align:center;font-family:'Inter',sans-serif}
+        .pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-family:'Inter',sans-serif;font-weight:500;letter-spacing:0.4px}
+        .notif-dot{width:7px;height:7px;background:#3B82F6;border-radius:50%;position:absolute;top:-2px;right:-2px;box-shadow:0 0 8px rgba(59,130,246,0.9);animation:pulse 2s ease-in-out infinite}
         .bar{height:6px;border-radius:8px;overflow:hidden}
-
-        .action-btn{
-          background:rgba(255,255,255,0.03);
-          border:1px solid rgba(212,168,83,0.12);
-          border-radius:18px;padding:15px 6px;cursor:pointer;
-          display:flex;flex-direction:column;align-items:center;gap:7px;
-          transition:all .25s;
-        }
-        .action-btn:hover{
-          background:rgba(212,168,83,0.07);border-color:rgba(212,168,83,0.3);
-          transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.15);
-        }
+        .action-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(59,130,246,0.12);border-radius:18px;padding:15px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:7px;transition:all .25s;}
+        .action-btn:hover{background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.3);transform:translateY(-3px);box-shadow:0 8px 24px rgba(59,130,246,0.15);}
         .action-btn:active{transform:translateY(-1px)}
-
         .card-hover{transition:transform .25s,box-shadow .25s}
-        .card-hover:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.22)}
-
-        .glass-card{
-          background:rgba(255,255,255,0.03);
-          backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-          border:1px solid rgba(212,168,83,0.12);border-radius:22px;padding:20px;
-          box-shadow:0 4px 24px rgba(0,0,0,0.3),0 1px 0 rgba(255,255,255,0.05) inset;
-        }
-
+        .card-hover:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.15)}
+        .glass-card{background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid rgba(59,130,246,0.12);border-radius:22px;padding:20px;}
         @keyframes scanline{0%{top:10%}50%{top:85%}100%{top:10%}}
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.6;transform:scale(0.9)}}
         @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
-        @keyframes glow{0%,100%{box-shadow:0 0 30px rgba(212,168,83,0.1),0 0 60px rgba(212,168,83,0.05)}50%{box-shadow:0 0 50px rgba(212,168,83,0.2),0 0 100px rgba(212,168,83,0.08)}}
+        @keyframes glow{0%,100%{box-shadow:0 0 30px rgba(59,130,246,0.12),0 0 60px rgba(59,130,246,0.06)}50%{box-shadow:0 0 50px rgba(59,130,246,0.25),0 0 100px rgba(59,130,246,0.1)}}
         @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-        @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(212,168,83,0.35)}70%{box-shadow:0 0 0 16px rgba(212,168,83,0)}100%{box-shadow:0 0 0 0 rgba(212,168,83,0)}}
+        @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(59,130,246,0.4)}70%{box-shadow:0 0 0 16px rgba(59,130,246,0)}100%{box-shadow:0 0 0 0 rgba(59,130,246,0)}}
         @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-
         .balance-card{animation:glow 5s ease-in-out infinite}
-        .section-title{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;opacity:0.35;margin-bottom:18px}
-        input:focus{border-color:rgba(212,168,83,0.5) !important;box-shadow:0 0 0 4px rgba(212,168,83,0.07) !important;outline:none}
+        .section-title{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;opacity:0.35;margin-bottom:18px}
+        input:focus{border-color:rgba(59,130,246,0.5) !important;box-shadow:0 0 0 4px rgba(59,130,246,0.08) !important;outline:none}
         input{transition:border-color .2s,box-shadow .2s}
-
-        .tx-row{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.04);transition:all .2s}
-        .tx-row:hover{background:rgba(255,255,255,0.015);margin:0 -8px;padding-left:8px;padding-right:8px;border-radius:14px;border-bottom-color:transparent}
+        .tx-row{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid rgba(59,130,246,0.06);transition:all .2s}
+        .tx-row:hover{background:rgba(59,130,246,0.04);margin:0 -8px;padding-left:8px;padding-right:8px;border-radius:14px;border-bottom-color:transparent}
         .tx-row:last-child{border-bottom:none}
-
         .contact-avatar{transition:all .2s}
         .contact-avatar:hover{transform:scale(1.1);filter:brightness(1.2)}
-
         .currency-option{transition:background .15s}
-        .currency-option:hover{background:rgba(212,168,83,0.06) !important}
-      `}</style>
+        .currency-option:hover{background:rgba(59,130,246,0.06) !important}
+      \`}</style>
 
       {/* ── HEADER ── */}
       <div style={{ padding:"54px 24px 16px", display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
         <div>
-          <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, letterSpacing:4, textTransform:"uppercase", marginBottom:6 }}>Good morning</p>
-          <h2 style={{ fontSize:26, fontWeight:600, letterSpacing:-0.8, lineHeight:1, fontFamily:"'Cormorant Garamond',serif", fontStyle:"italic" }}>Mohindharan <span style={{ fontStyle:"normal", fontWeight:700 }}>DK</span></h2>
+          <p style={{ fontFamily:"'Inter'", fontSize:9, color:th.textMuted, letterSpacing:4, textTransform:"uppercase", marginBottom:6 }}>Good morning</p>
+          <h2 style={{ fontSize:26, fontWeight:600, letterSpacing:-0.8, lineHeight:1, fontFamily:"'Plus Jakarta Sans',sans-serif", fontStyle:"italic" }}>Mohindharan <span style={{ fontStyle:"normal", fontWeight:700 }}>DK</span></h2>
         </div>
         <div style={{ display:"flex", gap:8, alignItems:"center", marginTop:4 }}>
           <button onClick={() => setDark(d => !d)} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:14, width:38, height:38, cursor:"pointer", fontSize:15, display:"flex", alignItems:"center", justifyContent:"center", transition:"all .2s", boxShadow: dark ? "0 2px 8px rgba(0,0,0,0.3)" : "0 2px 8px rgba(0,0,0,0.06)" }}>
@@ -527,7 +483,7 @@ export default function PayFlow() {
             <span style={{ fontSize:15 }}>🔔</span>
             {unread > 0 && <div className="notif-dot" />}
           </div>
-          <div style={{ width:38, height:38, borderRadius:14, background:`linear-gradient(135deg,${th.gold},${th.goldLight})`, display:"flex", alignItems:"center", justifyContent:"center", color:"#0A0806", fontWeight:700, fontFamily:"'DM Sans'", fontSize:12, letterSpacing:0.5, boxShadow:`0 4px 16px rgba(212,168,83,0.3)` }}>MD</div>
+          <div style={{ width:38, height:38, borderRadius:14, background:`linear-gradient(135deg,${th.blue},${th.goldLight})`, display:"flex", alignItems:"center", justifyContent:"center", color:"#0A0806", fontWeight:700, fontFamily:"'Inter'", fontSize:12, letterSpacing:0.5, boxShadow:`0 4px 16px rgba(212,168,83,0.3)` }}>MD</div>
         </div>
       </div>
 
@@ -539,19 +495,19 @@ export default function PayFlow() {
           <div className={`fade ${mounted?"in":""}`}>
 
             {/* Balance Card */}
-            <div className="balance-card card-hover" style={{ background:th.cardGrad, border:`1px solid ${th.borderBright}`, borderRadius:28, padding:"28px 24px 24px", marginBottom:24, position:"relative", overflow:"hidden", boxShadow: dark ? "0 20px 60px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset" : "0 20px 60px rgba(0,0,0,0.1)" }}>
+            <div className="balance-card card-hover" style={{ background:`linear-gradient(145deg,#0F2040,#1a3a6e,#0F2040)`, border:`1px solid rgba(96,165,250,0.3)`, borderRadius:28, padding:"28px 24px 24px", marginBottom:24, position:"relative", overflow:"hidden", boxShadow:"0 20px 60px rgba(0,0,50,0.5), 0 1px 0 rgba(255,255,255,0.08) inset" }}>
               <div style={{ position:"absolute", top:-70, right:-70, width:200, height:200, borderRadius:"50%", background:`radial-gradient(circle, rgba(212,168,83,0.12) 0%, transparent 70%)`, pointerEvents:"none" }} />
               <div style={{ position:"absolute", bottom:-50, left:-50, width:160, height:160, borderRadius:"50%", background:`radial-gradient(circle, rgba(123,159,224,0.09) 0%, transparent 70%)`, pointerEvents:"none" }} />
               <div style={{ position:"absolute", top:0, left:0, right:0, height:"1px", background:`linear-gradient(90deg, transparent, rgba(212,168,83,0.4), transparent)` }} />
-              <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, letterSpacing:3.5, textTransform:"uppercase", marginBottom:12 }}>Total Balance</p>
-              <h1 style={{ fontSize:40, fontWeight:600, color:th.gold, letterSpacing:-2, lineHeight:1, marginBottom:6, fontFamily:"'Cormorant Garamond',serif" }}>₹1,24,350</h1>
-              <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginBottom:20, letterSpacing:2 }}>•••• 4821 &nbsp;·&nbsp; VISA Gold</p>
+              <p style={{ fontFamily:"'Inter'", fontSize:9, color:th.textMuted, letterSpacing:3.5, textTransform:"uppercase", marginBottom:12 }}>Total Balance</p>
+              <h1 style={{ fontSize:40, fontWeight:600, color:th.gold, letterSpacing:-2, lineHeight:1, marginBottom:6, fontFamily:"'Plus Jakarta Sans',sans-serif" }}>₹1,24,350</h1>
+              <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted, marginBottom:20, letterSpacing:2 }}>•••• 4821 &nbsp;·&nbsp; VISA Gold</p>
               <div style={{ height:"1px", background:`linear-gradient(90deg, transparent, ${th.borderBright}, transparent)`, marginBottom:20 }} />
               <div style={{ display:"flex", gap:0, marginBottom:16 }}>
-                {[["Income","↑ ₹90,000",th.green],["Spent","↓ ₹8,777",th.pink],["Cashback",`✦ ₹${totalCashback}`,th.gold]].map(([l,v,c],i) => (
+                {[["Income","↑ ₹90,000",th.green],["Spent","↓ ₹8,777",th.pink],["Cashback",`✦ ₹${totalCashback}`,th.goldLight]].map(([l,v,c],i) => (
                   <div key={l} style={{ flex:1, borderRight: i<2 ? `1px solid ${th.border}` : "none", paddingRight:14, paddingLeft:i>0?14:0 }}>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:6 }}>{l}</p>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:13, color:c, fontWeight:600, letterSpacing:-0.3 }}>{v}</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:9, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:6 }}>{l}</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:13, color:c, fontWeight:600, letterSpacing:-0.3 }}>{v}</p>
                   </div>
                 ))}
               </div>
@@ -559,10 +515,10 @@ export default function PayFlow() {
               <div onClick={() => { setShowInstantLoan(true); setLoanStep(1); }} style={{ display:"flex", alignItems:"center", gap:10, background:"rgba(93,184,150,0.08)", border:"1px solid rgba(93,184,150,0.2)", borderRadius:14, padding:"10px 14px", cursor:"pointer", transition:"all .2s" }}>
                 <span style={{ fontSize:18 }}>⚡</span>
                 <div style={{ flex:1 }}>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:11, fontWeight:600, color:"#5DB896", marginBottom:1 }}>Instant Loan Available</p>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:"rgba(240,234,214,0.4)" }}>Get up to ₹10,000 in 60 seconds</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:11, fontWeight:600, color:"#5DB896", marginBottom:1 }}>Instant Loan Available</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:10, color:"rgba(240,234,214,0.4)" }}>Get up to ₹10,000 in 60 seconds</p>
                 </div>
-                <span style={{ fontFamily:"'DM Sans'", fontSize:12, fontWeight:700, color:"#5DB896" }}>₹10K →</span>
+                <span style={{ fontFamily:"'Inter'", fontSize:12, fontWeight:700, color:"#5DB896" }}>₹10K →</span>
               </div>
             </div>
 
@@ -577,7 +533,7 @@ export default function PayFlow() {
               ].map(a => (
                 <button key={a.label} className="action-btn" onClick={a.fn} style={{ padding:"18px 6px", gap:8 }}>
                   <span style={{ fontSize:20, color:a.c, lineHeight:1 }}>{a.icon}</span>
-                  <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textSub, fontWeight:500, letterSpacing:0.3 }}>{a.label}</span>
+                  <span style={{ fontFamily:"'Inter'", fontSize:10, color:th.textSub, fontWeight:500, letterSpacing:0.3 }}>{a.label}</span>
                 </button>
               ))}
             </div>
@@ -586,13 +542,13 @@ export default function PayFlow() {
             <div style={{ marginBottom:32 }}>
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
                 <p className="section-title" style={{ margin:0 }}>Send Money</p>
-                <span onClick={() => setShowSend(true)} style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold, cursor:"pointer" }}>See all →</span>
+                <span onClick={() => setShowSend(true)} style={{ fontFamily:"'Inter'", fontSize:11, color:th.gold, cursor:"pointer" }}>See all →</span>
               </div>
               <div style={{ display:"flex", gap:20, overflowX:"auto", paddingBottom:4 }}>
                 {contacts.map(c => (
                   <div key={c.name} onClick={() => { if (c.name!=="+ Add") setSendTo(c.name); setShowSend(true); }} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:8, cursor:"pointer", minWidth:52 }}>
-                    <div style={{ width:52, height:52, borderRadius:"50%", background:`${c.color}15`, border:`1.5px solid ${c.color}40`, display:"flex", alignItems:"center", justifyContent:"center", color:c.color, fontFamily:"'DM Sans'", fontWeight:600, fontSize:13, transition:"all .2s" }}>{c.initials}</div>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textSub }}>{c.name}</span>
+                    <div style={{ width:52, height:52, borderRadius:"50%", background:`${c.color}15`, border:`1.5px solid ${c.color}40`, display:"flex", alignItems:"center", justifyContent:"center", color:c.color, fontFamily:"'Inter'", fontWeight:600, fontSize:13, transition:"all .2s" }}>{c.initials}</div>
+                    <span style={{ fontFamily:"'Inter'", fontSize:10, color:th.textSub }}>{c.name}</span>
                   </div>
                 ))}
               </div>
@@ -602,13 +558,13 @@ export default function PayFlow() {
             <div style={{ marginBottom:32 }}>
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
                 <p className="section-title" style={{ margin:0 }}>Pay Bills</p>
-                <span onClick={() => setShowBill(billServices[0].name)} style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold, cursor:"pointer" }}>See all →</span>
+                <span onClick={() => setShowBill(billServices[0].name)} style={{ fontFamily:"'Inter'", fontSize:11, color:th.gold, cursor:"pointer" }}>See all →</span>
               </div>
               <div style={{ display:"flex", gap:10, overflowX:"auto", paddingBottom:4 }}>
                 {billServices.map(s => (
                   <button key={s.name} onClick={() => setShowBill(s.name)} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:18, padding:"16px 14px", cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", gap:8, minWidth:68, flexShrink:0, transition:"all .2s" }}>
                     <span style={{ fontSize:22 }}>{s.icon}</span>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textSub, fontWeight:500 }}>{s.name}</span>
+                    <span style={{ fontFamily:"'Inter'", fontSize:10, color:th.textSub, fontWeight:500 }}>{s.name}</span>
                   </button>
                 ))}
               </div>
@@ -618,19 +574,19 @@ export default function PayFlow() {
             <div style={{ marginBottom:16 }}>
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
                 <p className="section-title" style={{ margin:0 }}>Recent</p>
-                <span onClick={() => go("history")} style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold, cursor:"pointer" }}>View all →</span>
+                <span onClick={() => go("history")} style={{ fontFamily:"'Inter'", fontSize:11, color:th.gold, cursor:"pointer" }}>View all →</span>
               </div>
               {transactions.slice(0,4).map(tx => (
                 <div key={tx.id} className="tx-row">
                   <div style={{ width:44, height:44, borderRadius:14, background:tx.amount>0?"rgba(93,184,150,0.1)":"rgba(212,168,83,0.08)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, flexShrink:0 }}>{tx.icon}</div>
                   <div style={{ flex:1 }}>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:500, color:th.text, marginBottom:3 }}>{tx.name}</p>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>{tx.date} · {tx.category}</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:13, fontWeight:500, color:th.text, marginBottom:3 }}>{tx.name}</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted }}>{tx.date} · {tx.category}</p>
                   </div>
                   <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                    <span style={{ fontFamily:"'DM Sans'", fontWeight:600, fontSize:13, color:tx.amount>0?th.green:th.text }}>{tx.amount>0?"+ ":"– "}₹{Math.abs(tx.amount).toLocaleString()}</span>
+                    <span style={{ fontFamily:"'Inter'", fontWeight:600, fontSize:13, color:tx.amount>0?th.green:th.text }}>{tx.amount>0?"+ ":"– "}₹{Math.abs(tx.amount).toLocaleString()}</span>
                     <button onClick={() => setShowChat(tx)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:14, opacity:0.4, padding:"2px 4px", transition:"opacity .2s" }} onMouseOver={e=>e.target.style.opacity=0.8} onMouseOut={e=>e.target.style.opacity=0.4}>
-                      💬{txMessages[tx.id]?.length>0 && <sup style={{ fontFamily:"'DM Sans'", fontSize:8, color:th.gold }}>{txMessages[tx.id].length}</sup>}
+                      💬{txMessages[tx.id]?.length>0 && <sup style={{ fontFamily:"'Inter'", fontSize:8, color:th.gold }}>{txMessages[tx.id].length}</sup>}
                     </button>
                   </div>
                 </div>
@@ -652,12 +608,12 @@ export default function PayFlow() {
               <div key={tx.id} className="tx-row">
                 <div style={{ width:42, height:42, borderRadius:13, background:tx.amount>0?"rgba(93,184,150,0.1)":"rgba(212,168,83,0.08)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, flexShrink:0 }}>{tx.icon}</div>
                 <div style={{ flex:1 }}>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:500, color:th.text, marginBottom:2 }}>{tx.name}</p>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>{tx.date} · {tx.category}</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:13, fontWeight:500, color:th.text, marginBottom:2 }}>{tx.name}</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted }}>{tx.date} · {tx.category}</p>
                 </div>
                 <div style={{ display:"flex", alignItems:"center", gap:10 }}>
                   <div style={{ textAlign:"right" }}>
-                    <p style={{ fontFamily:"'DM Sans'", fontWeight:600, fontSize:13, color:tx.amount>0?th.green:th.text }}>{tx.amount>0?"+ ":"– "}₹{Math.abs(tx.amount).toLocaleString()}</p>
+                    <p style={{ fontFamily:"'Inter'", fontWeight:600, fontSize:13, color:tx.amount>0?th.green:th.text }}>{tx.amount>0?"+ ":"– "}₹{Math.abs(tx.amount).toLocaleString()}</p>
                     <span className="pill" style={{ background:"rgba(93,184,150,0.1)", color:th.green, marginTop:2 }}>✓ Done</span>
                   </div>
                   <button onClick={() => setShowChat(tx)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:14, opacity:0.4, padding:"2px 4px" }}>💬</button>
@@ -674,8 +630,8 @@ export default function PayFlow() {
             <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:18 }}>
               {[["Total Spent","₹8,777",th.pink,"↓"],["Total Income","₹90,000",th.green,"↑"],["Saved","₹81,223",th.gold,"◈"],["Bills Paid","₹2,297",th.blue,"⚡"]].map(([l,v,c,i]) => (
                 <div key={l} style={{ ...glass, padding:"16px 18px" }}>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, textTransform:"uppercase", letterSpacing:1.5, marginBottom:8 }}>{l}</p>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:18, fontWeight:700, color:c, letterSpacing:-0.5 }}>{i} {v}</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:9, color:th.textMuted, textTransform:"uppercase", letterSpacing:1.5, marginBottom:8 }}>{l}</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:18, fontWeight:700, color:c, letterSpacing:-0.5 }}>{i} {v}</p>
                 </div>
               ))}
             </div>
@@ -684,8 +640,8 @@ export default function PayFlow() {
               {spendingData.map(s => (
                 <div key={s.category} style={{ marginBottom:14 }}>
                   <div style={{ display:"flex", justifyContent:"space-between", marginBottom:6 }}>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textSub }}>{s.category}</span>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:12, color:s.color, fontWeight:600 }}>₹{s.amount.toLocaleString()}</span>
+                    <span style={{ fontFamily:"'Inter'", fontSize:12, color:th.textSub }}>{s.category}</span>
+                    <span style={{ fontFamily:"'Inter'", fontSize:12, color:s.color, fontWeight:600 }}>₹{s.amount.toLocaleString()}</span>
                   </div>
                   <div className="bar" style={{ background:th.bar }}>
                     <div style={{ height:"100%", width:`${s.pct}%`, background:s.color, borderRadius:8, transition:"width 1s ease" }} />
@@ -699,7 +655,7 @@ export default function PayFlow() {
                 {[55,72,40,88,62,48,90].map((h,i) => (
                   <div key={i} style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:5 }}>
                     <div style={{ width:"100%", height:h, borderRadius:"5px 5px 0 0", background: i===6?`linear-gradient(180deg,${th.gold},${th.goldLight})`:th.bar, transition:"height .8s ease" }} />
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:8, color:th.textMuted }}>{"SONDJFM"[i]}</span>
+                    <span style={{ fontFamily:"'Inter'", fontSize:8, color:th.textMuted }}>{"SONDJFM"[i]}</span>
                   </div>
                 ))}
               </div>
@@ -715,9 +671,9 @@ export default function PayFlow() {
               <button className="btn-ghost" onClick={() => setShowAddGoal(true)}>+ New Goal</button>
             </div>
             <div style={{ ...glass, marginBottom:18, textAlign:"center", background:`linear-gradient(135deg,rgba(93,184,150,0.08),rgba(93,184,150,0.03))`, border:`1px solid rgba(93,184,150,0.15)` }}>
-              <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:8 }}>Total Saved</p>
-              <p style={{ fontFamily:"'DM Sans'", fontSize:32, fontWeight:700, color:th.green, letterSpacing:-1 }}>₹{goals.reduce((s,g)=>s+g.saved,0).toLocaleString()}</p>
-              <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginTop:5 }}>across {goals.length} goals</p>
+              <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:8 }}>Total Saved</p>
+              <p style={{ fontFamily:"'Inter'", fontSize:32, fontWeight:700, color:th.green, letterSpacing:-1 }}>₹{goals.reduce((s,g)=>s+g.saved,0).toLocaleString()}</p>
+              <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted, marginTop:5 }}>across {goals.length} goals</p>
             </div>
             {goals.map(g => {
               const pct = Math.min(100, Math.round((g.saved/g.target)*100));
@@ -726,36 +682,36 @@ export default function PayFlow() {
                   <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14 }}>
                     <div style={{ width:44, height:44, borderRadius:14, background:`${g.color}12`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 }}>{g.icon}</div>
                     <div style={{ flex:1 }}>
-                      <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text, marginBottom:2 }}>{g.name}</p>
-                      <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>Target ₹{g.target.toLocaleString()}</p>
+                      <p style={{ fontFamily:"'Inter'", fontSize:13, fontWeight:600, color:th.text, marginBottom:2 }}>{g.name}</p>
+                      <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted }}>Target ₹{g.target.toLocaleString()}</p>
                     </div>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:18, fontWeight:700, color:g.color }}>{pct}%</span>
+                    <span style={{ fontFamily:"'Inter'", fontSize:18, fontWeight:700, color:g.color }}>{pct}%</span>
                   </div>
                   <div className="bar" style={{ background:th.bar, marginBottom:10 }}>
                     <div style={{ height:"100%", width:`${pct}%`, background:`linear-gradient(90deg,${g.color},${g.color}99)`, borderRadius:8 }} />
                   </div>
                   <div style={{ display:"flex", justifyContent:"space-between" }}>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.green, fontWeight:500 }}>₹{g.saved.toLocaleString()} saved</span>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>₹{(g.target-g.saved).toLocaleString()} to go</span>
+                    <span style={{ fontFamily:"'Inter'", fontSize:11, color:th.green, fontWeight:500 }}>₹{g.saved.toLocaleString()} saved</span>
+                    <span style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted }}>₹{(g.target-g.saved).toLocaleString()} to go</span>
                   </div>
                 </div>
               );
             })}
-            <h3 style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:600, marginTop:28, marginBottom:14, color:th.text, letterSpacing:0.2 }}>Loan & EMI Tracker</h3>
+            <h3 style={{ fontFamily:"'Inter'", fontSize:14, fontWeight:600, marginTop:28, marginBottom:14, color:th.text, letterSpacing:0.2 }}>Loan & EMI Tracker</h3>
             {loans.map(l => {
               const pct = Math.round(((l.total-l.remaining)/l.total)*100);
               return (
                 <div key={l.name} className="card-hover" style={{ ...glass, marginBottom:12 }}>
                   <div style={{ display:"flex", justifyContent:"space-between", marginBottom:12 }}>
-                    <div><p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text, marginBottom:2 }}>{l.name}</p><p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>{l.bank}</p></div>
-                    <div style={{ textAlign:"right" }}><p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:700, color:l.color }}>₹{l.emi.toLocaleString()}/mo</p><p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, marginTop:2 }}>{l.remaining} EMIs left</p></div>
+                    <div><p style={{ fontFamily:"'Inter'", fontSize:13, fontWeight:600, color:th.text, marginBottom:2 }}>{l.name}</p><p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted }}>{l.bank}</p></div>
+                    <div style={{ textAlign:"right" }}><p style={{ fontFamily:"'Inter'", fontSize:14, fontWeight:700, color:l.color }}>₹{l.emi.toLocaleString()}/mo</p><p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted, marginTop:2 }}>{l.remaining} EMIs left</p></div>
                   </div>
                   <div className="bar" style={{ background:th.bar, marginBottom:8 }}>
                     <div style={{ height:"100%", width:`${pct}%`, background:l.color, borderRadius:8 }} />
                   </div>
                   <div style={{ display:"flex", justifyContent:"space-between" }}>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.green }}>{pct}% paid</span>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>₹{l.outstanding.toLocaleString()} outstanding</span>
+                    <span style={{ fontFamily:"'Inter'", fontSize:10, color:th.green }}>{pct}% paid</span>
+                    <span style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted }}>₹{l.outstanding.toLocaleString()} outstanding</span>
                   </div>
                 </div>
               );
@@ -767,11 +723,11 @@ export default function PayFlow() {
         {tab==="rewards" && (
           <div className={`fade ${mounted?"in":""}`}>
             <h2 style={{ fontSize:26, fontWeight:600, marginBottom:4, letterSpacing:-0.5 }}>Rewards</h2>
-            <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textMuted, marginBottom:20 }}>Earn while you spend ✦</p>
+            <p style={{ fontFamily:"'Inter'", fontSize:12, color:th.textMuted, marginBottom:20 }}>Earn while you spend ✦</p>
             <div style={{ ...glass, marginBottom:20, background:`linear-gradient(135deg,rgba(212,168,83,0.1),rgba(212,168,83,0.04))`, border:`1px solid rgba(212,168,83,0.2)`, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
               <div>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:8 }}>Total Earned This Month</p>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:28, fontWeight:700, color:th.gold, letterSpacing:-1 }}>₹{totalCashback}</p>
+                <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:8 }}>Total Earned This Month</p>
+                <p style={{ fontFamily:"'Inter'", fontSize:28, fontWeight:700, color:th.gold, letterSpacing:-1 }}>₹{totalCashback}</p>
               </div>
               <span style={{ fontSize:38 }}>🏆</span>
             </div>
@@ -780,19 +736,19 @@ export default function PayFlow() {
               <div key={o.title} className="card-hover" style={{ ...glass, marginBottom:10, display:"flex", gap:14, alignItems:"center" }}>
                 <div style={{ width:44, height:44, borderRadius:14, background:`${o.color}12`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:21, flexShrink:0 }}>{o.icon}</div>
                 <div style={{ flex:1 }}>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text, marginBottom:2 }}>{o.title}</p>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>{o.brand} · Expires {o.expires}</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:13, fontWeight:600, color:th.text, marginBottom:2 }}>{o.title}</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted }}>{o.brand} · Expires {o.expires}</p>
                 </div>
                 <div style={{ textAlign:"right" }}>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:700, color:th.green }}>+₹{o.earned}</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:13, fontWeight:700, color:th.green }}>+₹{o.earned}</p>
                   <button className="btn-ghost" style={{ padding:"4px 10px", fontSize:10, marginTop:5 }}>Claim</button>
                 </div>
               </div>
             ))}
             <div style={{ ...glass, marginTop:18, textAlign:"center", background:`linear-gradient(135deg,rgba(212,168,83,0.07),rgba(212,168,83,0.02))` }}>
               <span style={{ fontSize:28 }}>⭐</span>
-              <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text, marginTop:8, marginBottom:6 }}>Gold Member Perks</p>
-              <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, lineHeight:1.7 }}>2× cashback on bills · Priority support · Zero forex fees</p>
+              <p style={{ fontFamily:"'Inter'", fontSize:13, fontWeight:600, color:th.text, marginTop:8, marginBottom:6 }}>Gold Member Perks</p>
+              <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted, lineHeight:1.7 }}>2× cashback on bills · Priority support · Zero forex fees</p>
             </div>
           </div>
         )}
@@ -806,7 +762,7 @@ export default function PayFlow() {
                 <h2 style={{ fontSize:18, fontWeight:600, letterSpacing:-0.3 }}>Aria · AI Support</h2>
                 <div style={{ display:"flex", alignItems:"center", gap:5, marginTop:3 }}>
                   <div style={{ width:6, height:6, borderRadius:"50%", background:th.green, animation:"pulse 2s infinite" }} />
-                  <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.green, letterSpacing:0.3 }}>Online · Instant replies</span>
+                  <span style={{ fontFamily:"'Inter'", fontSize:10, color:th.green, letterSpacing:0.3 }}>Online · Instant replies</span>
                 </div>
               </div>
             </div>
@@ -817,10 +773,10 @@ export default function PayFlow() {
                   {msg.role==="assistant" && (
                     <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:2 }}>
                       <div style={{ width:18, height:18, borderRadius:6, background:"linear-gradient(135deg,rgba(123,159,224,0.2),rgba(160,123,224,0.2))", display:"flex", alignItems:"center", justifyContent:"center", fontSize:10 }}>🤖</div>
-                      <span style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, letterSpacing:0.5 }}>ARIA</span>
+                      <span style={{ fontFamily:"'Inter'", fontSize:9, color:th.textMuted, letterSpacing:0.5 }}>ARIA</span>
                     </div>
                   )}
-                  <div style={{ maxWidth:"82%", padding:"12px 15px", borderRadius:msg.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px", background:msg.role==="user"?`rgba(212,168,83,0.15)`:dark?"rgba(123,159,224,0.08)":"rgba(123,159,224,0.1)", border:msg.role==="assistant"?`1px solid rgba(123,159,224,0.15)`:`1px solid rgba(212,168,83,0.2)`, fontFamily:"'DM Sans',sans-serif", fontSize:13, lineHeight:1.55, color:th.text, whiteSpace:"pre-wrap" }}>{msg.text}</div>
+                  <div style={{ maxWidth:"82%", padding:"12px 15px", borderRadius:msg.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px", background:msg.role==="user"?`rgba(212,168,83,0.15)`:dark?"rgba(123,159,224,0.08)":"rgba(123,159,224,0.1)", border:msg.role==="assistant"?`1px solid rgba(123,159,224,0.15)`:`1px solid rgba(212,168,83,0.2)`, fontFamily:"'Inter',sans-serif", fontSize:13, lineHeight:1.55, color:th.text, whiteSpace:"pre-wrap" }}>{msg.text}</div>
                 </div>
               ))}
               {supportLoading && (
@@ -836,7 +792,7 @@ export default function PayFlow() {
 
             {supportMessages.length<=1 && (
               <div style={{ flexShrink:0, marginBottom:12 }}>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, marginBottom:8, textTransform:"uppercase", letterSpacing:1.5 }}>Common questions</p>
+                <p style={{ fontFamily:"'Inter'", fontSize:9, color:th.textMuted, marginBottom:8, textTransform:"uppercase", letterSpacing:1.5 }}>Common questions</p>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
                   {["Why was my payment declined?","How to dispute a transaction?","International transfer limit?","Add a new bank account?","Track my refund","Change UPI PIN"].map(q => (
                     <button key={q} onClick={() => setSupportInput(q)} className="btn-ghost" style={{ fontSize:10, padding:"6px 10px" }}>{q}</button>
@@ -856,7 +812,7 @@ export default function PayFlow() {
         {tab==="credit" && (
           <div className={`fade ${mounted?"in":""}`}>
             <h2 style={{ fontSize:26, fontWeight:600, marginBottom:4, letterSpacing:-0.5 }}>Credit</h2>
-            <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textMuted, marginBottom:20 }}>Your credit health at a glance</p>
+            <p style={{ fontFamily:"'Inter'", fontSize:12, color:th.textMuted, marginBottom:20 }}>Your credit health at a glance</p>
 
             {/* ── INSTANT LOAN BANNER ── */}
             <div className="card-hover" onClick={() => { setShowInstantLoan(true); setLoanStep(1); }} style={{ marginBottom:22, borderRadius:22, padding:"20px", background:"linear-gradient(135deg,#1A2A1A,#0A1A0A)", border:"1px solid rgba(93,184,150,0.3)", cursor:"pointer", position:"relative", overflow:"hidden" }}>
@@ -866,40 +822,40 @@ export default function PayFlow() {
                 <div style={{ width:52, height:52, borderRadius:16, background:"rgba(93,184,150,0.15)", border:"1px solid rgba(93,184,150,0.25)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:24, flexShrink:0 }}>⚡</div>
                 <div style={{ flex:1 }}>
                   <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4 }}>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:15, fontWeight:700, color:"#F0EAD6" }}>Instant Loan</p>
-                    <span style={{ background:"rgba(93,184,150,0.15)", border:"1px solid rgba(93,184,150,0.3)", borderRadius:6, padding:"2px 8px", fontSize:9, color:"#5DB896", fontFamily:"'DM Sans'", fontWeight:600, letterSpacing:0.5 }}>PRE-APPROVED</span>
+                    <p style={{ fontFamily:"'Inter'", fontSize:15, fontWeight:700, color:"#F0EAD6" }}>Instant Loan</p>
+                    <span style={{ background:"rgba(93,184,150,0.15)", border:"1px solid rgba(93,184,150,0.3)", borderRadius:6, padding:"2px 8px", fontSize:9, color:"#5DB896", fontFamily:"'Inter'", fontWeight:600, letterSpacing:0.5 }}>PRE-APPROVED</span>
                   </div>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:"rgba(240,234,214,0.5)", marginBottom:6 }}>Get up to ₹10,000 in 60 seconds</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:12, color:"rgba(240,234,214,0.5)", marginBottom:6 }}>Get up to ₹10,000 in 60 seconds</p>
                   <div style={{ display:"flex", gap:12 }}>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:"#5DB896" }}>✓ No collateral</span>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:"#5DB896" }}>✓ Instant disbursal</span>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:"#5DB896" }}>✓ Flexible repay</span>
+                    <span style={{ fontFamily:"'Inter'", fontSize:10, color:"#5DB896" }}>✓ No collateral</span>
+                    <span style={{ fontFamily:"'Inter'", fontSize:10, color:"#5DB896" }}>✓ Instant disbursal</span>
+                    <span style={{ fontFamily:"'Inter'", fontSize:10, color:"#5DB896" }}>✓ Flexible repay</span>
                   </div>
                 </div>
                 <span style={{ fontSize:20, color:"#5DB896" }}>›</span>
               </div>
               <div style={{ marginTop:14, display:"flex", justifyContent:"space-between", padding:"10px 14px", background:"rgba(93,184,150,0.06)", borderRadius:12, border:"1px solid rgba(93,184,150,0.12)" }}>
                 <div style={{ textAlign:"center" }}>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:"rgba(240,234,214,0.4)", letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Eligible</p>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:15, fontWeight:700, color:"#5DB896" }}>₹10,000</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:9, color:"rgba(240,234,214,0.4)", letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Eligible</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:15, fontWeight:700, color:"#5DB896" }}>₹10,000</p>
                 </div>
                 <div style={{ textAlign:"center" }}>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:"rgba(240,234,214,0.4)", letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Interest</p>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:15, fontWeight:700, color:"#D4A853" }}>1.5%/mo</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:9, color:"rgba(240,234,214,0.4)", letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Interest</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:15, fontWeight:700, color:"#D4A853" }}>1.5%/mo</p>
                 </div>
                 <div style={{ textAlign:"center" }}>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:"rgba(240,234,214,0.4)", letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Tenure</p>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:15, fontWeight:700, color:"#7B9FE0" }}>30-90 days</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:9, color:"rgba(240,234,214,0.4)", letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Tenure</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:15, fontWeight:700, color:"#7B9FE0" }}>30-90 days</p>
                 </div>
                 <div style={{ textAlign:"center" }}>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:"rgba(240,234,214,0.4)", letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Disbursal</p>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:15, fontWeight:700, color:"#A07BE0" }}>60 secs</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:9, color:"rgba(240,234,214,0.4)", letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Disbursal</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:15, fontWeight:700, color:"#A07BE0" }}>60 secs</p>
                 </div>
               </div>
             </div>
             <div style={{ ...glass, marginBottom:18, background:`linear-gradient(145deg,${dark?"#141420":"#FFF8EE"},${dark?"#0D1520":"#EEF4FF"})`, border:`1px solid ${th.borderBright}`, textAlign:"center", position:"relative", overflow:"hidden" }}>
               <div style={{ position:"absolute", top:-40, right:-40, width:150, height:150, borderRadius:"50%", background:"radial-gradient(circle,rgba(212,168,83,0.1),transparent)", pointerEvents:"none" }} />
-              <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, letterSpacing:3, textTransform:"uppercase", marginBottom:14 }}>Credit Score</p>
+              <p style={{ fontFamily:"'Inter'", fontSize:9, color:th.textMuted, letterSpacing:3, textTransform:"uppercase", marginBottom:14 }}>Credit Score</p>
               {/* Score circle */}
               <div style={{ position:"relative", width:140, height:140, margin:"0 auto 16px" }}>
                 <svg viewBox="0 0 140 140" style={{ width:140, height:140, transform:"rotate(-210deg)" }}>
@@ -908,20 +864,20 @@ export default function PayFlow() {
                     strokeDasharray={`${(748/900)*364} 364`} style={{ transition:"stroke-dasharray 1s ease" }}/>
                 </svg>
                 <div style={{ position:"absolute", inset:0, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
-                  <span style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:38, fontWeight:700, color:th.gold, lineHeight:1 }}>748</span>
-                  <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, marginTop:4, letterSpacing:1 }}>GOOD</span>
+                  <span style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:38, fontWeight:700, color:th.gold, lineHeight:1 }}>748</span>
+                  <span style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted, marginTop:4, letterSpacing:1 }}>GOOD</span>
                 </div>
               </div>
               <div style={{ display:"flex", justifyContent:"space-between", padding:"0 8px" }}>
                 {[["300","Poor"],["580","Fair"],["670","Good"],["740","V.Good"],["850","Excellent"]].map(([score, label]) => (
                   <div key={label} style={{ textAlign:"center" }}>
-                    <div style={{ fontFamily:"'DM Sans'", fontSize:8, color:th.textMuted }}>{score}</div>
-                    <div style={{ fontFamily:"'DM Sans'", fontSize:7, color:th.textMuted, marginTop:1 }}>{label}</div>
+                    <div style={{ fontFamily:"'Inter'", fontSize:8, color:th.textMuted }}>{score}</div>
+                    <div style={{ fontFamily:"'Inter'", fontSize:7, color:th.textMuted, marginTop:1 }}>{label}</div>
                   </div>
                 ))}
               </div>
               <div style={{ marginTop:14, padding:"10px 14px", background:"rgba(93,184,150,0.08)", borderRadius:12, border:"1px solid rgba(93,184,150,0.15)" }}>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.green }}>↑ Score improved by 12 points this month!</p>
+                <p style={{ fontFamily:"'Inter'", fontSize:12, color:th.green }}>↑ Score improved by 12 points this month!</p>
               </div>
             </div>
 
@@ -937,8 +893,8 @@ export default function PayFlow() {
               ].map(([factor, status, pct, color]) => (
                 <div key={factor} style={{ marginBottom:14 }}>
                   <div style={{ display:"flex", justifyContent:"space-between", marginBottom:6 }}>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:13, color:th.text, fontWeight:500 }}>{factor}</span>
-                    <span style={{ fontFamily:"'DM Sans'", fontSize:11, color, fontWeight:600 }}>{status}</span>
+                    <span style={{ fontFamily:"'Inter'", fontSize:13, color:th.text, fontWeight:500 }}>{factor}</span>
+                    <span style={{ fontFamily:"'Inter'", fontSize:11, color, fontWeight:600 }}>{status}</span>
                   </div>
                   <div className="bar" style={{ background:th.bar }}>
                     <div style={{ height:"100%", width:pct, background:`linear-gradient(90deg,${color},${color}99)`, borderRadius:8 }} />
@@ -959,25 +915,25 @@ export default function PayFlow() {
                   <div style={{ position:"absolute", top:-20, right:-20, width:100, height:100, borderRadius:"50%", background:`radial-gradient(circle,${card.color}18,transparent)` }} />
                   <div style={{ display:"flex", justifyContent:"space-between", marginBottom:16 }}>
                     <div>
-                      <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:"#F0EAD6", marginBottom:2 }}>{card.name}</p>
-                      <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:"rgba(240,234,214,0.4)" }}>{card.network} •••• 4821</p>
+                      <p style={{ fontFamily:"'Inter'", fontSize:13, fontWeight:600, color:"#F0EAD6", marginBottom:2 }}>{card.name}</p>
+                      <p style={{ fontFamily:"'Inter'", fontSize:10, color:"rgba(240,234,214,0.4)" }}>{card.network} •••• 4821</p>
                     </div>
                     <span style={{ fontSize:24 }}>{card.network==="VISA"?"💳":"💳"}</span>
                   </div>
                   <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
                     <div>
-                      <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:"rgba(240,234,214,0.4)", textTransform:"uppercase", letterSpacing:1.5, marginBottom:3 }}>Used</p>
-                      <p style={{ fontFamily:"'DM Sans'", fontSize:15, fontWeight:700, color:card.color }}>₹{card.used.toLocaleString()}</p>
+                      <p style={{ fontFamily:"'Inter'", fontSize:9, color:"rgba(240,234,214,0.4)", textTransform:"uppercase", letterSpacing:1.5, marginBottom:3 }}>Used</p>
+                      <p style={{ fontFamily:"'Inter'", fontSize:15, fontWeight:700, color:card.color }}>₹{card.used.toLocaleString()}</p>
                     </div>
                     <div style={{ textAlign:"right" }}>
-                      <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:"rgba(240,234,214,0.4)", textTransform:"uppercase", letterSpacing:1.5, marginBottom:3 }}>Limit</p>
-                      <p style={{ fontFamily:"'DM Sans'", fontSize:15, fontWeight:700, color:"rgba(240,234,214,0.6)" }}>₹{card.limit.toLocaleString()}</p>
+                      <p style={{ fontFamily:"'Inter'", fontSize:9, color:"rgba(240,234,214,0.4)", textTransform:"uppercase", letterSpacing:1.5, marginBottom:3 }}>Limit</p>
+                      <p style={{ fontFamily:"'Inter'", fontSize:15, fontWeight:700, color:"rgba(240,234,214,0.6)" }}>₹{card.limit.toLocaleString()}</p>
                     </div>
                   </div>
                   <div className="bar" style={{ background:"rgba(255,255,255,0.08)", marginBottom:6 }}>
                     <div style={{ height:"100%", width:`${utilPct}%`, background:card.color, borderRadius:8 }} />
                   </div>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:"rgba(240,234,214,0.4)" }}>{utilPct}% utilized · Due on 5th</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:10, color:"rgba(240,234,214,0.4)" }}>{utilPct}% utilized · Due on 5th</p>
                 </div>
               );
             })}
@@ -992,11 +948,11 @@ export default function PayFlow() {
               <div key={offer.title} className="card-hover" style={{ ...glass, marginBottom:12, display:"flex", gap:14, alignItems:"center" }}>
                 <div style={{ width:46, height:46, borderRadius:14, background:`${offer.color}12`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, flexShrink:0 }}>{offer.icon}</div>
                 <div style={{ flex:1 }}>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text, marginBottom:3 }}>{offer.title}</p>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>{offer.rate} · {offer.tenure}</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:13, fontWeight:600, color:th.text, marginBottom:3 }}>{offer.title}</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted }}>{offer.rate} · {offer.tenure}</p>
                 </div>
                 <div style={{ textAlign:"right" }}>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:700, color:offer.color, marginBottom:5 }}>{offer.amount}</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:13, fontWeight:700, color:offer.color, marginBottom:5 }}>{offer.amount}</p>
                   <button className="btn-ghost" style={{ padding:"5px 10px", fontSize:10 }}>Apply →</button>
                 </div>
               </div>
@@ -1014,8 +970,8 @@ export default function PayFlow() {
                 <div key={tip} style={{ display:"flex", gap:12, alignItems:"flex-start", padding:"10px 0", borderBottom:`1px solid ${th.row}` }}>
                   <span style={{ fontSize:18, flexShrink:0 }}>{icon}</span>
                   <div>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:12, fontWeight:600, color:th.text, marginBottom:2 }}>{tip}</p>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>{desc}</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:12, fontWeight:600, color:th.text, marginBottom:2 }}>{tip}</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted }}>{desc}</p>
                   </div>
                 </div>
               ))}
@@ -1028,17 +984,17 @@ export default function PayFlow() {
           <div className={`fade ${mounted?"in":""}`}>
             <h2 style={{ fontSize:26, fontWeight:600, marginBottom:22, letterSpacing:-0.5 }}>Profile</h2>
             <div style={{ display:"flex", flexDirection:"column", alignItems:"center", marginBottom:26 }}>
-              <div style={{ width:76, height:76, borderRadius:22, background:`linear-gradient(135deg,${th.gold},${th.goldLight})`, display:"flex", alignItems:"center", justifyContent:"center", color:"#0A0806", fontSize:26, fontWeight:700, fontFamily:"'DM Sans'", marginBottom:14, boxShadow:`0 8px 32px rgba(212,168,83,0.3)` }}>MD</div>
+              <div style={{ width:76, height:76, borderRadius:22, background:`linear-gradient(135deg,${th.blue},${th.goldLight})`, display:"flex", alignItems:"center", justifyContent:"center", color:"#0A0806", fontSize:26, fontWeight:700, fontFamily:"'Inter'", marginBottom:14, boxShadow:`0 8px 32px rgba(212,168,83,0.3)` }}>MD</div>
               <h3 style={{ fontSize:20, fontWeight:600, letterSpacing:-0.3, marginBottom:4 }}>Mohindharan DK</h3>
-              <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textMuted, marginBottom:8 }}>mohindharan@gmail.com</p>
-              <span className="pill" style={{ background:`rgba(212,168,83,0.12)`, color:th.gold, border:`1px solid rgba(212,168,83,0.25)`, letterSpacing:0.5 }}>✦ Gold Member</span>
+              <p style={{ fontFamily:"'Inter'", fontSize:12, color:th.textMuted, marginBottom:8 }}>mohindharan@gmail.com</p>
+              <span className="pill" style={{ background:`rgba(59,130,246,0.1)`, color:th.goldLight, border:`1px solid rgba(59,130,246,0.25)`, letterSpacing:0.5 }}>✦ Gold Member</span>
             </div>
             <div style={{ ...glass, marginBottom:12 }}>
               {[["💳","Linked Accounts","2 cards"],["🔐","Security","2FA On"],["📍","UPI ID","mohindharan@upi"],["🏦","Bank","HDFC ••4821"],["🌍","Intl. Transfer","SWIFT enabled"],["🎁","Refer & Earn","₹500/referral"],["🤖","AI Support","Chat with Aria"],["🌗","Theme",dark?"Dark Mode":"Light Mode"],["🔒","Lock App","Biometric"]].map(([icon,label,val],i) => (
                 <div key={label} onClick={i===5?()=>setShowRefer(true):i===6?()=>go("support"):i===7?()=>setDark(d=>!d):i===4?()=>setShowIntl(true):i===8?()=>setLocked(true):undefined} style={{ ...row, cursor:i>=4?"pointer":"default" }}>
                   <span style={{ fontSize:17 }}>{icon}</span>
-                  <span style={{ fontFamily:"'DM Sans'", fontSize:13, color:th.textSub, flex:1 }}>{label}</span>
-                  <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold }}>{val}</span>
+                  <span style={{ fontFamily:"'Inter'", fontSize:13, color:th.textSub, flex:1 }}>{label}</span>
+                  <span style={{ fontFamily:"'Inter'", fontSize:11, color:th.gold }}>{val}</span>
                 </div>
               ))}
             </div>
@@ -1116,7 +1072,7 @@ export default function PayFlow() {
               </div>
               <div style={{ display:"flex", gap:6, marginBottom:20, background:th.input, borderRadius:14, padding:4 }}>
                 {["My QR","Scan QR"].map(t => (
-                  <button key={t} onClick={() => { setQrTab(t); setScanResult(null); setScannerActive(false); }} style={{ flex:1, padding:"9px", borderRadius:11, border:"none", cursor:"pointer", fontFamily:"'DM Sans',sans-serif", fontSize:13, fontWeight:600, background:qrTab===t?`linear-gradient(135deg,${th.gold},${th.goldLight})`:undefined, color:qrTab===t?"#0A0806":th.textMuted, transition:"all .2s", boxShadow:qrTab===t?"0 2px 8px rgba(212,168,83,0.2)":"none" }}>{t}</button>
+                  <button key={t} onClick={() => { setQrTab(t); setScanResult(null); setScannerActive(false); }} style={{ flex:1, padding:"9px", borderRadius:11, border:"none", cursor:"pointer", fontFamily:"'Inter',sans-serif", fontSize:13, fontWeight:600, background:qrTab===t?`linear-gradient(135deg,${th.gold},${th.goldLight})`:undefined, color:qrTab===t?"#0A0806":th.textMuted, transition:"all .2s", boxShadow:qrTab===t?"0 2px 8px rgba(212,168,83,0.2)":"none" }}>{t}</button>
                 ))}
               </div>
               {qrTab==="My QR" ? (
@@ -1126,8 +1082,8 @@ export default function PayFlow() {
                       {QR_PATTERN.map((v,i) => <div key={i} style={{ background:v?"#09090F":"white", borderRadius:1 }} />)}
                     </div>
                   </div>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:600, color:th.text, marginBottom:4 }}>mohindharan@upi</p>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginBottom:18 }}>Scan to pay Mohindharan DK</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:14, fontWeight:600, color:th.text, marginBottom:4 }}>mohindharan@upi</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted, marginBottom:18 }}>Scan to pay Mohindharan DK</p>
                   <button className="btn-primary">📤 Share QR Code</button>
                 </div>
               ) : (
@@ -1135,10 +1091,10 @@ export default function PayFlow() {
                   {scanResult ? (
                     <div style={{ textAlign:"center" }}>
                       <div style={{ fontSize:44, marginBottom:10 }}>✅</div>
-                      <p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:600, color:th.green, marginBottom:10 }}>QR Scanned!</p>
+                      <p style={{ fontFamily:"'Inter'", fontSize:14, fontWeight:600, color:th.green, marginBottom:10 }}>QR Scanned!</p>
                       <div style={{ background:th.input, border:`1px solid ${th.border}`, borderRadius:14, padding:"12px 16px", marginBottom:16, wordBreak:"break-all", textAlign:"left" }}>
-                        <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, marginBottom:4, textTransform:"uppercase", letterSpacing:1 }}>UPI / Payment Info</p>
-                        <p style={{ fontFamily:"'DM Sans'", fontSize:13, color:th.text }}>{scanResult}</p>
+                        <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted, marginBottom:4, textTransform:"uppercase", letterSpacing:1 }}>UPI / Payment Info</p>
+                        <p style={{ fontFamily:"'Inter'", fontSize:13, color:th.text }}>{scanResult}</p>
                       </div>
                       <div style={{ display:"flex", gap:8 }}>
                         <button className="btn-primary" onClick={() => { setShowQR(false); setScanResult(null); setShowSend(true); }}>Pay Now →</button>
@@ -1176,8 +1132,8 @@ export default function PayFlow() {
                         const sel = splitPeople.includes(c.name);
                         return (
                           <div key={c.name} onClick={() => setSplitPeople(p => p.includes(c.name)?p.filter(x=>x!==c.name):[...p,c.name])} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:6, cursor:"pointer" }}>
-                            <div style={{ width:46, height:46, borderRadius:"50%", background:sel?`${c.color}30`:`${c.color}12`, border:`1.5px solid ${sel?c.color:c.color+"30"}`, display:"flex", alignItems:"center", justifyContent:"center", color:c.color, fontFamily:"'DM Sans'", fontWeight:600, fontSize:12, transition:"all .2s" }}>{sel?"✓":c.initials}</div>
-                            <span style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textSub }}>{c.name}</span>
+                            <div style={{ width:46, height:46, borderRadius:"50%", background:sel?`${c.color}30`:`${c.color}12`, border:`1.5px solid ${sel?c.color:c.color+"30"}`, display:"flex", alignItems:"center", justifyContent:"center", color:c.color, fontFamily:"'Inter'", fontWeight:600, fontSize:12, transition:"all .2s" }}>{sel?"✓":c.initials}</div>
+                            <span style={{ fontFamily:"'Inter'", fontSize:9, color:th.textSub }}>{c.name}</span>
                           </div>
                         );
                       })}
@@ -1185,9 +1141,9 @@ export default function PayFlow() {
                   </div>
                   {splitAmount && splitPeople.length>0 && (
                     <div style={{ background:`rgba(212,168,83,0.07)`, border:`1px solid rgba(212,168,83,0.15)`, borderRadius:14, padding:"14px 16px" }}>
-                      <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginBottom:5 }}>Each person pays</p>
-                      <p style={{ fontFamily:"'DM Sans'", fontSize:26, fontWeight:700, color:th.gold, letterSpacing:-1 }}>₹{Math.round(parseInt(splitAmount)/(splitPeople.length+1))}</p>
-                      <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, marginTop:4 }}>Split {splitPeople.length+1} ways · you + {splitPeople.join(", ")}</p>
+                      <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted, marginBottom:5 }}>Each person pays</p>
+                      <p style={{ fontFamily:"'Inter'", fontSize:26, fontWeight:700, color:th.gold, letterSpacing:-1 }}>₹{Math.round(parseInt(splitAmount)/(splitPeople.length+1))}</p>
+                      <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted, marginTop:4 }}>Split {splitPeople.length+1} ways · you + {splitPeople.join(", ")}</p>
                     </div>
                   )}
                   <button className="btn-primary" onClick={handleSplit}>Send Split Requests →</button>
@@ -1206,7 +1162,7 @@ export default function PayFlow() {
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:6 }}>
                 <div>
                   <h3 style={{ fontSize:20, fontWeight:600, letterSpacing:-0.3 }}>🌍 International Transfer</h3>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginTop:3 }}>SWIFT · WIRE · Best live rates</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted, marginTop:3 }}>SWIFT · WIRE · Best live rates</p>
                 </div>
                 <button onClick={() => setShowIntl(false)} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:10, width:32, height:32, cursor:"pointer", color:th.textMuted, fontSize:16, display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
               </div>
@@ -1226,9 +1182,9 @@ export default function PayFlow() {
                         {currencies.map(c => (
                           <div key={c.code} onClick={() => { setIntlCurrency(c); setShowCurrencyPicker(false); }} style={{ display:"flex", alignItems:"center", gap:10, padding:"11px 14px", cursor:"pointer", background:intlCurrency.code===c.code?`rgba(212,168,83,0.08)`:"transparent", borderBottom:`1px solid ${th.row}`, transition:"background .15s" }}>
                             <span style={{ fontSize:18 }}>{c.flag}</span>
-                            <span style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text }}>{c.code}</span>
-                            <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, flex:1 }}>{c.name}</span>
-                            <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold }}>₹{c.rate}</span>
+                            <span style={{ fontFamily:"'Inter'", fontSize:13, fontWeight:600, color:th.text }}>{c.code}</span>
+                            <span style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted, flex:1 }}>{c.name}</span>
+                            <span style={{ fontFamily:"'Inter'", fontSize:11, color:th.gold }}>₹{c.rate}</span>
                           </div>
                         ))}
                       </div>
@@ -1240,12 +1196,12 @@ export default function PayFlow() {
                     {intlINR && (
                       <>
                         <div style={{ display:"flex", justifyContent:"space-between", marginTop:8, padding:"10px 13px", background:`rgba(212,168,83,0.06)`, borderRadius:11 }}>
-                          <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>You pay (INR)</span>
-                          <span style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:700, color:th.gold }}>₹{parseFloat(intlINR).toLocaleString("en-IN")}</span>
+                          <span style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted }}>You pay (INR)</span>
+                          <span style={{ fontFamily:"'Inter'", fontSize:13, fontWeight:700, color:th.gold }}>₹{parseFloat(intlINR).toLocaleString("en-IN")}</span>
                         </div>
                         <div style={{ display:"flex", justifyContent:"space-between", marginTop:4, padding:"8px 13px", background:th.input, borderRadius:11 }}>
-                          <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>Transfer fee (0.5%)</span>
-                          <span style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textSub }}>₹{parseFloat(intlFee).toLocaleString("en-IN")}</span>
+                          <span style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted }}>Transfer fee (0.5%)</span>
+                          <span style={{ fontFamily:"'Inter'", fontSize:11, color:th.textSub }}>₹{parseFloat(intlFee).toLocaleString("en-IN")}</span>
                         </div>
                       </>
                     )}
@@ -1254,7 +1210,7 @@ export default function PayFlow() {
                   <div><label style={lbl}>Bank Account / IBAN</label><input style={inp} placeholder="Account number or IBAN" value={intlAccount} onChange={e => setIntlAccount(e.target.value)} /></div>
                   <div style={{ display:"flex", alignItems:"center", gap:8, padding:"10px 13px", background:"rgba(93,184,150,0.06)", border:"1px solid rgba(93,184,150,0.15)", borderRadius:11 }}>
                     <span style={{ fontSize:13 }}>ℹ️</span>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.green, lineHeight:1.5 }}>Live rate: 1 {intlCurrency.code} = ₹{intlCurrency.rate} · 1–3 business days</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.green, lineHeight:1.5 }}>Live rate: 1 {intlCurrency.code} = ₹{intlCurrency.rate} · 1–3 business days</p>
                   </div>
                   <button className="btn-primary" onClick={handleIntl}>Send Internationally →</button>
                 </div>
@@ -1271,28 +1227,28 @@ export default function PayFlow() {
             <div style={{ padding:"20px 22px 16px", borderBottom:`1px solid ${th.row}`, display:"flex", alignItems:"center", gap:12, flexShrink:0 }}>
               <div style={{ width:40, height:40, borderRadius:13, background:showChat.amount>0?"rgba(93,184,150,0.1)":"rgba(212,168,83,0.08)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18 }}>{showChat.icon}</div>
               <div style={{ flex:1 }}>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:600, color:th.text, marginBottom:2 }}>{showChat.name}</p>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>{showChat.date} · <span style={{ color:showChat.amount>0?th.green:th.pink }}>{showChat.amount>0?"+ ":"– "}₹{Math.abs(showChat.amount).toLocaleString()}</span></p>
+                <p style={{ fontFamily:"'Inter'", fontSize:14, fontWeight:600, color:th.text, marginBottom:2 }}>{showChat.name}</p>
+                <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted }}>{showChat.date} · <span style={{ color:showChat.amount>0?th.green:th.pink }}>{showChat.amount>0?"+ ":"– "}₹{Math.abs(showChat.amount).toLocaleString()}</span></p>
               </div>
               <button onClick={() => setShowChat(null)} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:10, width:32, height:32, cursor:"pointer", color:th.textMuted, fontSize:16, display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
             </div>
             <div style={{ flex:1, overflowY:"auto", padding:"16px 20px", display:"flex", flexDirection:"column", gap:10 }}>
               <div style={{ alignSelf:"center", background:`rgba(212,168,83,0.07)`, border:`1px solid rgba(212,168,83,0.15)`, borderRadius:12, padding:"10px 16px", textAlign:"center", marginBottom:6 }}>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.gold, fontWeight:600, letterSpacing:0.5, marginBottom:3 }}>📋 Transaction Receipt · {showChat.date}</p>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:13, color:th.text }}>{showChat.amount>0?"+ ":"– "}₹{Math.abs(showChat.amount).toLocaleString()} · {showChat.category}</p>
+                <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.gold, fontWeight:600, letterSpacing:0.5, marginBottom:3 }}>📋 Transaction Receipt · {showChat.date}</p>
+                <p style={{ fontFamily:"'Inter'", fontSize:13, color:th.text }}>{showChat.amount>0?"+ ":"– "}₹{Math.abs(showChat.amount).toLocaleString()} · {showChat.category}</p>
               </div>
-              {txMessages[showChat.id]?.length===0 && <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textMuted, textAlign:"center", marginTop:20 }}>No messages yet. Say something! 👋</p>}
+              {txMessages[showChat.id]?.length===0 && <p style={{ fontFamily:"'Inter'", fontSize:12, color:th.textMuted, textAlign:"center", marginTop:20 }}>No messages yet. Say something! 👋</p>}
               {txMessages[showChat.id]?.map((msg,i) => (
                 <div key={i} style={{ display:"flex", flexDirection:"column", alignItems:msg.from==="me"?"flex-end":"flex-start" }}>
-                  <div style={{ maxWidth:"76%", padding:"11px 14px", borderRadius:msg.from==="me"?"16px 16px 4px 16px":"16px 16px 16px 4px", background:msg.from==="me"?`rgba(212,168,83,0.14)`:`rgba(255,255,255,0.05)`, border:msg.from==="me"?`1px solid rgba(212,168,83,0.2)`:`1px solid rgba(255,255,255,0.07)`, fontFamily:"'DM Sans',sans-serif", fontSize:13, lineHeight:1.5, color:th.text }}>{msg.text}</div>
-                  <span style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, marginTop:3, padding:"0 4px" }}>{msg.time}</span>
+                  <div style={{ maxWidth:"76%", padding:"11px 14px", borderRadius:msg.from==="me"?"16px 16px 4px 16px":"16px 16px 16px 4px", background:msg.from==="me"?`rgba(212,168,83,0.14)`:`rgba(255,255,255,0.05)`, border:msg.from==="me"?`1px solid rgba(212,168,83,0.2)`:`1px solid rgba(255,255,255,0.07)`, fontFamily:"'Inter',sans-serif", fontSize:13, lineHeight:1.5, color:th.text }}>{msg.text}</div>
+                  <span style={{ fontFamily:"'Inter'", fontSize:9, color:th.textMuted, marginTop:3, padding:"0 4px" }}>{msg.time}</span>
                 </div>
               ))}
               <div ref={chatEndRef} />
             </div>
             <div style={{ padding:"12px 18px 24px", borderTop:`1px solid ${th.row}`, display:"flex", gap:10, flexShrink:0 }}>
               <input style={{ ...inp, flex:1, padding:"11px 14px", fontSize:13 }} placeholder="Type a message…" value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => e.key==="Enter" && sendChat()} />
-              <button onClick={sendChat} style={{ background:`linear-gradient(135deg,${th.gold},${th.goldLight})`, border:"none", borderRadius:12, width:44, height:44, cursor:"pointer", fontSize:16, display:"flex", alignItems:"center", justifyContent:"center", color:"#0A0806", flexShrink:0 }}>↑</button>
+              <button onClick={sendChat} style={{ background:`linear-gradient(135deg,${th.blue},${th.goldLight})`, border:"none", borderRadius:12, width:44, height:44, cursor:"pointer", fontSize:16, display:"flex", alignItems:"center", justifyContent:"center", color:"#0A0806", flexShrink:0 }}>↑</button>
             </div>
           </div>
         </div>
@@ -1329,7 +1285,7 @@ export default function PayFlow() {
                   <div style={{ width:36, height:36, borderRadius:11, background:"rgba(93,184,150,0.12)", border:"1px solid rgba(93,184,150,0.2)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18 }}>⚡</div>
                   <div>
                     <h3 style={{ fontSize:18, fontWeight:600, letterSpacing:-0.3 }}>Instant Loan</h3>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.green, marginTop:1 }}>Step {loanStep} of 4</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.green, marginTop:1 }}>Step {loanStep} of 4</p>
                   </div>
                 </div>
                 <button onClick={() => { setShowInstantLoan(false); setLoanStep(1); }} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:10, width:32, height:32, cursor:"pointer", color:th.textMuted, fontSize:16, display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
@@ -1343,7 +1299,7 @@ export default function PayFlow() {
               {/* Step 1 — Eligibility Check */}
               {loanStep===1 && (
                 <div>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:600, color:th.text, marginBottom:16 }}>Checking your eligibility...</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:14, fontWeight:600, color:th.text, marginBottom:16 }}>Checking your eligibility...</p>
 
                   {/* Eligibility criteria */}
                   {[
@@ -1356,16 +1312,16 @@ export default function PayFlow() {
                     <div key={label} style={{ display:"flex", alignItems:"center", gap:12, padding:"12px 16px", background:th.surface, border:`1px solid ${th.border}`, borderRadius:14, marginBottom:8 }}>
                       <div style={{ width:28, height:28, borderRadius:"50%", background:passed?"rgba(93,184,150,0.12)":"rgba(224,123,159,0.12)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, flexShrink:0 }}>{passed?"✓":"✗"}</div>
                       <div style={{ flex:1 }}>
-                        <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textSub }}>{label}</p>
+                        <p style={{ fontFamily:"'Inter'", fontSize:12, color:th.textSub }}>{label}</p>
                       </div>
-                      <span style={{ fontFamily:"'DM Sans'", fontSize:12, fontWeight:600, color }}>{value}</span>
+                      <span style={{ fontFamily:"'Inter'", fontSize:12, fontWeight:600, color }}>{value}</span>
                     </div>
                   ))}
 
                   <div style={{ background:"rgba(93,184,150,0.08)", border:"1px solid rgba(93,184,150,0.2)", borderRadius:16, padding:"16px", marginTop:16, marginBottom:20, textAlign:"center" }}>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginBottom:4 }}>You are eligible for</p>
-                    <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:36, fontWeight:700, color:th.green, letterSpacing:-1 }}>₹10,000</p>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, marginTop:4 }}>Based on your credit profile</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted, marginBottom:4 }}>You are eligible for</p>
+                    <p style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:36, fontWeight:700, color:th.green, letterSpacing:-1 }}>₹10,000</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted, marginTop:4 }}>Based on your credit profile</p>
                   </div>
 
                   <button className="btn-primary" onClick={() => setLoanStep(2)}>Check My Offer →</button>
@@ -1375,16 +1331,16 @@ export default function PayFlow() {
               {/* Step 2 — Choose Amount & Tenure */}
               {loanStep===2 && (
                 <div>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:600, color:th.text, marginBottom:20 }}>Choose your loan amount</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:14, fontWeight:600, color:th.text, marginBottom:20 }}>Choose your loan amount</p>
 
                   {/* Amount slider */}
                   <div style={{ ...glass, marginBottom:16, textAlign:"center" }}>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:8 }}>Loan Amount</p>
-                    <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:40, fontWeight:700, color:th.gold, letterSpacing:-1, marginBottom:12 }}>₹{loanAmount.toLocaleString()}</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:8 }}>Loan Amount</p>
+                    <p style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:40, fontWeight:700, color:th.gold, letterSpacing:-1, marginBottom:12 }}>₹{loanAmount.toLocaleString()}</p>
                     <input type="range" min="1000" max="10000" step="500" value={loanAmount} onChange={e => setLoanAmount(parseInt(e.target.value))} style={{ width:"100%", accentColor:"#D4A853", cursor:"pointer" }} />
                     <div style={{ display:"flex", justifyContent:"space-between", marginTop:4 }}>
-                      <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>₹1,000</span>
-                      <span style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>₹10,000</span>
+                      <span style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted }}>₹1,000</span>
+                      <span style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted }}>₹10,000</span>
                     </div>
                   </div>
 
@@ -1396,12 +1352,12 @@ export default function PayFlow() {
                   </div>
 
                   {/* Tenure */}
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:12, fontWeight:600, color:th.text, marginBottom:10 }}>Repayment Period</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:12, fontWeight:600, color:th.text, marginBottom:10 }}>Repayment Period</p>
                   <div style={{ display:"flex", gap:8, marginBottom:20 }}>
                     {[30,60,90].map(t => (
                       <button key={t} onClick={() => setLoanTenure(t)} style={{ flex:1, padding:"12px 8px", borderRadius:14, border:`1px solid ${loanTenure===t?"rgba(93,184,150,0.5)":"rgba(212,168,83,0.15)"}`, background:loanTenure===t?"rgba(93,184,150,0.1)":"transparent", cursor:"pointer", transition:"all .2s" }}>
-                        <p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:700, color:loanTenure===t?th.green:th.text }}>{t}</p>
-                        <p style={{ fontFamily:"'DM Sans'", fontSize:9, color:th.textMuted, marginTop:2 }}>days</p>
+                        <p style={{ fontFamily:"'Inter'", fontSize:14, fontWeight:700, color:loanTenure===t?th.green:th.text }}>{t}</p>
+                        <p style={{ fontFamily:"'Inter'", fontSize:9, color:th.textMuted, marginTop:2 }}>days</p>
                       </button>
                     ))}
                   </div>
@@ -1415,8 +1371,8 @@ export default function PayFlow() {
                       ["Total Repayment", `₹${Math.round(loanAmount + loanAmount * 0.015 * loanTenure/30).toLocaleString()}`],
                     ].map(([label, value], i) => (
                       <div key={label} style={{ display:"flex", justifyContent:"space-between", padding:"6px 0", borderBottom: i<3?`1px solid ${th.row}`:"none" }}>
-                        <span style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textMuted }}>{label}</span>
-                        <span style={{ fontFamily:"'DM Sans'", fontSize:12, fontWeight: i===3?700:400, color: i===3?th.gold:th.text }}>{value}</span>
+                        <span style={{ fontFamily:"'Inter'", fontSize:12, color:th.textMuted }}>{label}</span>
+                        <span style={{ fontFamily:"'Inter'", fontSize:12, fontWeight: i===3?700:400, color: i===3?th.gold:th.text }}>{value}</span>
                       </div>
                     ))}
                   </div>
@@ -1428,7 +1384,7 @@ export default function PayFlow() {
               {/* Step 3 — Confirm */}
               {loanStep===3 && (
                 <div>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:14, fontWeight:600, color:th.text, marginBottom:20 }}>Confirm loan details</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:14, fontWeight:600, color:th.text, marginBottom:20 }}>Confirm loan details</p>
 
                   <div style={{ ...glass, marginBottom:16 }}>
                     {[
@@ -1441,8 +1397,8 @@ export default function PayFlow() {
                     ].map(([icon,label,value]) => (
                       <div key={label} style={{ display:"flex", alignItems:"center", gap:12, padding:"10px 0", borderBottom:`1px solid ${th.row}` }}>
                         <span style={{ fontSize:16 }}>{icon}</span>
-                        <span style={{ fontFamily:"'DM Sans'", fontSize:13, color:th.textSub, flex:1 }}>{label}</span>
-                        <span style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.gold }}>{value}</span>
+                        <span style={{ fontFamily:"'Inter'", fontSize:13, color:th.textSub, flex:1 }}>{label}</span>
+                        <span style={{ fontFamily:"'Inter'", fontSize:13, fontWeight:600, color:th.gold }}>{value}</span>
                       </div>
                     ))}
                   </div>
@@ -1458,7 +1414,7 @@ export default function PayFlow() {
                   </div>
 
                   <div style={{ background:"rgba(93,184,150,0.06)", border:"1px solid rgba(93,184,150,0.15)", borderRadius:14, padding:"12px 14px", marginBottom:20 }}>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.green }}>⚡ Money will be credited to your HDFC account within 60 seconds of approval</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.green }}>⚡ Money will be credited to your HDFC account within 60 seconds of approval</p>
                   </div>
 
                   <button className="btn-primary" onClick={() => setLoanStep(4)}>🔐 Confirm & Get Money →</button>
@@ -1471,7 +1427,7 @@ export default function PayFlow() {
                   <div style={{ fontSize:64, marginBottom:16 }}>⚡</div>
                   <div style={{ width:80, height:80, borderRadius:"50%", background:"rgba(93,184,150,0.12)", border:"2px solid rgba(93,184,150,0.3)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:36, margin:"0 auto 20px" }}>✓</div>
                   <h3 style={{ fontSize:24, fontWeight:700, color:th.green, letterSpacing:-0.5, marginBottom:8 }}>Loan Approved!</h3>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:13, color:th.textMuted, marginBottom:20 }}>₹{loanAmount.toLocaleString()} is being credited to your account</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:13, color:th.textMuted, marginBottom:20 }}>₹{loanAmount.toLocaleString()} is being credited to your account</p>
 
                   <div style={{ ...glass, marginBottom:20, textAlign:"left" }}>
                     {[
@@ -1481,14 +1437,14 @@ export default function PayFlow() {
                       ["Due Date", `${new Date(Date.now() + loanTenure*86400000).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"})}`, th.gold],
                     ].map(([label, value, color]) => (
                       <div key={label} style={{ display:"flex", justifyContent:"space-between", padding:"8px 0", borderBottom:`1px solid ${th.row}` }}>
-                        <span style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textMuted }}>{label}</span>
-                        <span style={{ fontFamily:"'DM Sans'", fontSize:12, fontWeight:600, color }}>{value}</span>
+                        <span style={{ fontFamily:"'Inter'", fontSize:12, color:th.textMuted }}>{label}</span>
+                        <span style={{ fontFamily:"'Inter'", fontSize:12, fontWeight:600, color }}>{value}</span>
                       </div>
                     ))}
                   </div>
 
                   <div style={{ background:"rgba(212,168,83,0.06)", border:`1px solid rgba(212,168,83,0.15)`, borderRadius:14, padding:"12px 14px", marginBottom:24 }}>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>💡 Set a reminder to repay on time to maintain your credit score</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted }}>💡 Set a reminder to repay on time to maintain your credit score</p>
                   </div>
 
                   <button className="btn-primary" onClick={() => { setShowInstantLoan(false); setLoanStep(1); }}>Done ✓</button>
@@ -1513,20 +1469,20 @@ export default function PayFlow() {
               <div style={{ background:"linear-gradient(135deg,rgba(212,168,83,0.15),rgba(212,168,83,0.05))", border:`1px solid rgba(212,168,83,0.25)`, borderRadius:22, padding:"24px 20px", marginBottom:22, textAlign:"center", position:"relative", overflow:"hidden" }}>
                 <div style={{ position:"absolute", top:-30, right:-30, width:120, height:120, borderRadius:"50%", background:"radial-gradient(circle,rgba(212,168,83,0.15),transparent)", pointerEvents:"none" }} />
                 <div style={{ fontSize:44, marginBottom:12 }}>🎁</div>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted, letterSpacing:2, textTransform:"uppercase", marginBottom:8 }}>You earn</p>
-                <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:42, fontWeight:700, color:th.gold, letterSpacing:-1, lineHeight:1, marginBottom:6 }}>₹500</h2>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:12, color:th.textMuted }}>for every friend who joins & pays</p>
+                <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted, letterSpacing:2, textTransform:"uppercase", marginBottom:8 }}>You earn</p>
+                <h2 style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:42, fontWeight:700, color:th.gold, letterSpacing:-1, lineHeight:1, marginBottom:6 }}>₹500</h2>
+                <p style={{ fontFamily:"'Inter'", fontSize:12, color:th.textMuted }}>for every friend who joins & pays</p>
               </div>
 
               {/* Steps */}
               <div style={{ marginBottom:22 }}>
-                <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:14 }}>How it works</p>
+                <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:2, marginBottom:14 }}>How it works</p>
                 {[["1️⃣","Share your code","Send it to friends & family"],["2️⃣","They sign up","Using your referral code"],["3️⃣","Earn ₹500","When they make their first payment"]].map(([num,title,desc]) => (
                   <div key={title} style={{ display:"flex", gap:14, alignItems:"center", marginBottom:14 }}>
                     <span style={{ fontSize:20, flexShrink:0 }}>{num}</span>
                     <div>
-                      <p style={{ fontFamily:"'DM Sans'", fontSize:13, fontWeight:600, color:th.text, marginBottom:2 }}>{title}</p>
-                      <p style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.textMuted }}>{desc}</p>
+                      <p style={{ fontFamily:"'Inter'", fontSize:13, fontWeight:600, color:th.text, marginBottom:2 }}>{title}</p>
+                      <p style={{ fontFamily:"'Inter'", fontSize:11, color:th.textMuted }}>{desc}</p>
                     </div>
                   </div>
                 ))}
@@ -1535,10 +1491,10 @@ export default function PayFlow() {
               {/* Referral code box */}
               <div style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:16, padding:"16px 20px", marginBottom:14, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
                 <div>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:1.5, marginBottom:5 }}>Your referral code</p>
-                  <p style={{ fontFamily:"'DM Sans'", fontSize:20, fontWeight:700, color:th.gold, letterSpacing:2 }}>PAYFLOW-MOHIN</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:1.5, marginBottom:5 }}>Your referral code</p>
+                  <p style={{ fontFamily:"'Inter'", fontSize:20, fontWeight:700, color:th.gold, letterSpacing:2 }}>PAYFLOW-MOHIN</p>
                 </div>
-                <button onClick={handleRefer} style={{ background:referCopied?"rgba(93,184,150,0.15)":"rgba(212,168,83,0.1)", border:`1px solid ${referCopied?"rgba(93,184,150,0.3)":"rgba(212,168,83,0.25)"}`, borderRadius:12, padding:"10px 16px", cursor:"pointer", fontFamily:"'DM Sans'", fontSize:12, fontWeight:600, color:referCopied?th.green:th.gold, transition:"all .3s" }}>
+                <button onClick={handleRefer} style={{ background:referCopied?"rgba(93,184,150,0.15)":"rgba(212,168,83,0.1)", border:`1px solid ${referCopied?"rgba(93,184,150,0.3)":"rgba(212,168,83,0.25)"}`, borderRadius:12, padding:"10px 16px", cursor:"pointer", fontFamily:"'Inter'", fontSize:12, fontWeight:600, color:referCopied?th.green:th.gold, transition:"all .3s" }}>
                   {referCopied ? "✓ Copied!" : "Copy"}
                 </button>
               </div>
@@ -1554,8 +1510,8 @@ export default function PayFlow() {
               <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginTop:18 }}>
                 {[["Friends Referred","3"],["Total Earned","₹1,500"]].map(([l,v]) => (
                   <div key={l} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:16, padding:"16px", textAlign:"center" }}>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:1.5, marginBottom:8 }}>{l}</p>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:22, fontWeight:700, color:th.gold }}>{v}</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted, textTransform:"uppercase", letterSpacing:1.5, marginBottom:8 }}>{l}</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:22, fontWeight:700, color:th.gold }}>{v}</p>
                   </div>
                 ))}
               </div>
@@ -1572,7 +1528,7 @@ export default function PayFlow() {
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:18 }}>
                 <h3 style={{ fontSize:20, fontWeight:600, letterSpacing:-0.3 }}>Notifications</h3>
                 <div style={{ display:"flex", gap:12, alignItems:"center" }}>
-                  <span onClick={() => setNotifications(ns=>ns.map(n=>({...n,read:true})))} style={{ fontFamily:"'DM Sans'", fontSize:11, color:th.gold, cursor:"pointer", letterSpacing:0.2 }}>Mark all read</span>
+                  <span onClick={() => setNotifications(ns=>ns.map(n=>({...n,read:true})))} style={{ fontFamily:"'Inter'", fontSize:11, color:th.gold, cursor:"pointer", letterSpacing:0.2 }}>Mark all read</span>
                   <button onClick={() => setShowNotif(false)} style={{ background:th.surface, border:`1px solid ${th.border}`, borderRadius:10, width:32, height:32, cursor:"pointer", color:th.textMuted, fontSize:16, display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
                 </div>
               </div>
@@ -1580,8 +1536,8 @@ export default function PayFlow() {
                 <div key={n.id} style={{ ...row, alignItems:"flex-start" }}>
                   <div style={{ width:7, height:7, borderRadius:"50%", background:n.read?"transparent":th.gold, marginTop:5, flexShrink:0, border:n.read?`1px solid ${th.border}`:"none", boxShadow:n.read?"none":`0 0 6px rgba(212,168,83,0.6)` }} />
                   <div>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:13, color:n.read?th.textSub:th.text, marginBottom:3 }}>{n.msg}</p>
-                    <p style={{ fontFamily:"'DM Sans'", fontSize:10, color:th.textMuted }}>{n.time}</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:13, color:n.read?th.textSub:th.text, marginBottom:3 }}>{n.msg}</p>
+                    <p style={{ fontFamily:"'Inter'", fontSize:10, color:th.textMuted }}>{n.time}</p>
                   </div>
                 </div>
               ))}
